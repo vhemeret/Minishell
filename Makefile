@@ -6,7 +6,7 @@
 #    By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/04 16:43:53 by vahemere          #+#    #+#              #
-#    Updated: 2022/04/04 16:47:09 by vahemere         ###   ########.fr        #
+#    Updated: 2022/04/05 20:06:14 by vahemere         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,8 @@ OBJS_DIR = objs
 SRCS_DIR = $(shell find srcs -type d)
 
 vpath %.c $(foreach dir, $(SRCS_DIR), $(dir))
-SRCS = #main.c \
+SRCS = main.c \
+ft_strlen.c \
 
 OBJS = $(addprefix $(OBJS_DIR)/, $(SRCS:%.c=%.o))
 
@@ -24,7 +25,7 @@ NORM = norminette
 ########################### COMPILATION AND FLAGS ###########################
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -pthread
+CFLAGS = -Wall -Wextra -Werror
 
 ##################################### COLOR ##################################
 
@@ -38,11 +39,11 @@ all: $(NAME)
 ##################################### MANDATORY ##############################
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) philo.h $(OBJS) -o $(NAME)
+	$(CC) $(CFLAGS) minishell.h $(OBJS) -lreadline -o $(NAME)
 	@echo "\n\t$(COLOUR_PURPLE)***EXECUTABLE CREATED SUCCESSFULL***\n\n$(COLOUR_END)"
 
 $(OBJS_DIR)/%.o : %.c | $(OBJS_DIR)
-	$(CC) $(CFLAGS) -o $@ -c $<
+	$(CC) $(CFLAGS) -lreadline -o $@ -c $<
 
 $(OBJS_DIR):
 	mkdir -p $@
