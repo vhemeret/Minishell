@@ -1,0 +1,35 @@
+====== SIMPLE & DOUBLE QUOTES =====
+echo salut a b c            => salut a b c
+echo 'salut' a b c          => salut a b c
+echo "salut" a b c          => salut a b c
+echo 'salut'a b c           => saluta b c
+echo "salut"a b c           => saluta b c
+echo 'salut'a"b" c          => salutab c
+echo 'salut'"a"b'c'         => salutabc
+'echo' a b c                => a b c
+"echo" a b c                => a b c
+
+====== ENV VAR =====
+export a="test"
+echo $a                     => test
+echo '$a'                   => $a
+echo "$a"                   => test
+echo $a'-salut-'            => test-salut-
+echo '$a'-$a-"$a"           => $a-test-test
+
+export echo_env="echo"
+$echo_env a b c             => a b c
+'$echo_env' a b c           => $echo_env command not found
+"$echo_env" a b c           => a b c
+
+
+
+====== UTILS =====
+- Checker si la commande envoyer contient un pipe (check_pipe -> utils)
+	- Si la commande contient un ou plusieurs pipe(s) alors plusieurs tab dargs.
+
+	- Sinon un tableau darg.
+
+- Checker si la commande contient des quotes, doubles quotes ou dollard.
+	- Aviser le tableau darg en fonction
+

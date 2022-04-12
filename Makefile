@@ -6,7 +6,7 @@
 #    By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/04 16:43:53 by vahemere          #+#    #+#              #
-#    Updated: 2022/04/05 20:06:14 by vahemere         ###   ########.fr        #
+#    Updated: 2022/04/09 18:24:17 by vahemere         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,8 @@ SRCS_DIR = $(shell find srcs -type d)
 
 vpath %.c $(foreach dir, $(SRCS_DIR), $(dir))
 SRCS = main.c \
-ft_strlen.c \
+get_cmd.c \
+check_pipe.c ft_strlen.c \
 
 OBJS = $(addprefix $(OBJS_DIR)/, $(SRCS:%.c=%.o))
 
