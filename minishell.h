@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 18:14:41 by vahemere          #+#    #+#             */
-/*   Updated: 2022/04/12 17:29:01 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/04/17 23:10:39 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,26 +22,25 @@
 
 /*####################### STRUCTURES #######################*/
 
-typedef struct s_lex
+typedef struct s_cmd
 {
-	char			*cmd;
-	char			*path_cmd;
-	char			**args;
-	struct s_lex	*next;
-	int				is_quote;
-	int				is_dquote;
-}				t_lex;
+	char			*cmd; //malloced
+	struct s_cmd	*next;
+}				t_cmd; //malloced
 
 /*####################### PROTOTYPES #######################*/
 
 	/*### PARSING ###*/
-void	get_cmd(char *cmd_line, t_lex **lexer);
+void	manage_cmd(char *cmd_line, t_cmd **cmd);
+int		pars_cmd_line(char *cmd_line);
 
 	/*###   EXEC  ###*/
 	
 	/*###  UTILS  ###*/
+char	*ft_strdup(char *str);
 int		ft_strlen(char *str);
 int		check_pipe(char *cmd);
+int		is_whitespace(char c);
 
 	/*### CLEANING ###*/
 void	free_double_array(char **arr);

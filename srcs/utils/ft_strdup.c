@@ -1,31 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   manage_quote.c                                     :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/12 16:08:27 by vahemere          #+#    #+#             */
-/*   Updated: 2022/04/12 16:09:18 by vahemere         ###   ########.fr       */
+/*   Created: 2022/04/17 03:39:51 by vahemere          #+#    #+#             */
+/*   Updated: 2022/04/17 03:45:09 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	manage_quote(char c, t_lex **lexer)
+char	*ft_strdup(char *str)
 {
-	if (c == '\'')
-	{
-			if ((*lexer)->is_quote == 0)
-				(*lexer)->is_quote = 1;
-			else
-				(*lexer)->is_quote = 0;
-	}
-	else if (c == '\"')
-	{
-		if ((*lexer)->is_dquote == 0)
-			(*lexer)->is_dquote = 1;
-		else
-			(*lexer)->is_dquote = 0;
-	}
+	char *dest;
+	int	i;
+
+	i = -1;
+	dest = malloc(sizeof(char) * (ft_strlen(str) + 1));
+	if (!dest)
+		return (NULL);
+	while (str[++i])
+		dest[i] = str[i];
+	dest[i] = '\0';
+	return (dest);
 }

@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/12 16:09:03 by vahemere          #+#    #+#             */
-/*   Updated: 2022/04/12 16:09:25 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/04/17 23:10:10 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,5 +16,5 @@ int	is_whitespace(char c)
 {
 	if ((c >= 9 && c <= 13) || c == ' ')
 		return (1);
-	return (1);
+	return (0);
 }
