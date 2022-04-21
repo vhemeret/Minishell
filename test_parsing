@@ -24,12 +24,6 @@ $echo_env a b c             => a b c
 
 
 
-====== UTILS =====
-- Checker si la commande envoyer contient un pipe (check_pipe -> utils)
-	- Si la commande contient un ou plusieurs pipe(s) alors plusieurs tab dargs.
-
-	- Sinon un tableau darg.
-
-- Checker si la commande contient des quotes, doubles quotes ou dollard.
-	- Aviser le tableau darg en fonction
-
+====== error =====
+premier paring au niveau des quotes
+ $

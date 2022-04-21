@@ -6,7 +6,7 @@
 #    By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/04 16:43:53 by vahemere          #+#    #+#              #
-#    Updated: 2022/04/17 19:28:12 by vahemere         ###   ########.fr        #
+#    Updated: 2022/04/19 18:07:50 by vahemere         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ SRCS_DIR = $(shell find srcs -type d)
 vpath %.c $(foreach dir, $(SRCS_DIR), $(dir))
 SRCS = main.c \
 manage_cmd.c pars_cmd_line.c \
-check_pipe.c ft_strdup.c ft_strlen.c is_whitespace.c \
+ft_strdup.c ft_strlen.c is_whitespace.c quoting_state.c is_word.c next_quote.c \
 cleaning.c \
 
 OBJS = $(addprefix $(OBJS_DIR)/, $(SRCS:%.c=%.o))

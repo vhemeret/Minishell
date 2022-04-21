@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 18:12:49 by vahemere          #+#    #+#             */
-/*   Updated: 2022/04/17 23:09:12 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/04/20 00:30:28 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,9 @@ static int	pars_pipe(char *cmd_line)
 			i++;
 	if (cmd_line[i] == '|')
 		return (0);
-	while (cmd_line[i + 1])
-		i++;
+	if (cmd_line[i] && cmd_line[i + 1])
+		while (cmd_line[i + 1])
+			i++;
 	if (is_whitespace(cmd_line[i]))
 		while (cmd_line[i] && is_whitespace(cmd_line[i]))
 			i--;
