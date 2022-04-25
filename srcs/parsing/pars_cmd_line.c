@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 18:12:49 by vahemere          #+#    #+#             */
-/*   Updated: 2022/04/20 00:30:28 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/04/23 23:12:32 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,24 +37,44 @@ static int	pars_quote(char *cmd_line)
 {
 	int	quote;
 	int	dquote;
+	int	q;
+	int	dq;
 	int	i;
 	
 	i = -1;
+	q = 0;
+	dq = 0;
 	quote = 0;
 	dquote = 0;
 	while (cmd_line[++i])
 	{
-		if (cmd_line[i] == '"')
-			dquote++;
-		else if (cmd_line[i] == '\'')
-			quote++;
+		if (cmd_line[i] == '"' && dquote == 0 && quote == 0)
+		{
+			dquote = 1;
+			dq++;
+		}
+		else if (cmd_line[i] == '"' && dquote == 1 && quote == 0)
+		{
+			dquote = 0;
+			dq++;
+		}
+		if (cmd_line[i] == '\'' && quote == 0 && dquote == 0)
+		{
+			quote = 1;
+			q++;
+		}
+		else if (cmd_line[i] == '\'' && quote == 1 && dquote == 0)
+		{
+			quote = 0;
+			q++;
+		}
 	}
-	if (quote % 2 != 0)
+	if (q % 2 != 0)
 	{
 		printf("minishell:	syntax error single quote not closed\n");
 		return (0);
 	}
-	if (dquote % 2 != 0)
+	if (dq % 2 != 0)
 	{
 		printf("minishell:	syntax error double quote not closed\n");
 		return (0);

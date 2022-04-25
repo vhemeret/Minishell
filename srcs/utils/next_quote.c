@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 17:55:45 by vahemere          #+#    #+#             */
-/*   Updated: 2022/04/20 03:58:40 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/04/25 04:27:13 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,30 @@ int	next_dquote(char *cmd)
 	if (cmd[i] == '"' && cmd[i + 1] == '"')
 		return (i);
 	else if (cmd[i] == '"')
+		i++;
+	while (cmd[i] && cmd[i + 1] != '"')
+		i++;
+	return (i);
+}
+
+int	next_squote_len(char *cmd)
+{
+	int	i;
+
+	i = 0;
+	if (cmd[i] == '\'')
+		i++;
+	while (cmd[i] && cmd[i + 1] != '\'')
+		i++;
+	return (i);
+}
+
+int	next_dquote_len(char *cmd)
+{
+	int	i;
+
+	i = 0;
+	if (cmd[i] == '"')
 		i++;
 	while (cmd[i] && cmd[i + 1] != '"')
 		i++;
