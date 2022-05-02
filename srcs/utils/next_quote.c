@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 17:55:45 by vahemere          #+#    #+#             */
-/*   Updated: 2022/04/25 04:27:13 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/05/02 02:48:17 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,26 +40,20 @@ int	next_dquote(char *cmd)
 	return (i);
 }
 
-int	next_squote_len(char *cmd)
+int	next_squote_len(char *cmd, int i)
 {
-	int	i;
-
-	i = 0;
 	if (cmd[i] == '\'')
 		i++;
-	while (cmd[i] && cmd[i + 1] != '\'')
+	while (cmd[i + 1] && cmd[i + 1] != '\'')
 		i++;
 	return (i);
 }
 
-int	next_dquote_len(char *cmd)
+int	next_dquote_len(char *cmd, int i)
 {
-	int	i;
-
-	i = 0;
 	if (cmd[i] == '"')
 		i++;
-	while (cmd[i] && cmd[i + 1] != '"')
+	while (cmd[i + 1] && cmd[i + 1] != '"')
 		i++;
 	return (i);
 }

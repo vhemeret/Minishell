@@ -25,5 +25,4 @@ $echo_env a b c             => a b c
 
 
 ====== error =====
-premier paring au niveau des quotes
- $
+a voir ce test :	//printf("%c\n", cmd_line[i]);

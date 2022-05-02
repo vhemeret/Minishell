@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 18:14:41 by vahemere          #+#    #+#             */
-/*   Updated: 2022/04/25 10:53:46 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/05/02 02:45:02 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ int		ft_strlen(char *str);
 void	quoting_state(char c, t_quote *state);
 int		next_dquote(char *cmd);
 int		next_squote(char *cmd);
-int		next_dquote_len(char *cmd);
-int		next_squote_len(char *cmd);
+int		next_dquote_len(char *cmd, int i);
+int		next_squote_len(char *cmd, int i);
 int		is_whitespace(char c);
 int		sp_word(char *cmd, int i, t_quote *state);
 int		pipe_word(char *cmd, int i, t_quote *state);

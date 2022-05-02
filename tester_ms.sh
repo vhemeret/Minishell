@@ -7,3 +7,4 @@ il y a x mots|co<<bizare"<<"|lol
 <
 <<
 <<<
+//printf("%c\n", cmd_line[i]);
