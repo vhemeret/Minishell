@@ -25,4 +25,4 @@ $echo_env a b c             => a b c
 
 
 ====== error =====
-a voir ce test :	//printf("%c\n", cmd_line[i]);
+a voir ce test :	//printf("%c\n", cmd_line[i]); -> fix

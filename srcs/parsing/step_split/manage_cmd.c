@@ -6,11 +6,11 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 16:23:06 by vahemere          #+#    #+#             */
-/*   Updated: 2022/05/02 03:03:29 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/05/03 03:26:34 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../../../minishell.h"
 
 int	is_sep(char c)
 {
@@ -88,7 +88,6 @@ static char	*put_words_into_tabs(char *cmd_line, int i, t_quote *state)
 	else
 		while (cmd_line[i] && !is_sep(cmd_line[i]))
 			i++;
-	printf("%i\n", i - j);
 	words = malloc(sizeof(char) * ((i - j) + 1));
 	if (!words)
 		return (NULL);
@@ -105,12 +104,22 @@ static char	*put_words_into_tabs(char *cmd_line, int i, t_quote *state)
 		i++;
 		while (cmd_line[i] && cmd_line[i] != '\'')
 			words[k++] = cmd_line[i++];
+		if (cmd_line[i + 1] && !is_sep(cmd_line[i + 1]))
+		{
+			i++;
+			while (cmd_line[i] && !is_sep(cmd_line[i]))
+				words[k++] = cmd_line[i++];
+		}
 	}
 	else if (cmd_line[i] == '"' && state->is_dquote == 1)
 	{
-		i++;
+		words[k++] = cmd_line[i++];
 		while (cmd_line[i] && cmd_line[i] != '"')
 			words[k++] = cmd_line[i++];
+		words[k++] = cmd_line[i++];
+		if (cmd_line[i] && !is_sep(cmd_line[i]))
+			while (cmd_line[i] && !is_sep(cmd_line[i]))
+				words[k++] = cmd_line[i++];
 	}
 	else if (cmd_line[i] == '|')
 		words[k++] = cmd_line[i];
@@ -164,7 +173,9 @@ void	manage_cmd(char *cmd_line)
 		i++;
 	}
 	words[tab_index] = NULL;
-	i = -1;
-	while (words[++i])
-		printf("tab[%i]\t=\t%s\n", i, words[i]);
+	// PRINT
+	// i = -1;
+	// while (words[++i])
+	// 	printf("tab[%i]\t=\t%s\n", i, words[i]);
+	tokenizer(words);
 }

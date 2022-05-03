@@ -6,11 +6,11 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 18:12:49 by vahemere          #+#    #+#             */
-/*   Updated: 2022/04/23 23:12:32 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/05/03 03:10:41 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../../../minishell.h"
 
 static int	pars_pipe(char *cmd_line)
 {

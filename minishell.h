@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 18:14:41 by vahemere          #+#    #+#             */
-/*   Updated: 2022/05/02 02:45:02 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/05/03 03:12:03 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,13 @@ typedef struct s_quote
 	int	is_dquote;
 }	t_quote;
 
+typedef struct s_token
+{
+	char			*word;
+	//enum			type;
+	struct s_token	*next;
+} t_token;
+
 /*####################### PROTOTYPES #######################*/
 
 	/*### PARSING ###*/
@@ -53,6 +60,7 @@ int		pars_cmd_line(char *cmd_line);
 	/*###  UTILS  ###*/
 char	*ft_strdup(char *str);
 int		ft_strlen(char *str);
+int		is_sep(char c);
 void	quoting_state(char c, t_quote *state);
 int		next_dquote(char *cmd);
 int		next_squote(char *cmd);
