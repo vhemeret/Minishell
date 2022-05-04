@@ -6,7 +6,7 @@
 #    By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/04 16:43:53 by vahemere          #+#    #+#              #
-#    Updated: 2022/05/03 03:21:02 by vahemere         ###   ########.fr        #
+#    Updated: 2022/05/03 03:28:41 by vahemere         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ SRCS_DIR = $(shell find srcs -type d)
 
 vpath %.c $(foreach dir, $(SRCS_DIR), $(dir))
 SRCS = main.c \
-manage_cmd.c pars_cmd_line.c \
+manage_cmd.c pars_cmd_line.c tokenizer.c \
 ft_strdup.c ft_strlen.c is_whitespace.c quoting_state.c is_word.c next_quote.c \
 cleaning.c \
 

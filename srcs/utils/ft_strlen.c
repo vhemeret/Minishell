@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 20:03:21 by vahemere          #+#    #+#             */
-/*   Updated: 2022/04/05 20:06:43 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/05/04 17:05:04 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ int	ft_strlen(char *str)
 	{
 		while (str[i])
 			i++;
-		return (i);
 	}
-	return (0);
+	return (i);
 }

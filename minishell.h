@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 18:14:41 by vahemere          #+#    #+#             */
-/*   Updated: 2022/05/03 03:12:03 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/05/04 18:59:25 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,40 +20,45 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
+#define ICI printf("ici\n");
+
 /*####################### STRUCTURES #######################*/
 
-enum type
+typedef enum s_type
 {
-	CMD, // cmd
-	ARG, // argument
-	R_IN, // <
-	R_OUT, // >
-	DR_OUT, // >>
-	DR_IN, // << (HERE_DOC)
-	INFILE,	// word following <
-	OUTFILE, // word following >
-	LIMITOR, // word following <<
-	OUTFILE_DROUT, // word following >>
-};
+	CMD, // cmd								0
+	ARG, // argument						1
+	R_IN, // <								2
+	R_OUT, // >								3
+	DR_OUT, // >>							4
+	DR_IN, // << (HERE_DOC)					5
+	INFILE,	// word following <				6
+	OUTFILE, // word following >			7
+	LIMITOR, // word following <<			8
+	OUTFILE_DROUT, // word following >>		9
+	PIPE,//									10
+}			t_type;
 
 typedef struct s_quote
 {
 	int	is_quote;
 	int	is_dquote;
-}	t_quote;
+}				t_quote;
 
 typedef struct s_token
 {
 	char			*word;
-	//enum			type;
+	int				index;
 	struct s_token	*next;
-} t_token;
+	enum s_type		type;
+} 				t_token;
 
 /*####################### PROTOTYPES #######################*/
 
 	/*### PARSING ###*/
 void	manage_cmd(char *cmd_line);
 int		pars_cmd_line(char *cmd_line);
+void	tokenizer(char **cmd);
 
 	/*###   EXEC  ###*/
 
