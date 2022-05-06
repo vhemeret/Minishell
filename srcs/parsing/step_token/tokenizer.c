@@ -6,37 +6,66 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 03:18:55 by vahemere          #+#    #+#             */
-/*   Updated: 2022/05/04 19:22:30 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/05/05 20:36:58 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell.h"
 
-// void	type_of_word(t_token **lst)
-// {
-// 	t_token	*tmp;
-// 	int		pipe;
-
-// 	tmp = (*lst);
-// 	pipe = 0;
-// 	while (tmp)
-// 	{
-		
-// 	}
-	
-// }
-
-void	put_word_index(t_token **tmp, char *str)
+void	type_of_word(t_token **lst)
 {
-	static int	i = 1;
+	t_token	*tmp;
+	t_token	*save;
 
-	if (str[0] == '|')
-		i = 0;
-	(*tmp)->word = ft_strdup(str);
-	(*tmp)->index = i;
-	i++;
-	if ((*tmp)->next == NULL)
-		i = 0;
+	tmp = (*lst);
+	while (tmp)
+	{
+		if (tmp->index == 1)
+			tmp->type = 0;
+		else if (tmp->index == 0)
+			tmp->type = 10;
+		else
+		{
+			if (save->type == 2)
+				tmp->type = 6;
+			else if (save->type == 7)
+				tmp->type = 7;
+			else if (is_limitor(tmp, save))
+				tmp->type = 8;
+			else if (is_outfile_drout(tmp, save))
+				tmp->type = 9;
+			else if (is_drin(tmp))
+				tmp->type = 5;
+			else if (is_drout(tmp))
+				tmp->type = 4;
+			else if (tmp->word[0] == '>' && tmp->word[1] == '\0')
+				tmp->type = 3;
+			else if (tmp->word[0] == '<' && tmp->word[1] == '\0')
+				tmp->type = 2;
+			else
+				tmp->type = 1;
+		}
+		save = tmp;
+		tmp = tmp->next;
+	}
+}
+
+void	put_index_node(t_token **lst)
+{
+	int		i;
+	t_token	*tmp;
+
+	i = 1;
+	tmp = (*lst);
+	while (tmp)
+	{
+		if (tmp->word[0] == '|')
+			i = 0;
+		tmp->index = i;
+		tmp->type = -1;
+		tmp = tmp->next;
+		i++;
+	}
 }
 
 void	tokenizer(char **cmd)
@@ -53,7 +82,7 @@ void	tokenizer(char **cmd)
 	lst = malloc(sizeof(t_token) * (1));
 	if (!lst)
 		return ;
-	put_word_index(&lst, cmd[0]);
+	lst->word = ft_strdup(cmd[0]);
 	if (len == 1)
 		lst->next = NULL;
 	else
@@ -67,18 +96,13 @@ void	tokenizer(char **cmd)
 			if (!lst->next)
 				return ;
 			tmp = tmp->next;
-			put_word_index(&tmp, cmd[i]);
-			//tmp->word = ft_strdup(cmd[i]);
+			tmp->word = ft_strdup(cmd[i]);
 			i++;
 		}
 		tmp->next = NULL;
 	}
 	tmp = lst;
 	free_double_array(cmd);
-	while (tmp)
-	{
-		printf("word -> %s | index -> %i\n", tmp->word, tmp->index);
-		tmp = tmp->next;
-	}
-	//type_of_word(&lst);
+	put_index_node(&lst);
+	type_of_word(&lst);
 }
