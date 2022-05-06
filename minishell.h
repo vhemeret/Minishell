@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 18:14:41 by vahemere          #+#    #+#             */
-/*   Updated: 2022/05/04 18:59:25 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/05/06 05:05:56 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
-#define ICI printf("ici\n");
+#define ICI printf("ICI\n");
 
 /*####################### STRUCTURES #######################*/
 
@@ -75,6 +75,11 @@ int		is_whitespace(char c);
 int		sp_word(char *cmd, int i, t_quote *state);
 int		pipe_word(char *cmd, int i, t_quote *state);
 int		redir_word(char *cmd, int i, t_quote *state);
+int		is_drout(t_token *tmp);
+int		is_drin(t_token *tmp);
+int		is_outfile_drout(t_token *save);
+int		is_limitor(t_token *save);
+int		is_type(t_token *tmp);
 
 	/*### CLEANING ###*/
 void	free_double_array(char **arr);

@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 03:18:55 by vahemere          #+#    #+#             */
-/*   Updated: 2022/05/05 20:36:58 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/05/06 05:04:15 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,20 +30,17 @@ void	type_of_word(t_token **lst)
 				tmp->type = 6;
 			else if (save->type == 7)
 				tmp->type = 7;
-			else if (is_limitor(tmp, save))
-				tmp->type = 8;
-			else if (is_outfile_drout(tmp, save))
-				tmp->type = 9;
-			else if (is_drin(tmp))
-				tmp->type = 5;
-			else if (is_drout(tmp))
-				tmp->type = 4;
-			else if (tmp->word[0] == '>' && tmp->word[1] == '\0')
-				tmp->type = 3;
-			else if (tmp->word[0] == '<' && tmp->word[1] == '\0')
-				tmp->type = 2;
+			else if (tmp->word[0] == '<' || tmp->word[0] == '>')
+				tmp->type = is_type(tmp);
 			else
-				tmp->type = 1;
+			{
+				if (is_outfile_drout(save))
+					tmp->type = 9;
+				else if (is_limitor(save))
+					tmp->type = 8;
+				else
+					tmp->type = 1;
+			}
 		}
 		save = tmp;
 		tmp = tmp->next;
@@ -101,8 +98,13 @@ void	tokenizer(char **cmd)
 		}
 		tmp->next = NULL;
 	}
-	tmp = lst;
 	free_double_array(cmd);
 	put_index_node(&lst);
 	type_of_word(&lst);
+	tmp = lst;
+	while (tmp)
+	{
+		printf("word -> [%s]\nindex -> [%i]\nType -> [%d]\n\n", tmp->word, tmp->index, tmp->type);
+		tmp = tmp->next;
+	}
 }
