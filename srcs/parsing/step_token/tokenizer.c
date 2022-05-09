@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 03:18:55 by vahemere          #+#    #+#             */
-/*   Updated: 2022/05/06 05:04:15 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/05/09 13:37:18 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,13 @@ void	type_of_word(t_token **lst)
 	tmp = (*lst);
 	while (tmp)
 	{
-		if (tmp->index == 1)
+		if (tmp->index == 1 && tmp->word[0] != '<' && tmp->word[0] != '>')
 			tmp->type = 0;
 		else if (tmp->index == 0)
 			tmp->type = 10;
 		else
 		{
-			if (save->type == 2)
-				tmp->type = 6;
-			else if (save->type == 7)
-				tmp->type = 7;
-			else if (tmp->word[0] == '<' || tmp->word[0] == '>')
+			if (tmp->word[0] == '<' || tmp->word[0] == '>')
 				tmp->type = is_type(tmp);
 			else
 			{
@@ -38,6 +34,12 @@ void	type_of_word(t_token **lst)
 					tmp->type = 9;
 				else if (is_limitor(save))
 					tmp->type = 8;
+				else if (save->type == 2)
+					tmp->type = 6;
+				else if (save->type == 3)
+					tmp->type = 7;
+				else if (save->type == 6 && tmp->next->word[0] == '|')
+					tmp->type = 0;
 				else
 					tmp->type = 1;
 			}
@@ -84,7 +86,6 @@ void	tokenizer(char **cmd)
 		lst->next = NULL;
 	else
 	{
-		printf("%i\n", len);
 		i = 1;
 		tmp = lst;
 		while (i < len)
@@ -104,7 +105,7 @@ void	tokenizer(char **cmd)
 	tmp = lst;
 	while (tmp)
 	{
-		printf("word -> [%s]\nindex -> [%i]\nType -> [%d]\n\n", tmp->word, tmp->index, tmp->type);
+		printf("word -> [%s]\nType -> [%s]\n\n", tmp->word, types[tmp->type]);
 		tmp = tmp->next;
 	}
 }

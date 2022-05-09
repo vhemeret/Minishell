@@ -8,3 +8,4 @@ il y a x mots|co<<bizare"<<"|lol
 <<
 <<<
 //printf("%c\n", cmd_line[i]);
+ls -la | echo < "Salut" >> outfile | < infile cat | ls > outfile
