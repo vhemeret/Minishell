@@ -1,42 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_cmd.c                                          :+:      :+:    :+:   */
+/*   quoting_state.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/06 16:23:06 by vahemere          #+#    #+#             */
-/*   Updated: 2022/04/06 18:36:24 by vahemere         ###   ########.fr       */
+/*   Created: 2022/04/18 13:29:57 by vahemere          #+#    #+#             */
+/*   Updated: 2022/04/18 14:47:14 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-char **malloc_darrgs(char *cmd)
+void	quoting_state(char c, t_quote *state)
 {
-	int	i;
-	int	word;
-	
-	i = -1;
-	word = 0;
-	while (cmd[++i] && cmd[i] != '|')
+	if (c == '\'')
 	{
-		
+		if (state->is_quote == 0)
+			state->is_quote = 1;
+		else
+			state->is_quote = 0;
 	}
-}
-
-char	**get_cmd(char *cmd)
-{
-	int		i;
-	char	**cmd;
-	t_data	data;
-
-	i = -1;
-	data.is_quote = 0;
-	data.is_dquote = 0;
-	cmd = malloc_darrgs(cmd);
-	while (cmd[++i] && cmd[i] != '|')
+	else if (c == '"')
 	{
-		
+		if (state->is_dquote == 0)
+			state->is_dquote = 1;
+		else
+			state->is_dquote = 0;
 	}
 }

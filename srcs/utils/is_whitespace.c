@@ -1,32 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_pipe.c                                       :+:      :+:    :+:   */
+/*   is_whitespace.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/06 16:13:11 by vahemere          #+#    #+#             */
-/*   Updated: 2022/04/10 18:04:18 by vahemere         ###   ########.fr       */
+/*   Created: 2022/04/12 16:09:03 by vahemere          #+#    #+#             */
+/*   Updated: 2022/04/17 23:10:10 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	check_pipe(char *cmd)
+int	is_whitespace(char c)
 {
-	int i;
-	int	nb_pipe;
-
-	i = -1;
-	nb_pipe = 0;
-	if (cmd)
-	{
-		while (cmd[++i])
-		{
-			if (cmd[i] == '|')
-				nb_pipe++;
-		}
-		return (nb_pipe);
-	}
+	if ((c >= 9 && c <= 13) || c == ' ')
+		return (1);
 	return (0);
 }

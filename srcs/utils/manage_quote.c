@@ -1,32 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_pipe.c                                       :+:      :+:    :+:   */
+/*   manage_quote.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/06 16:13:11 by vahemere          #+#    #+#             */
-/*   Updated: 2022/04/10 18:04:18 by vahemere         ###   ########.fr       */
+/*   Created: 2022/04/12 16:08:27 by vahemere          #+#    #+#             */
+/*   Updated: 2022/04/12 16:09:18 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	check_pipe(char *cmd)
+void	manage_quote(char c, t_lex **lexer)
 {
-	int i;
-	int	nb_pipe;
-
-	i = -1;
-	nb_pipe = 0;
-	if (cmd)
+	if (c == '\'')
 	{
-		while (cmd[++i])
-		{
-			if (cmd[i] == '|')
-				nb_pipe++;
-		}
-		return (nb_pipe);
+			if ((*lexer)->is_quote == 0)
+				(*lexer)->is_quote = 1;
+			else
+				(*lexer)->is_quote = 0;
 	}
-	return (0);
+	else if (c == '\"')
+	{
+		if ((*lexer)->is_dquote == 0)
+			(*lexer)->is_dquote = 1;
+		else
+			(*lexer)->is_dquote = 0;
+	}
 }

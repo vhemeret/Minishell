@@ -6,7 +6,7 @@
 #    By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/04 16:43:53 by vahemere          #+#    #+#              #
-#    Updated: 2022/04/05 20:06:14 by vahemere         ###   ########.fr        #
+#    Updated: 2022/05/06 04:01:19 by vahemere         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,9 @@ SRCS_DIR = $(shell find srcs -type d)
 
 vpath %.c $(foreach dir, $(SRCS_DIR), $(dir))
 SRCS = main.c \
-ft_strlen.c \
+manage_cmd.c pars_cmd_line.c tokenizer.c is_type.c \
+ft_strdup.c ft_strlen.c is_whitespace.c quoting_state.c is_word.c next_quote.c \
+cleaning.c \
 
 OBJS = $(addprefix $(OBJS_DIR)/, $(SRCS:%.c=%.o))
 
@@ -25,7 +27,7 @@ NORM = norminette
 ########################### COMPILATION AND FLAGS ###########################
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
 
 ##################################### COLOR ##################################
 
