@@ -1,26 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   manage_quote.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/05 20:03:21 by vahemere          #+#    #+#             */
-/*   Updated: 2022/05/04 17:05:04 by vahemere         ###   ########.fr       */
+/*   Created: 2022/04/12 16:08:27 by vahemere          #+#    #+#             */
+/*   Updated: 2022/04/12 16:09:18 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	ft_strlen(char *str)
+void	manage_quote(char c, t_lex **lexer)
 {
-	int	i;
-
-	i = 0;
-	if (str[i])
+	if (c == '\'')
 	{
-		while (str[i])
-			i++;
+			if ((*lexer)->is_quote == 0)
+				(*lexer)->is_quote = 1;
+			else
+				(*lexer)->is_quote = 0;
 	}
-	return (i);
+	else if (c == '\"')
+	{
+		if ((*lexer)->is_dquote == 0)
+			(*lexer)->is_dquote = 1;
+		else
+			(*lexer)->is_dquote = 0;
+	}
 }

@@ -1,26 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   quoting_state.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/05 20:03:21 by vahemere          #+#    #+#             */
-/*   Updated: 2022/05/04 17:05:04 by vahemere         ###   ########.fr       */
+/*   Created: 2022/04/18 13:29:57 by vahemere          #+#    #+#             */
+/*   Updated: 2022/04/18 14:47:14 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	ft_strlen(char *str)
+void	quoting_state(char c, t_quote *state)
 {
-	int	i;
-
-	i = 0;
-	if (str[i])
+	if (c == '\'')
 	{
-		while (str[i])
-			i++;
+		if (state->is_quote == 0)
+			state->is_quote = 1;
+		else
+			state->is_quote = 0;
 	}
-	return (i);
+	else if (c == '"')
+	{
+		if (state->is_dquote == 0)
+			state->is_dquote = 1;
+		else
+			state->is_dquote = 0;
+	}
 }
