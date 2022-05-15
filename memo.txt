@@ -1,0 +1,2 @@
+si save est infile et tmp != sep alors tmp->type = 1
+single quote, gerer syntax apres token.

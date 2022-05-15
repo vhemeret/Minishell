@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 03:18:55 by vahemere          #+#    #+#             */
-/*   Updated: 2022/05/09 13:37:18 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/05/15 00:38:14 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,9 +103,11 @@ void	tokenizer(char **cmd)
 	put_index_node(&lst);
 	type_of_word(&lst);
 	tmp = lst;
+	//char	*types[11] = {"CMD", "ARG", "R_IN", "R_OUT", "DR_IN", "DR_OUT", "INFILE", "OUTFILE", "LIMITOR", "OUTFILE_DROUT", "PIPE"};
 	while (tmp)
 	{
-		printf("word -> [%s]\nType -> [%s]\n\n", tmp->word, types[tmp->type]);
+		printf("\033[31;01m\t[%s]\033[00m\n", tmp->word);
 		tmp = tmp->next;
 	}
+              //<<|<|fhs
 }

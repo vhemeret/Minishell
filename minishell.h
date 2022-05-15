@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 18:14:41 by vahemere          #+#    #+#             */
-/*   Updated: 2022/05/09 13:32:00 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/05/13 03:23:37 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ typedef enum s_type
 	PIPE,//									10
 }			t_type;
 
-char	*types[11] = {"CMD", "ARG", "R_IN", "R_OUT", "DR_IN", "DR_OUT", "INFILE", "OUTFILE", "LIMITOR", "OUTFILE_DROUT", "PIPE"};
+
 typedef struct s_quote
 {
 	int	is_quote;
@@ -70,8 +70,8 @@ int		is_sep(char c);
 void	quoting_state(char c, t_quote *state);
 int		next_dquote(char *cmd);
 int		next_squote(char *cmd);
-int		next_dquote_len(char *cmd, int i);
-int		next_squote_len(char *cmd, int i);
+int		next_dquote_len(char *cmd, int i, t_quote *state);
+int		next_squote_len(char *cmd, int i, t_quote *state);
 int		is_whitespace(char c);
 int		sp_word(char *cmd, int i, t_quote *state);
 int		pipe_word(char *cmd, int i, t_quote *state);
@@ -84,5 +84,12 @@ int		is_type(t_token *tmp);
 
 	/*### CLEANING ###*/
 void	free_double_array(char **arr);
+
+
+int	spr_word(char *cmd, int i);
+int	spr_word2(char *cmd, int i, t_quote *state);
+int	sep_word(char c);
+int	quoting_rules(char *cmd, int i, t_quote *state);
+int	end_word(char *cmd, int i, t_quote *state);
 
 #endif
