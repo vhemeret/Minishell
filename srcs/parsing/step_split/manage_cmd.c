@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 16:23:06 by vahemere          #+#    #+#             */
-/*   Updated: 2022/05/15 05:01:20 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/05/16 18:59:27 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,6 @@ int	sep_word(char c)
 	return (0);
 }
 
-// int	is_sep(char c)
-// {
-// 	if (c == '"' || c == '\'' || c == '<' || c == '>' || c == '|' || c == ' ')
-// 		return (1);
-// 	return (0);
-// }
-
-// calcul nombre de mot pour le double tab
 static int	nb_words(char *cmd_line, t_quote *state)
 {
 	int	i;
@@ -57,27 +49,22 @@ static int	nb_words(char *cmd_line, t_quote *state)
 			words++;
 		}
 	}
-	printf("\t\033[34;01mNB_WORDS -> %i\033[00m\n\t----------\n\n", words);
+	printf("\t\033[34;01mNB_WORDS [%i]\033[00m\n\t------------\n", words);
 	return (words);
 }
 
-// retourne 1 si l' on est bien sur un mot
 static int	is_word(char *cmd_line, int i, t_quote	*state)
 {
 	quoting_state(cmd_line[i], state);
 	if (spr_word2(cmd_line, i, state)
 		|| pipe_word(cmd_line, i, state)
 		|| redir_word(cmd_line, i, state))
-	{
-		printf("caractere : %s\n", &cmd_line[i]);
 		return (1);
-	}
 	else
 		return (0);
 	return (0);
 }
 
-// aloue la taille d'un mot pour par la suite le mettre dans le double tableau
 static char	*put_words_into_tabs(char *cmd_line, int *i, t_quote *state)
 {
 	char	*words;
@@ -105,7 +92,6 @@ static char	*put_words_into_tabs(char *cmd_line, int *i, t_quote *state)
 			(*i)++;
 		}
 	}
-	printf("len words %i\n", (*i - j));
 	words = malloc(sizeof(char) * ((*i - j) + 1));
 	if (!words)
 		return (NULL);
@@ -146,7 +132,7 @@ static char	*put_words_into_tabs(char *cmd_line, int *i, t_quote *state)
 			}
 	}
 	else if (cmd_line[*i] == '|')
-		words[k++] = cmd_line[*i];
+		words[k++] = cmd_line[(*i)++];
 	else
 	{
 		if (cmd_line[*i] && cmd_line[*i] == ' ')
@@ -162,7 +148,6 @@ static char	*put_words_into_tabs(char *cmd_line, int *i, t_quote *state)
 	return (words);
 }
 
-// aloue le double tableau et place chaque mot alouer avec la fonction ci dessus dedans.
 void	manage_cmd(char *cmd_line)
 {
 	t_quote	*state;
@@ -186,14 +171,12 @@ void	manage_cmd(char *cmd_line)
 	{
 		if (is_word(cmd_line, i, state))
 		{
-			printf("\033[33;01mword found -> [%s]\t\t dq [%i] sq [%i]\033[00m\n", &cmd_line[i], state->is_dquote, state->is_quote);
 			words[tab_index] = put_words_into_tabs(cmd_line, &i, state);
-			printf("\033[32;01mword remaining -> [%s]\t\t dq [%i] sq [%i]\033[00m\n", &cmd_line[i], state->is_dquote, state->is_quote);
 			tab_index++;
 		}
-		i++;
+		else
+			i++;
 	}
 	words[tab_index] = NULL;
-	printf("\n\n");
 	tokenizer(words);
 }
