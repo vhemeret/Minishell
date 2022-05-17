@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pars_cmd_line.c                                    :+:      :+:    :+:   */
+/*   first_check.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 18:12:49 by vahemere          #+#    #+#             */
-/*   Updated: 2022/05/03 03:10:41 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/05/17 23:03:05 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ static int	pars_quote(char *cmd_line)
 	return (1);
 }
 
-int	pars_cmd_line(char *cmd_line)
+int	first_check(char *cmd_line)
 {
 	if (!pars_quote(cmd_line))
 		return (0);

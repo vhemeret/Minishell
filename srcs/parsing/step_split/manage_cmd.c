@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 16:23:06 by vahemere          #+#    #+#             */
-/*   Updated: 2022/05/16 18:59:27 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/05/18 01:15:10 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,9 +151,9 @@ static char	*put_words_into_tabs(char *cmd_line, int *i, t_quote *state)
 void	manage_cmd(char *cmd_line)
 {
 	t_quote	*state;
+	t_token	*lst;
 	char	**words;
 	int		tab_index;
-	int		len;
 	int		i;
 
 	tab_index = 0;
@@ -162,12 +162,11 @@ void	manage_cmd(char *cmd_line)
 		return ;
 	state->is_dquote = 0;
 	state->is_quote = 0;
-	len = nb_words(cmd_line, state);
-	words = malloc(sizeof(char *) * (len + 1));
+	words = malloc(sizeof(char *) * (nb_words(cmd_line, state) + 1));
 	if (!words)
 		return ;
 	i = 0;
-	while (tab_index < len)
+	while (cmd_line[i])
 	{
 		if (is_word(cmd_line, i, state))
 		{
@@ -178,5 +177,17 @@ void	manage_cmd(char *cmd_line)
 			i++;
 	}
 	words[tab_index] = NULL;
-	tokenizer(words);
+	tokenizer(words, &lst);
+
+	/*########### PRINT ###########*/
+	t_token	*tmp;
+
+	tmp = lst;
+	char	*types[11] = {"CMD", "ARG", "R_IN", "R_OUT", "DR_IN", "DR_OUT", "INFILE", "OUTFILE", "LIMITOR", "OUTFILE_DROUT", "PIPE"};
+	while (tmp)
+	{
+		printf("\033[31;01m\t[%s]\033[00m \033[32;01m|\033[00m \033[33;01m[%s]\033[00m\n", tmp->word, types[tmp->type]);
+		tmp = tmp->next;
+	}
+	/*#############################*/
 }

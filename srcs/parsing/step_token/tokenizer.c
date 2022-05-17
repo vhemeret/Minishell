@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 03:18:55 by vahemere          #+#    #+#             */
-/*   Updated: 2022/05/16 18:58:42 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/05/17 22:57:17 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,31 +67,30 @@ void	put_index_node(t_token **lst)
 	}
 }
 
-void	tokenizer(char **cmd)
+void	tokenizer(char **cmd, t_token **lst)
 {
 	int		i;
 	int		len;
-	t_token	*lst;
 	t_token *tmp;
 
 	i = 0;
 	while (cmd[i])
 		i++;
 	len = i;
-	lst = malloc(sizeof(t_token) * (1));
+	(*lst) = malloc(sizeof(t_token) * (1));
 	if (!lst)
 		return ;
-	lst->word = ft_strdup(cmd[0]);
+	(*lst)->word = ft_strdup(cmd[0]);
 	if (len == 1)
-		lst->next = NULL;
+		(*lst)->next = NULL;
 	else
 	{
 		i = 1;
-		tmp = lst;
+		tmp = (*lst);
 		while (i < len)
 		{
 			tmp->next = malloc(sizeof(t_token) * (1));
-			if (!lst->next)
+			if (!(*lst)->next)
 				return ;
 			tmp = tmp->next;
 			tmp->word = ft_strdup(cmd[i]);
@@ -100,13 +99,6 @@ void	tokenizer(char **cmd)
 		tmp->next = NULL;
 	}
 	free_double_array(cmd);
-	put_index_node(&lst);
-	type_of_word(&lst);
-	tmp = lst;
-	char	*types[11] = {"CMD", "ARG", "R_IN", "R_OUT", "DR_IN", "DR_OUT", "INFILE", "OUTFILE", "LIMITOR", "OUTFILE_DROUT", "PIPE"};
-	while (tmp)
-	{
-		printf("\033[31;01m\t[%s]\033[00m \033[32;01m|\033[00m \033[33;01m[%s]\033[00m\n", tmp->word, types[tmp->type]);
-		tmp = tmp->next;
-	}
+	put_index_node(lst);
+	type_of_word(lst);
 }

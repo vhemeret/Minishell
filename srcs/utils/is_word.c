@@ -6,23 +6,14 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 14:04:28 by vahemere          #+#    #+#             */
-/*   Updated: 2022/05/15 02:20:45 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/05/17 23:01:20 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-// int	spr_word(char *cmd, int i)
-// {
-// 	if (!is_whitespace(cmd[i]) && (i == 0 || is_whitespace(cmd[i - 1])
-// 		|| cmd[i - 1] == '|' || cmd[i - 1] == '<' || cmd[i - 1] == '>'))
-// 				return (1);
-// 	return (0);
-// }
-
 int	spr_word2(char *cmd, int i, t_quote *state)
 {
-	// printf("word -> %s, state -> d%i s%i\n", &cmd[i], state->is_dquote, state->is_quote);
 	if (state->is_quote == 1 || state->is_dquote == 1)
 	{
 		if (cmd[i] == '"' && state->is_dquote == 1)

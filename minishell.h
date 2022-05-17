@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 18:14:41 by vahemere          #+#    #+#             */
-/*   Updated: 2022/05/13 03:23:37 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/05/18 01:15:00 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,10 @@ typedef struct s_token
 /*####################### PROTOTYPES #######################*/
 
 	/*### PARSING ###*/
+int		first_check(char *cmd_line);
 void	manage_cmd(char *cmd_line);
-int		pars_cmd_line(char *cmd_line);
-void	tokenizer(char **cmd);
+void	tokenizer(char **cmd, t_token **lst);
+int		second_check(t_token *lst);
 
 	/*###   EXEC  ###*/
 
