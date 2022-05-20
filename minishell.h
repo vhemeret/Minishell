@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 18:14:41 by vahemere          #+#    #+#             */
-/*   Updated: 2022/05/18 01:15:00 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/05/20 16:18:09 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@
 # include <stdlib.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-
-#define ICI printf("ICI\n");
 
 /*####################### STRUCTURES #######################*/
 
@@ -57,40 +55,39 @@ typedef struct s_token
 /*####################### PROTOTYPES #######################*/
 
 	/*### PARSING ###*/
-int		first_check(char *cmd_line);
+int		is_word(char *cmd, int i, t_quote *state);
+int		end_word(char *cmd, int i, t_quote *state);
+int		sep_word(char c);
 void	manage_cmd(char *cmd_line);
 void	tokenizer(char **cmd, t_token **lst);
-int		second_check(t_token *lst);
+int		is_type(t_token *tmp);
+int		syntax_check(t_token **lst);
+int		check_quote(char *cmd_line, t_quote *state);
+int		is_drout(t_token *tmp);
+int		is_drin(t_token *tmp);
+int		is_outfile_drout(t_token *save);
+int		is_limitor(t_token *save);
 
 	/*###   EXEC  ###*/
 
 	/*###  UTILS  ###*/
 char	*ft_strdup(char *str);
 int		ft_strlen(char *str);
-int		is_sep(char c);
 void	quoting_state(char c, t_quote *state);
 int		next_dquote(char *cmd);
 int		next_squote(char *cmd);
 int		next_dquote_len(char *cmd, int i, t_quote *state);
 int		next_squote_len(char *cmd, int i, t_quote *state);
 int		is_whitespace(char c);
-int		sp_word(char *cmd, int i, t_quote *state);
 int		pipe_word(char *cmd, int i, t_quote *state);
 int		redir_word(char *cmd, int i, t_quote *state);
-int		is_drout(t_token *tmp);
-int		is_drin(t_token *tmp);
-int		is_outfile_drout(t_token *save);
-int		is_limitor(t_token *save);
-int		is_type(t_token *tmp);
 
 	/*### CLEANING ###*/
 void	free_double_array(char **arr);
+int		print_and_free(char *str, t_token **lst);
 
 
-int	spr_word(char *cmd, int i);
-int	spr_word2(char *cmd, int i, t_quote *state);
-int	sep_word(char c);
-int	quoting_rules(char *cmd, int i, t_quote *state);
-int	end_word(char *cmd, int i, t_quote *state);
+// int	spr_word(char *cmd, int i);
+// int	quoting_rules(char *cmd, int i, t_quote *state);
 
 #endif

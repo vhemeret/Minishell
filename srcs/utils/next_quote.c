@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 17:55:45 by vahemere          #+#    #+#             */
-/*   Updated: 2022/05/17 23:00:57 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/05/20 09:48:55 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ int	next_squote_len(char *cmd, int i, t_quote *state)
 		i++;
 	while (cmd[i] && cmd[i] != '\'')
 		i++;
+	if (cmd[i] == '\0')
+		return (i);
 	quoting_state(cmd[i], state);
 	i++;
 	if (cmd[i] && !sep_word(cmd[i]))
@@ -65,6 +67,8 @@ int	next_dquote_len(char *cmd, int i, t_quote *state)
 		i++;
 	while (cmd[i] && cmd[i] != '"')
 		i++;
+	if (cmd[i] == '\0')
+		return (i);
 	quoting_state(cmd[i], state);
 	i++;
 	if (cmd[i] && !sep_word(cmd[i]))

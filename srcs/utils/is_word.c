@@ -6,13 +6,13 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 14:04:28 by vahemere          #+#    #+#             */
-/*   Updated: 2022/05/17 23:01:20 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/05/20 09:43:36 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	spr_word2(char *cmd, int i, t_quote *state)
+int	is_word(char *cmd, int i, t_quote *state)
 {
 	if (state->is_quote == 1 || state->is_dquote == 1)
 	{

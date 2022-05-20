@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 18:14:25 by vahemere          #+#    #+#             */
-/*   Updated: 2022/05/17 23:03:00 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/05/18 12:02:32 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,6 @@ int	main(int ac, char **av, char **env)
 		ret = readline("\033[0;35mminishell\033[0m\033[0;32m$>\033[0m ");
 		if (ft_strlen(ret) != 0)
 		{
-			if (!first_check(ret))
-				continue;
 			manage_cmd(ret);
 			if (ret && *ret)
 				add_history(ret);

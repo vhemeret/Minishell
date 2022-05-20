@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 16:23:06 by vahemere          #+#    #+#             */
-/*   Updated: 2022/05/18 01:15:10 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/05/20 16:16:22 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	nb_words(char *cmd_line, t_quote *state)
 	while (cmd_line[++i])
 	{
 		quoting_state(cmd_line[i], state);
-		if (spr_word2(cmd_line, i, state) || pipe_word(cmd_line, i, state)
+		if (is_word(cmd_line, i, state) || pipe_word(cmd_line, i, state)
 			|| redir_word(cmd_line, i, state))
 		{
 			if (cmd_line[i] == '<' && cmd_line[i + 1] && cmd_line[i + 1] == '<')
@@ -43,9 +43,17 @@ static int	nb_words(char *cmd_line, t_quote *state)
 					i++;
 			}
 			else if (cmd_line[i] == '\'' && state->is_quote == 1)
+			{
 				i += next_squote(&cmd_line[i]);
+				if (cmd_line[i] == '\0')
+					return (words += 1);
+			}
 			else if (cmd_line[i] == '"' && state->is_dquote == 1)
+			{
 				i += next_dquote(&cmd_line[i]);
+				if (cmd_line[i] == '\0')
+					return (words += 1);
+			}
 			words++;
 		}
 	}
@@ -53,10 +61,10 @@ static int	nb_words(char *cmd_line, t_quote *state)
 	return (words);
 }
 
-static int	is_word(char *cmd_line, int i, t_quote	*state)
+static int	on_word(char *cmd_line, int i, t_quote	*state)
 {
 	quoting_state(cmd_line[i], state);
-	if (spr_word2(cmd_line, i, state)
+	if (is_word(cmd_line, i, state)
 		|| pipe_word(cmd_line, i, state)
 		|| redir_word(cmd_line, i, state))
 		return (1);
@@ -99,6 +107,7 @@ static char	*put_words_into_tabs(char *cmd_line, int *i, t_quote *state)
 	state->is_dquote = 0;
 	*i = j;
 	k = 0;
+	quoting_state(cmd_line[*i], state);
 	if (cmd_line[*i] == '<')
 		while (cmd_line[*i] && cmd_line[*i] == '<' && k < 2)
 			words[k++] = cmd_line[(*i)++];
@@ -110,7 +119,11 @@ static char	*put_words_into_tabs(char *cmd_line, int *i, t_quote *state)
 		words[k++] = cmd_line[(*i)++];
 		while (cmd_line[*i] && cmd_line[*i] != '\'')
 			words[k++] = cmd_line[(*i)++];
-		words[k++] = cmd_line[(*i)++];
+		if (cmd_line[(*i)] == '\0')
+		{
+			words[k] = '\0';
+			return (words);
+		}
 		if (cmd_line[*i] && !sep_word(cmd_line[*i]))
 			while (cmd_line[*i] && !end_word(cmd_line, *i, state))
 			{
@@ -123,7 +136,11 @@ static char	*put_words_into_tabs(char *cmd_line, int *i, t_quote *state)
 		words[k++] = cmd_line[(*i)++];
 		while (cmd_line[*i] && cmd_line[*i] != '"')
 			words[k++] = cmd_line[(*i)++];
-		words[k++] = cmd_line[(*i)++];
+		if (cmd_line[(*i)] == '\0')
+		{
+			words[k] = '\0';
+			return (words);
+		}
 		if (cmd_line[*i] && !sep_word(cmd_line[*i]))
 			while (cmd_line[*i] && !end_word(cmd_line, *i, state))
 			{
@@ -160,25 +177,27 @@ void	manage_cmd(char *cmd_line)
 	state = malloc(sizeof(t_quote));
 	if (!state)
 		return ;
-	state->is_dquote = 0;
-	state->is_quote = 0;
+	if (!check_quote(cmd_line, state))
+		return ;
 	words = malloc(sizeof(char *) * (nb_words(cmd_line, state) + 1));
 	if (!words)
 		return ;
+	state->is_dquote = 0;
+	state->is_quote = 0;
 	i = 0;
 	while (cmd_line[i])
 	{
-		if (is_word(cmd_line, i, state))
-		{
-			words[tab_index] = put_words_into_tabs(cmd_line, &i, state);
-			tab_index++;
-		}
+		if (on_word(cmd_line, i, state))
+			words[tab_index++] = put_words_into_tabs(cmd_line, &i, state);
 		else
 			i++;
 	}
 	words[tab_index] = NULL;
 	tokenizer(words, &lst);
-
+	if (!syntax_check(&lst))
+		return ;
+	//expand(&lst);
+	
 	/*########### PRINT ###########*/
 	t_token	*tmp;
 
