@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 16:23:06 by vahemere          #+#    #+#             */
-/*   Updated: 2022/05/20 16:16:22 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/05/21 16:37:27 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,7 @@ static char	*put_words_into_tabs(char *cmd_line, int *i, t_quote *state)
 	return (words);
 }
 
-void	manage_cmd(char *cmd_line)
+void	manage_cmd(char *cmd_line, char **env)
 {
 	t_quote	*state;
 	t_token	*lst;
@@ -196,7 +196,7 @@ void	manage_cmd(char *cmd_line)
 	tokenizer(words, &lst);
 	if (!syntax_check(&lst))
 		return ;
-	//expand(&lst);
+	//expand(&lst, env);
 	
 	/*########### PRINT ###########*/
 	t_token	*tmp;

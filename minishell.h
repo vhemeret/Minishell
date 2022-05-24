@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 18:14:41 by vahemere          #+#    #+#             */
-/*   Updated: 2022/05/20 16:18:09 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/05/21 15:42:19 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ typedef struct s_token
 int		is_word(char *cmd, int i, t_quote *state);
 int		end_word(char *cmd, int i, t_quote *state);
 int		sep_word(char c);
-void	manage_cmd(char *cmd_line);
+void	manage_cmd(char *cmd_line, char **env);
 void	tokenizer(char **cmd, t_token **lst);
 int		is_type(t_token *tmp);
 int		syntax_check(t_token **lst);
@@ -81,6 +81,7 @@ int		next_squote_len(char *cmd, int i, t_quote *state);
 int		is_whitespace(char c);
 int		pipe_word(char *cmd, int i, t_quote *state);
 int		redir_word(char *cmd, int i, t_quote *state);
+char	**copy_env(char **env);
 
 	/*### CLEANING ###*/
 void	free_double_array(char **arr);
