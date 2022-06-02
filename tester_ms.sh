@@ -63,3 +63,5 @@ a b c
 vahemere@e3r6p1:~/Desktop/project/Minishell$ export t="$VAR"$VAR"$VAR"
 vahemere@e3r6p1:~/Desktop/project/Minishell$ echo $t
 a b ca b ca b c
+
+sudo apt-get install libreadline-dev 

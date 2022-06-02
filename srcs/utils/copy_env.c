@@ -6,11 +6,11 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 15:33:24 by vahemere          #+#    #+#             */
-/*   Updated: 2022/05/21 15:39:29 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/05/31 18:00:13 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../minishell.h"
 
 char	**copy_env(char **env)
 {

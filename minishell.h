@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 18:14:41 by vahemere          #+#    #+#             */
-/*   Updated: 2022/05/21 15:42:19 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/05/31 18:00:12 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ int		is_drout(t_token *tmp);
 int		is_drin(t_token *tmp);
 int		is_outfile_drout(t_token *save);
 int		is_limitor(t_token *save);
+void	expand(t_token **lst, t_quote *state, char **env);
 
 	/*###   EXEC  ###*/
 

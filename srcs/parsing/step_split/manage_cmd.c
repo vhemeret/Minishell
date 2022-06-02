@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 16:23:06 by vahemere          #+#    #+#             */
-/*   Updated: 2022/05/21 16:37:27 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/05/31 18:41:01 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ static int	nb_words(char *cmd_line, t_quote *state)
 			words++;
 		}
 	}
+	printf("\n\n\033[32;01mSTEP_SPLIT & TOKEN : \033[00m\n\n");
 	printf("\t\033[34;01mNB_WORDS [%i]\033[00m\n\t------------\n", words);
 	return (words);
 }
@@ -196,7 +197,6 @@ void	manage_cmd(char *cmd_line, char **env)
 	tokenizer(words, &lst);
 	if (!syntax_check(&lst))
 		return ;
-	//expand(&lst, env);
 	
 	/*########### PRINT ###########*/
 	t_token	*tmp;
@@ -209,4 +209,6 @@ void	manage_cmd(char *cmd_line, char **env)
 		tmp = tmp->next;
 	}
 	/*#############################*/
+	printf("\n\n\033[32;01mSTEP_EXPAND : \033[00m\n\n");
+	expand(&lst, state, env);
 }

@@ -6,12 +6,13 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 15:31:55 by vahemere          #+#    #+#             */
-/*   Updated: 2022/05/23 19:18:43 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/05/31 17:58:32 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell.h"
 
+// repère si il y a des var a expandre
 static int	need_expand(char *word)
 {
 	int	i;
@@ -23,10 +24,53 @@ static int	need_expand(char *word)
 	return (0);
 }
 
-void	expand(t_token **lst, char **env)
+
+static void	basic_expantion(t_token **to_expand, char **save_env, t_quote *state)
+{
+	(void)save_env;
+	(void)state;
+	printf("basic_expantion -> %s\n", &(*to_expand)->word[0]);
+}
+
+static void	squote_expantion(t_token **to_expand, char **save_env, t_quote *state)
+{
+	(void)save_env;
+	(void)state;
+	printf("squote_expantion -> %s\n", &(*to_expand)->word[0]);
+}
+
+static void	dquote_expantion(t_token **to_expand, char **save_env, t_quote *state)
+{
+	(void)save_env;
+	(void)state;
+	printf("dquote_expantion -> %s\n", &(*to_expand)->word[0]);
+}
+
+// repere type déxpantion et envoie a la focntion associé
+static void type_expantion(t_token **to_expand, char **save_env, t_quote *state)
+{
+	int	i;
+
+	i = -1;
+	while ((*to_expand)->word[++i])
+	{
+		quoting_state((*to_expand)->word[i], state);
+		if ((*to_expand)->word[i] == '$')
+		{
+			if (state->is_quote == 1 && state->is_dquote == 0)
+				squote_expantion(to_expand, save_env, state);
+			else if (state->is_dquote == 1)
+				dquote_expantion(to_expand, save_env, state);
+			else
+				basic_expantion(to_expand, save_env, state);
+		}	
+	}
+}
+
+// copie l'environement | cherche le type de l'expantion 
+void	expand(t_token **lst, t_quote *state, char **env)
 {
 	char	**save_env;
-	t_quote	*state;
 	t_token	*tmp;
 	t_token	*save;
 
@@ -45,44 +89,4 @@ void	expand(t_token **lst, char **env)
 		else
 			tmp = tmp->next;
 	}
-}
-
-static void type_expantion(t_token **to_expand, char **save_env, t_quote *state)
-{
-	int	i;
-
-	i = -1;
-	while ((*to_expand)->word[++i])
-	{
-		quoting_state((*to_expand)->word[i], state);
-		if ((*to_expand)->word[i] == '$')
-		{
-			if (state->is_quote == 1 && state->is_dquote == 0)
-				squote_expantion(to_expand, save_env, state);
-			else if (state->is_dquote == 1)
-				dquote_expantion(to_expand, save_env, state);
-			else
-				basic_expantion(to_expand, save_env, state);
-		}		
-	}
-}
-
-char *search_in_env
-
-static void	basic_expantion(t_token **to_expand, char **save_env, t_quote *state)
-{
-	char	*var;
-	int		i;
-
-	i = -1;
-	while ((*to_expand)->word[++i] && (*to_expand)->word[i] != '$')
-	{
-		var = search_in_env(&(*to_expand)->word[i], save_env);
-	}
-}
-
-static void	squote_expantion(t_token **to_expand, char **save_env, t_quote *state)
-{
-	char *var;
-		
 }
