@@ -1,44 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cleaning.c                                         :+:      :+:    :+:   */
+/*   copy_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/06 18:22:13 by vahemere          #+#    #+#             */
-/*   Updated: 2022/05/18 10:36:00 by vahemere         ###   ########.fr       */
+/*   Created: 2022/05/21 15:33:24 by vahemere          #+#    #+#             */
+/*   Updated: 2022/05/31 18:00:13 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	free_double_array(char **arr)
+char	**copy_env(char **env)
 {
-	int	i;
+	char	**dest;
+	int		i;
 
+	i = 0;
+	while (env[i])
+		i++;
+	dest = malloc(sizeof(char *) * (i + 1));
 	i = -1;
-	while (arr[++i])
-	{
-		free(arr[i]);
-		arr[i] = NULL;
-	}
-	free(arr);
-	arr = NULL;
-}
-
-int	print_and_free(char *str, t_token **lst)
-{
-	t_token	*tmp;
-	
-	if (str)
-		dprintf(2, "%s\n", str);
-	while (tmp)
-	{
-		tmp = (*lst);
-		(*lst) = (*lst)->next;
-		free(tmp->word);
-		free(tmp);
-		tmp = NULL;
-	}
-	return (0);
+	while (env[++i])
+		dest[i] = env[i];
+	dest[i] = NULL;
+	return (dest);
 }

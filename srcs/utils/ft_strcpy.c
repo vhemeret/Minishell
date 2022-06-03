@@ -1,31 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   manage_quote.c                                     :+:      :+:    :+:   */
+/*   ft_strcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/12 16:08:27 by vahemere          #+#    #+#             */
-/*   Updated: 2022/04/12 16:09:18 by vahemere         ###   ########.fr       */
+/*   Created: 2022/06/03 13:25:50 by vahemere          #+#    #+#             */
+/*   Updated: 2022/06/03 16:16:07 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	manage_quote(char c, t_lex **lexer)
+char	*ft_strcpy(char *src)
 {
-	if (c == '\'')
+	char	*dst;
+	int		i;
+
+	i = 0;
+	while (src[i])
+		i++;
+	dst = malloc(sizeof(char) * (i + 1));
+	if (!dst)
+		return (NULL);
+	i = 0;
+	while (src[i])
 	{
-			if ((*lexer)->is_quote == 0)
-				(*lexer)->is_quote = 1;
-			else
-				(*lexer)->is_quote = 0;
+		dst[i] = src[i];
+		i++;
 	}
-	else if (c == '\"')
-	{
-		if ((*lexer)->is_dquote == 0)
-			(*lexer)->is_dquote = 1;
-		else
-			(*lexer)->is_dquote = 0;
-	}
+	dst[i] = '\0';
+	return (dst);
 }

@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 17:55:45 by vahemere          #+#    #+#             */
-/*   Updated: 2022/05/03 01:52:56 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/05/20 09:48:55 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,32 +40,44 @@ int	next_dquote(char *cmd)
 	return (i);
 }
 
-int	next_squote_len(char *cmd, int i)
+int	next_squote_len(char *cmd, int i, t_quote *state)
 {
 	if (cmd[i] == '\'')
 		i++;
-	while (cmd[i + 1] && cmd[i + 1] != '\'')
+	while (cmd[i] && cmd[i] != '\'')
 		i++;
-	if (cmd[i + 2] && !is_sep(cmd[i + 2]))
+	if (cmd[i] == '\0')
+		return (i);
+	quoting_state(cmd[i], state);
+	i++;
+	if (cmd[i] && !sep_word(cmd[i]))
 	{
-		i++;
-		while (cmd[i + 1] && !is_sep(cmd[i + 1]))
+		while (cmd[i] && !end_word(cmd, i, state))
+		{
+			quoting_state(cmd[i], state);
 			i++;
+		}
 	}
 	return (i);
 }
 
-int	next_dquote_len(char *cmd, int i)
+int	next_dquote_len(char *cmd, int i, t_quote *state)
 {
 	if (cmd[i] == '"')
 		i++;
 	while (cmd[i] && cmd[i] != '"')
 		i++;
+	if (cmd[i] == '\0')
+		return (i);
+	quoting_state(cmd[i], state);
 	i++;
-	if (cmd[i] && !is_sep(cmd[i]))
+	if (cmd[i] && !sep_word(cmd[i]))
 	{
-		while (cmd[i] && !is_sep(cmd[i]))
+		while (cmd[i] && !end_word(cmd, i, state))
+		{
+			quoting_state(cmd[i], state);
 			i++;
+		}
 	}
 	return (i);
 }
