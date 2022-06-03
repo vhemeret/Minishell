@@ -64,4 +64,26 @@ vahemere@e3r6p1:~/Desktop/project/Minishell$ export t="$VAR"$VAR"$VAR"
 vahemere@e3r6p1:~/Desktop/project/Minishell$ echo $t
 a b ca b ca b c
 
-sudo apt-get install libreadline-dev 
+
+$USER	-> vahemere
+$L		-> ls -la
+
+echo $USER | echo $L"$USER"'$USER'
+
+first step :
+
+echo				|	CMD
+$USER				|	ARG
+|					|	PIPE
+echo				|	CMD
+$L"$USER"'$USER'	|	ARG
+
+after expantion :
+
+echo				|	CMD
+vahemere			|	ARG
+|					|	PIPE
+echo				|	CMD
+ls					|	ARG
+-lavahemere$USER	|	ARG
+

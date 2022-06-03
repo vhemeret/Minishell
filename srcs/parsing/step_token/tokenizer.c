@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 03:18:55 by vahemere          #+#    #+#             */
-/*   Updated: 2022/05/17 22:57:17 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/06/03 12:44:27 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ void	tokenizer(char **cmd, t_token **lst)
 	int		i;
 	int		len;
 	t_token *tmp;
+	t_token	*save;
 
 	i = 0;
 	while (cmd[i])
@@ -82,17 +83,24 @@ void	tokenizer(char **cmd, t_token **lst)
 		return ;
 	(*lst)->word = ft_strdup(cmd[0]);
 	if (len == 1)
+	{
 		(*lst)->next = NULL;
+		(*lst)->back = NULL;
+	}
 	else
 	{
 		i = 1;
 		tmp = (*lst);
+		save = (*lst);
+		(*lst)->back = NULL;
 		while (i < len)
 		{
 			tmp->next = malloc(sizeof(t_token) * (1));
 			if (!(*lst)->next)
 				return ;
 			tmp = tmp->next;
+			tmp->back = save;
+			save = save->next;
 			tmp->word = ft_strdup(cmd[i]);
 			i++;
 		}

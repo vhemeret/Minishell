@@ -6,87 +6,99 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 15:31:55 by vahemere          #+#    #+#             */
-/*   Updated: 2022/05/31 17:58:32 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/06/03 16:55:21 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell.h"
 
-// repère si il y a des var a expandre
-static int	need_expand(char *word)
-{
-	int	i;
+// //repère si il y a des var a expandre
+// static int	need_expand(char *word)
+// {
+// 	int	i;
 
-	i = -1;
-	while (word[++i])
-		if (word[i] == '$')
-			return (1);
-	return (0);
-}
+// 	i = -1;
+// 	while (word[++i])
+// 		if (word[i] == '$')
+// 			return (1);
+// 	return (0);
+// }
+
+// // coupe uniquement la variable a expend
+// char	*cut_var(char *word, t_quote *state)
+// {
+// 	int		i;
+// 	int		j;
+// 	int		k;
+// 	char	*var;
+
+// 	i = 0;
+// 	while (word[i] && word[i] != '$')
+// 		i++;
+// 	j = i;
+// 	while (word[j] && (word[j] != '"' || word[j] != '\'' || word[j] != '$' || word[j] != ' '))
+// 		j++;
+// 	var = malloc(sizeof(char) * ((j - i) + 1));
+// 	if (!var)
+// 		return (NULL);
+// 	k = 0;
+// 	j = i;
+// 	while (word[j] && (word[j] != '"' || word[j] != '\'' || word[j] != '$' || word[j] != ' '))
+// 		var[k++] = word[j++];
+// 	var[k] = '\0';
+// 	return (var);
+// }
+
+// // retourne une variable expand
+// char	*search_in_env(char *word, char *save_env, t_quote *state)
+// {
+// 	int		i;
+// 	int		j;
+// 	char	*var;
+// 	char	*ret;
+
+// 	i = -1;
+// 	var = cut_var(word, state);
+// 	while (save_env[++i])
+// 	{
+// 		j = 0;
+// 		if (var[j] = save_env[j])
+// 		{
+// 			while (var[j] && save_env[j] && save_env[j] != '=' && var[j] == save_env[j])
+// 				j++;
+// 			if (var[j] == '\0' && save_env[j] && j != 0 && save_env[j] == '=')
+// 				ret = ft_strcpy(&save_env[j + 1]);
+// 		}
+// 	}
+// 	free(var);
+// 	var = NULL;
+// 	return (ret);
+// }
 
 
-static void	basic_expantion(t_token **to_expand, char **save_env, t_quote *state)
-{
-	(void)save_env;
-	(void)state;
-	printf("basic_expantion -> %s\n", &(*to_expand)->word[0]);
-}
 
-static void	squote_expantion(t_token **to_expand, char **save_env, t_quote *state)
-{
-	(void)save_env;
-	(void)state;
-	printf("squote_expantion -> %s\n", &(*to_expand)->word[0]);
-}
+// // copie l'environement | cherche le type de l'expantion 
+// void	expand(t_token **lst, t_quote *state, char **env)
+// {
+// 	char	**save_env;
+// 	char	**tab;
+// 	t_token	*tmp;
+// 	t_token	*save;
 
-static void	dquote_expantion(t_token **to_expand, char **save_env, t_quote *state)
-{
-	(void)save_env;
-	(void)state;
-	printf("dquote_expantion -> %s\n", &(*to_expand)->word[0]);
-}
-
-// repere type déxpantion et envoie a la focntion associé
-static void type_expantion(t_token **to_expand, char **save_env, t_quote *state)
-{
-	int	i;
-
-	i = -1;
-	while ((*to_expand)->word[++i])
-	{
-		quoting_state((*to_expand)->word[i], state);
-		if ((*to_expand)->word[i] == '$')
-		{
-			if (state->is_quote == 1 && state->is_dquote == 0)
-				squote_expantion(to_expand, save_env, state);
-			else if (state->is_dquote == 1)
-				dquote_expantion(to_expand, save_env, state);
-			else
-				basic_expantion(to_expand, save_env, state);
-		}	
-	}
-}
-
-// copie l'environement | cherche le type de l'expantion 
-void	expand(t_token **lst, t_quote *state, char **env)
-{
-	char	**save_env;
-	t_token	*tmp;
-	t_token	*save;
-
-	save_env = copy_env(env);
-	tmp = (*lst);
-	while (tmp)
-	{
-		save = tmp;
-		if (need_expand(tmp->word))
-		{
-			tmp = tmp->next;
-			state->is_quote = 0;
-			state->is_dquote = 0;
-			type_expantion(&save, save_env, state);
-		}
-		else
-			tmp = tmp->next;
-	}
-}
+// 	save_env = copy_env(env);
+// 	tmp = (*lst);
+// 	while (tmp)
+// 	{
+// 		save = tmp;
+// 		if (need_expand(tmp->word))
+// 		{
+			
+// 			tmp = tmp->next;
+// 			state->is_quote = 0;
+// 			state->is_dquote = 0;
+// 			// replace(&save, save_env, state);
+// 		}
+// 		else
+// 			tmp = tmp->next;
+// 	}
+// }

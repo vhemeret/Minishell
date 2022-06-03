@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 18:14:41 by vahemere          #+#    #+#             */
-/*   Updated: 2022/05/31 18:00:12 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/06/03 16:15:25 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef struct s_token
 	char			*word;
 	int				index;
 	struct s_token	*next;
+	struct s_token	*back;
 	enum s_type		type;
 } 				t_token;
 
@@ -83,11 +84,12 @@ int		is_whitespace(char c);
 int		pipe_word(char *cmd, int i, t_quote *state);
 int		redir_word(char *cmd, int i, t_quote *state);
 char	**copy_env(char **env);
+char	*ft_strcpy(char *src);
+char	**ft_split(char const *s, char c);
 
 	/*### CLEANING ###*/
 void	free_double_array(char **arr);
 int		print_and_free(char *str, t_token **lst);
-
 
 // int	spr_word(char *cmd, int i);
 // int	quoting_rules(char *cmd, int i, t_quote *state);
