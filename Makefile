@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+         #
+#    By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/04 16:43:53 by vahemere          #+#    #+#              #
-#    Updated: 2022/05/06 04:01:19 by vahemere         ###   ########.fr        #
+#    Updated: 2022/05/09 16:15:31 by brhajji-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ vpath %.c $(foreach dir, $(SRCS_DIR), $(dir))
 SRCS = main.c \
 manage_cmd.c pars_cmd_line.c tokenizer.c is_type.c \
 ft_strdup.c ft_strlen.c is_whitespace.c quoting_state.c is_word.c next_quote.c \
-cleaning.c \
+cleaning.c exec_utils.c execve.c\
 
 OBJS = $(addprefix $(OBJS_DIR)/, $(SRCS:%.c=%.o))
 

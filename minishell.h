@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 18:14:41 by vahemere          #+#    #+#             */
-/*   Updated: 2022/05/09 13:32:00 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/05/11 11:17:12 by brhajji-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,11 @@
 # include <stdlib.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <errno.h>
+# include <sys/types.h>
+# include <fcntl.h>
+# include <sys/wait.h>
+# include <unistd.h>
 
 #define ICI printf("ICI\n");
 
@@ -39,7 +44,7 @@ typedef enum s_type
 	PIPE,//									10
 }			t_type;
 
-char	*types[11] = {"CMD", "ARG", "R_IN", "R_OUT", "DR_IN", "DR_OUT", "INFILE", "OUTFILE", "LIMITOR", "OUTFILE_DROUT", "PIPE"};
+
 typedef struct s_quote
 {
 	int	is_quote;
@@ -62,6 +67,9 @@ int		pars_cmd_line(char *cmd_line);
 void	tokenizer(char **cmd);
 
 	/*###   EXEC  ###*/
+
+char	**get_arg(t_token *token);
+void	exec(t_token *token, char **envp);
 
 	/*###  UTILS  ###*/
 char	*ft_strdup(char *str);
