@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 16:23:06 by vahemere          #+#    #+#             */
-/*   Updated: 2022/06/03 16:55:54 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/06/04 04:15:57 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,7 +168,6 @@ static char	*put_words_into_tabs(char *cmd_line, int *i, t_quote *state)
 
 void	manage_cmd(char *cmd_line, char **env)
 {
-	(void)env;
 	t_quote	*state;
 	t_token	*lst;
 	char	**words;
@@ -211,5 +210,5 @@ void	manage_cmd(char *cmd_line, char **env)
 	}
 	printf("\n\n\033[32;01mSTEP_EXPAND : \033[00m\n\n");
 	/*#############################*/
-	//expand(&lst, state, env);
+	expand(&lst, state, env);
 }
