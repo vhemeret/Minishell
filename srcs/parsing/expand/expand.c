@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 15:31:55 by vahemere          #+#    #+#             */
-/*   Updated: 2022/06/04 04:19:02 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/06/04 09:02:15 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,15 +44,15 @@ int	search_in_env_len(char *word, char **save_env, t_quote *state)
 		{
 			j = 0;
 			k = 1;
-			if (word[k] == save_env[j])
+			if (word[k] == save_env[i][j])
 			{
-				while (word[k++] && save_env[j] && save_env[j] != '=' && word[k] == save_env[j])
+				while (word[k++] && save_env[i][j] && save_env[i][j] != '=' && word[k] == save_env[i][j])
 					j++;
-				if ((word[k] == '\0' || word[k] == '\'' || word[k] == '"') && save_env[j] && j != 0 && save_env[j] == '=')
+				if ((word[k] == '\0' || word[k] == '\'' || word[k] == '"') && save_env[i][j] && j != 0 && save_env[i][j] == '=')
 				{
-					if (save_env[++j] == '\0')
+					if (save_env[i][++j] == '\0')
 						return (1);
-					while (save_env[++j])
+					while (save_env[i][++j])
 						len++;
 					return (len);
 				}
@@ -62,38 +62,40 @@ int	search_in_env_len(char *word, char **save_env, t_quote *state)
 	return (0);
 }
 
-int	search_in_env(char **str, char *word, char *save_env, t_quote *state)
+int	search_in_env(char *str, char *word, char **save_env, t_quote *state)
 {
 	int		i;
 	int		j;
 	int		k;
+	int		l;
 
 	i = -1;
 	if (state->is_quote == 1 && state->is_dquote == 0)
 	{
 		while (word[++i] && word[i] != '\'')
-			*str[i] = word[i];
+			str[i] = word[i];
 		return (i);
 	}
 	else
 	{
-		while (save_env[++i])
+		l = -1;
+		while (save_env[++l])
 		{
 			j = 0;
 			k = 1;
-			if (word[k] == save_env[j])
+			if (word[k] == save_env[l][j])
 			{
-				while (word[k++] && save_env[j] && save_env[j] != '=' && word[k] == save_env[j])
+				while (word[k++] && save_env[l][j] && save_env[l][j] != '=' && word[k] == save_env[l][j])
 					j++;
-				if ((word[k] == '\0' || word[k] == '\'' || word[k] == '"') && save_env[j] && j != 0 && save_env[j] == '=')
+				if ((word[k] == '\0' || word[k] == '\'' || word[k] == '"') && save_env[l][j] && j != 0 && save_env[l][j] == '=')
 				{
-					if (save_env[++j] == '\0')
+					if (save_env[l][++j] == '\0')
 					{
-						*str[i] = '$';
+						str[i] = '$';
 						return (i + 1);
 					}
-					while (save_env[++j])
-						*str[i++] = save_env[j];
+					while (save_env[l][++j])
+						str[i++] = save_env[l][j];
 					return (i);
 				}
 			}
@@ -122,6 +124,8 @@ void	test(t_token **to_expand, t_quote *state, char **env)
 	if (!str)
 		return ;
 	i = -1;
+	printf("%i\n", len);
+	printf("ici\n");
 	while ((*to_expand)->word[++i])
 	{
 		quoting_state((*to_expand)->word[i], state);
@@ -138,7 +142,6 @@ void	test(t_token **to_expand, t_quote *state, char **env)
 void	expand(t_token **lst, t_quote *state, char **env)
 {
 	char	**save_env;
-	char	**tab;
 	t_token	*tmp;
 	t_token	*save;
 
