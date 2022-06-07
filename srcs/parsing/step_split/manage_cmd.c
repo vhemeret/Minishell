@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   manage_cmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 16:23:06 by vahemere          #+#    #+#             */
-/*   Updated: 2022/06/03 16:55:54 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/06/06 16:23:41 by brhajji-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,8 @@ static int	nb_words(char *cmd_line, t_quote *state)
 			words++;
 		}
 	}
-	printf("\n\n\033[32;01mSTEP_SPLIT & TOKEN : \033[00m\n\n");
-	printf("\t\033[34;01mNB_WORDS [%i]\033[00m\n\t------------\n", words);
+	//printf("\n\n\033[32;01mSTEP_SPLIT & TOKEN : \033[00m\n\n");
+	//printf("\t\033[34;01mNB_WORDS [%i]\033[00m\n\t------------\n", words);
 	return (words);
 }
 
@@ -166,7 +166,7 @@ static char	*put_words_into_tabs(char *cmd_line, int *i, t_quote *state)
 	return (words);
 }
 
-void	manage_cmd(char *cmd_line, char **env)
+t_token	*manage_cmd(char *cmd_line, char **env)
 {
 	(void)env;
 	t_quote	*state;
@@ -178,12 +178,12 @@ void	manage_cmd(char *cmd_line, char **env)
 	tab_index = 0;
 	state = malloc(sizeof(t_quote));
 	if (!state)
-		return ;
+		return (NULL);
 	if (!check_quote(cmd_line, state))
-		return ;
+		return (NULL);
 	words = malloc(sizeof(char *) * (nb_words(cmd_line, state) + 1));
 	if (!words)
-		return ;
+		return (NULL);
 	state->is_dquote = 0;
 	state->is_quote = 0;
 	i = 0;
@@ -197,7 +197,7 @@ void	manage_cmd(char *cmd_line, char **env)
 	words[tab_index] = NULL;
 	tokenizer(words, &lst);
 	if (!syntax_check(&lst))
-		return ;
+		return (NULL);
 	
 	/*########### PRINT ###########*/
 	t_token	*tmp;
@@ -206,10 +206,11 @@ void	manage_cmd(char *cmd_line, char **env)
 	char	*types[11] = {"CMD", "ARG", "R_IN", "R_OUT", "DR_IN", "DR_OUT", "INFILE", "OUTFILE", "LIMITOR", "OUTFILE_DROUT", "PIPE"};
 	while (tmp)
 	{
-		printf("\033[31;01m\t[%s]\033[00m \033[32;01m|\033[00m \033[33;01m[%s]\033[00m\n", tmp->word, types[tmp->type]);
+		//printf("\033[31;01m\t[%s]\033[00m \033[32;01m|\033[00m \033[33;01m[%s]\033[00m\n", tmp->word, types[tmp->type]);
 		tmp = tmp->next;
 	}
-	printf("\n\n\033[32;01mSTEP_EXPAND : \033[00m\n\n");
+	//printf("\n\n\033[32;01mSTEP_EXPAND : \033[00m\n\n");
 	/*#############################*/
 	//expand(&lst, state, env);
+	return (lst);
 }

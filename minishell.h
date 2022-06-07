@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 18:14:41 by vahemere          #+#    #+#             */
-/*   Updated: 2022/06/03 16:15:25 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/06/07 19:11:01 by brhajji-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,11 @@
 # include <stdlib.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <errno.h>
+# include <sys/types.h>
+# include <fcntl.h>
+# include <sys/wait.h>
+# include <unistd.h>
 
 /*####################### STRUCTURES #######################*/
 
@@ -37,6 +42,14 @@ typedef enum s_type
 	PIPE,//									10
 }			t_type;
 
+typedef struct s_exec
+{
+	char 	**envp;
+	int		nb_cmd;
+	int		in;
+	int		out;
+	int		previous_fd;
+}			t_exec;
 
 typedef struct s_quote
 {
@@ -59,7 +72,7 @@ typedef struct s_token
 int		is_word(char *cmd, int i, t_quote *state);
 int		end_word(char *cmd, int i, t_quote *state);
 int		sep_word(char c);
-void	manage_cmd(char *cmd_line, char **env);
+t_token	*manage_cmd(char *cmd_line, char **env);
 void	tokenizer(char **cmd, t_token **lst);
 int		is_type(t_token *tmp);
 int		syntax_check(t_token **lst);
@@ -71,6 +84,9 @@ int		is_limitor(t_token *save);
 void	expand(t_token **lst, t_quote *state, char **env);
 
 	/*###   EXEC  ###*/
+
+char	**get_arg(t_token *token);
+void	exec(t_token *token, char **envp);
 
 	/*###  UTILS  ###*/
 char	*ft_strdup(char *str);
@@ -85,7 +101,8 @@ int		pipe_word(char *cmd, int i, t_quote *state);
 int		redir_word(char *cmd, int i, t_quote *state);
 char	**copy_env(char **env);
 char	*ft_strcpy(char *src);
-char	**ft_split(char const *s, char c);
+char	**ft_split(char *s, char c);
+char	*ft_strjoin(char *s1, char *s2);
 
 	/*### CLEANING ###*/
 void	free_double_array(char **arr);

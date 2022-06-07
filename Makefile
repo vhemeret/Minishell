@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+         #
+#    By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/04 16:43:53 by vahemere          #+#    #+#              #
-#    Updated: 2022/05/31 18:00:33 by vahemere         ###   ########.fr        #
+#    Updated: 2022/06/06 16:31:17 by brhajji-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,8 +16,8 @@ SRCS_DIR = $(shell find srcs -type d)
 vpath %.c $(foreach dir, $(SRCS_DIR), $(dir))
 SRCS = main.c \
 manage_cmd.c tokenizer.c is_type.c syntax_check.c expand.c \
-ft_strdup.c ft_strlen.c is_whitespace.c quoting_state.c is_word.c next_quote.c copy_env.c \
-cleaning.c \
+ft_strdup.c ft_strjoin.c ft_split.c ft_strlen.c is_whitespace.c quoting_state.c is_word.c next_quote.c copy_env.c \
+cleaning.c  exec_utils.c execve.c\
 
 OBJS = $(addprefix $(OBJS_DIR)/, $(SRCS:%.c=%.o))
 
@@ -27,7 +27,7 @@ NORM = norminette
 ########################### COMPILATION AND FLAGS ###########################
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
+CFLAGS = 
 
 ##################################### COLOR ##################################
 
@@ -63,6 +63,7 @@ norm:
 	@echo "$(COLOUR_PURPLE)***CHECK NORM FILES***$(COLOUR_END)"
 	@$(NORM)
 
-re: fclean all
+re: fclean
+	make all
 
 .PHONY: all clean fclean norm re
