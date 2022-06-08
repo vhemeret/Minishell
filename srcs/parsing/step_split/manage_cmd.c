@@ -6,7 +6,7 @@
 /*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 16:23:06 by vahemere          #+#    #+#             */
-/*   Updated: 2022/06/06 16:23:41 by brhajji-         ###   ########.fr       */
+/*   Updated: 2022/06/07 19:51:46 by brhajji-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,7 +203,7 @@ t_token	*manage_cmd(char *cmd_line, char **env)
 	t_token	*tmp;
 
 	tmp = lst;
-	char	*types[11] = {"CMD", "ARG", "R_IN", "R_OUT", "DR_IN", "DR_OUT", "INFILE", "OUTFILE", "LIMITOR", "OUTFILE_DROUT", "PIPE"};
+	//char	*types[11] = {"CMD", "ARG", "R_IN", "R_OUT", "DR_IN", "DR_OUT", "INFILE", "OUTFILE", "LIMITOR", "OUTFILE_DROUT", "PIPE"};
 	while (tmp)
 	{
 		//printf("\033[31;01m\t[%s]\033[00m \033[32;01m|\033[00m \033[33;01m[%s]\033[00m\n", tmp->word, types[tmp->type]);

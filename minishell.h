@@ -6,7 +6,7 @@
 /*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 18:14:41 by vahemere          #+#    #+#             */
-/*   Updated: 2022/06/07 19:11:01 by brhajji-         ###   ########.fr       */
+/*   Updated: 2022/06/08 17:39:41 by brhajji-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,9 @@ void	expand(t_token **lst, t_quote *state, char **env);
 
 char	**get_arg(t_token *token);
 void	exec(t_token *token, char **envp);
+void	set_r_in(t_exec	*utils, t_token *token);
+void	set_r_out(t_exec	*utils, t_token *token);
+char	**get_path(char **envp);
 
 	/*###  UTILS  ###*/
 char	*ft_strdup(char *str);
