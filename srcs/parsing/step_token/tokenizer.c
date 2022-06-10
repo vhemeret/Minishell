@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 03:18:55 by vahemere          #+#    #+#             */
-/*   Updated: 2022/06/03 12:44:27 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/06/08 13:52:27 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	type_of_word(t_token **lst)
 					tmp->type = 6;
 				else if (save->type == 3)
 					tmp->type = 7;
-				else if (save->type == 6 && tmp->next->word[0] == '|')
+				else if (save->type == 6 && ( !tmp->next || tmp->next->word[0] == '|' || tmp->next))
 					tmp->type = 0;
 				else
 					tmp->type = 1;

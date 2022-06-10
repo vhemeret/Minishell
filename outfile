@@ -1,0 +1,39 @@
+total 192
+drwxr-xr-x 5 vahemere 2021_paris   4096 Jun  8 13:57 .
+drwxr-xr-x 6 vahemere 2021_paris   4096 Jun  3 17:05 ..
+drwxr-xr-x 8 vahemere 2021_paris   4096 Jun  4 09:51 .git
+-rw-r--r-- 1 vahemere 2021_paris   2384 Jun  3 17:07 Makefile
+-rw-r--r-- 1 vahemere 2021_paris    335 Jun  3 17:09 memo.txt
+-rwxr-xr-x 1 vahemere 2021_paris 153200 Jun  8 13:52 minishell
+-rw-r--r-- 1 vahemere 2021_paris   3050 Jun  3 17:07 minishell.h
+drwxr-xr-x 2 vahemere 2021_paris   4096 Jun  8 13:52 objs
+-rw-r--r-- 1 vahemere 2021_paris      0 Jun  8 13:57 outfile
+drwxr-xr-x 5 vahemere 2021_paris   4096 Jun  3 17:07 srcs
+-rwxr-xr-x 1 vahemere 2021_paris   1760 Jun  3 17:09 tester_ms.sh
+-rw-r--r-- 1 vahemere 2021_paris    869 Jun  3 17:09 test_parsing
+total 196
+drwxr-xr-x 5 vahemere 2021_paris   4096 Jun  8 13:57 .
+drwxr-xr-x 6 vahemere 2021_paris   4096 Jun  3 17:05 ..
+drwxr-xr-x 8 vahemere 2021_paris   4096 Jun  4 09:51 .git
+-rw-r--r-- 1 vahemere 2021_paris   2384 Jun  3 17:07 Makefile
+-rw-r--r-- 1 vahemere 2021_paris    335 Jun  3 17:09 memo.txt
+-rwxr-xr-x 1 vahemere 2021_paris 153200 Jun  8 13:52 minishell
+-rw-r--r-- 1 vahemere 2021_paris   3050 Jun  3 17:07 minishell.h
+drwxr-xr-x 2 vahemere 2021_paris   4096 Jun  8 13:52 objs
+-rw-r--r-- 1 vahemere 2021_paris    740 Jun  8 13:57 outfile
+drwxr-xr-x 5 vahemere 2021_paris   4096 Jun  3 17:07 srcs
+-rwxr-xr-x 1 vahemere 2021_paris   1760 Jun  3 17:09 tester_ms.sh
+-rw-r--r-- 1 vahemere 2021_paris    869 Jun  3 17:09 test_parsing
+total 196
+drwxr-xr-x 5 vahemere 2021_paris   4096 Jun  8 13:57 .
+drwxr-xr-x 6 vahemere 2021_paris   4096 Jun  3 17:05 ..
+drwxr-xr-x 8 vahemere 2021_paris   4096 Jun  4 09:51 .git
+-rw-r--r-- 1 vahemere 2021_paris   2384 Jun  3 17:07 Makefile
+-rw-r--r-- 1 vahemere 2021_paris    335 Jun  3 17:09 memo.txt
+-rwxr-xr-x 1 vahemere 2021_paris 153200 Jun  8 13:52 minishell
+-rw-r--r-- 1 vahemere 2021_paris   3050 Jun  3 17:07 minishell.h
+drwxr-xr-x 2 vahemere 2021_paris   4096 Jun  8 13:52 objs
+-rw-r--r-- 1 vahemere 2021_paris   1480 Jun  8 13:57 outfile
+drwxr-xr-x 5 vahemere 2021_paris   4096 Jun  3 17:07 srcs
+-rwxr-xr-x 1 vahemere 2021_paris   1760 Jun  3 17:09 tester_ms.sh
+-rw-r--r-- 1 vahemere 2021_paris    869 Jun  3 17:09 test_parsing
