@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 15:31:55 by vahemere          #+#    #+#             */
-/*   Updated: 2022/06/10 18:45:42 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/06/13 05:55:19 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	search_in_env_len(char *word, char **save_env, t_quote *state, int *len)
 					j++;
 					k++;
 				}
-				if ((word[k] == '\0' || word[k] == '\'' || word[k] == '"') && save_env[i][j] && j != 0 && save_env[i][j] == '=')
+				if ((word[k] == '\0' || word[k] == '\'' || word[k] == '"' || word[k] == '$') && save_env[i][j] && j != 0 && save_env[i][j] == '=')
 				{
 					while (save_env[i][++j])
 						(*len)++;
@@ -59,63 +59,108 @@ int	search_in_env_len(char *word, char **save_env, t_quote *state, int *len)
 			}
 		}
 	}
-	return (0);
+	return (k);
 }
 
-char	*search_in_env(t_token **to_expand, char **save_env, t_quote *state, char *str)
+int	single_quote_expantion(char *word, t_expand *exp)
 {
-	int		i;
-	int		j;
-	int		x;
-	int		y;
+	int	i;
 
 	i = -1;
-	j = 0;
-	while ((*to_expand)->word[++i])
+	while (word[++i] && word[i] != '\'')
+		exp->str[exp->len++] = word[i];
+	return (i);
+}
+
+int	basic_expantion(char *word, t_expand *exp, char **env)
+{
+	int	i;
+	int	x;
+	int	y;
+
+	i = 1;
+	x = -1;
+	exp->found = 0;
+	while (env[++x])
 	{
-		quoting_state((*to_expand)->word[i], state);
-		if ((*to_expand)->word[i] == '$')
+		y = 0;
+		i = 1;
+		if (word[i] == env[x][y])
 		{
-			printf("%c\n", (*to_expand)->word[i]);
-			if (state->is_quote == 1 && state->is_dquote == 0)
+			while (word[i] && env[x][y] && word[i] == env[x][y])
 			{
-				while ((*to_expand)->word[i] && (*to_expand)->word[i] != '\'')
-					str[j++] = (*to_expand)->word[i++];
-				i -= 1;
+				i++;
+				y++;
 			}
-			else
+			if ((word[i] == '\0' || word[i] == '\'' || word[i] == '$'
+				|| word[i] == '"')
+				&& env[x][y] && env[x][y] == '=')
 			{
-				x = -1;
-				i += 1;
-				while (save_env[++x])
-				{
-					y = 0;
-					if ((*to_expand)->word[i] == save_env[x][y])
-					{
-						while ((*to_expand)->word[i] && save_env[x][y] && save_env[x][y] != '=' && (*to_expand)->word[i] == save_env[x][y])
-						{
-							i++;
-							y++;
-						}
-						if (((*to_expand)->word[i] == '\0' || (*to_expand)->word[i] == '\'' || (*to_expand)->word[i] == '"' || (*to_expand)->word[i] == '$') && save_env[x][y] && y != 0 && save_env[x][y] == '=')
-						{
-							if (save_env[x][y + 1] == '\0')
-								str[j] = '$';
-							printf("%s\n", &save_env[x][y]);
-							while (save_env[x][++y])
-								str[j++] = save_env[x][y];
-						}
-					}
-				}
-				i -= 1;
+				exp->found = 1;
+				while (env[x][++y])
+					exp->str[exp->len++] = env[x][y];
+				return (i);
 			}
 		}
-		else
-			str[j++] = (*to_expand)->word[i];
 	}
-	str[j] = '\0';
-	return (str);
+	return (i);
 }
+
+// char	*search_in_env(t_token **to_expand, char **save_env, t_quote *state, char *str)
+// {
+// 	int		i;
+// 	int		j;
+// 	int		x;
+// 	int		y;
+// 	int		found;
+
+// 	i = -1;
+// 	j = 0;
+// 	found = 0;
+// 	while ((*to_expand)->word[++i])
+// 	{
+// 		quoting_state((*to_expand)->word[i], state);
+// 		if ((*to_expand)->word[i] == '$')
+// 		{
+// 			if (state->is_quote == 1 && state->is_dquote == 0)
+// 			{
+// 				while ((*to_expand)->word[i] && (*to_expand)->word[i] != '\'')
+// 					str[j++] = (*to_expand)->word[i++];
+// 				i -= 1;
+// 			}
+// 			else
+// 			{
+// 				x = -1;
+// 				i += 1;
+// 				while (save_env[++x])
+// 				{
+// 					y = 0;
+// 					if ((*to_expand)->word[i] == save_env[x][y])
+// 					{
+// 						while ((*to_expand)->word[i] && save_env[x][y] && (*to_expand)->word[i] == save_env[x][y] && save_env[x][y] != '=')
+// 						{
+// 							i++;
+// 							y++;
+// 						}
+// 						if (((*to_expand)->word[i] == '\0' || (*to_expand)->word[i] == '\'' || (*to_expand)->word[i] == '"' || (*to_expand)->word[i] == '$') && save_env[x][y] && y != 0 && save_env[x][y] == '=')
+// 						{
+// 							if (save_env[x][y + 1] == '\0')
+// 								str[j] = '$';
+// 							while (save_env[x][++y])
+// 								str[j++] = save_env[x][y];
+// 							found = 1;
+// 						}
+// 					}
+// 				}
+// 				i -= 1;
+// 			}
+// 		}
+// 		else if ((*to_expand)->word[i] != '$')
+// 			str[j++] = (*to_expand)->word[i];
+// 	}
+// 	str[j] = '\0';
+// 	return (str);
+// }
 
 char	*malloc_for_expand(t_token **to_expand, t_quote *state, char **env)
 {
@@ -143,36 +188,32 @@ char	*malloc_for_expand(t_token **to_expand, t_quote *state, char **env)
 	return (str);
 }
 
-void	manage_expantion(t_token **to_expand, t_quote *state, char **env, t_index *index)
-{
-	(void)index;
-	char	*str;
-	
-	str = malloc_for_expand(to_expand, state, env);
-	if (!str)
+void	manage_expantion(t_token **to_expand, t_quote *state, char **env, t_expand *exp)
+{	
+	int	i;
+
+	i = -1;
+	exp->len = 0;
+	exp->str = malloc_for_expand(to_expand, state, env);
+	if (!exp->str)
 		return ;
-	str = search_in_env(to_expand, env, state, str);
-// 	str = malloc_for_expand(to_expand, state, env);
-// 	if (!str)
-// 		return ;
-// 	search_in_env();
-// 	index->i = 0;
-// 	while ((*to_expand)->word[index->i])
-// 	{
-// 		quoting_state((*to_expand)->word[index->i], state);
-// 		if ((*to_expand)->word[index->i] == '$')
-// 		{
-// 				i += search_in_env(&str[index->i], &(*to_expand)->word[index->i], env, state, index);
-// 				// printf("%i | %c | word -> %c\n", i, str[i - 1], (*to_expand)->word[i]);
-// 		}
-// 		else
-// 		{
-// 			str[index->i] = (*to_expand)->word[index->i];
-// 			index->i++;
-// 		}
-// 	}
-// 	str[len] = '\0';
-	printf("AFTER EXPAND -> [%s]\n", str);
+	while ((*to_expand)->word[++i])
+	{
+		quoting_state((*to_expand)->word[i], state);
+		if ((*to_expand)->word[i] == '$')
+		{
+			printf("%s\n", &(*to_expand)->word[i]);
+			if (state->is_quote == 1 && state->is_dquote == 0)
+				i += single_quote_expantion(&(*to_expand)->word[i], exp) - 1;
+			else
+				i += basic_expantion(&(*to_expand)->word[i], exp, env) - 1;
+		}
+		else
+			exp->str[exp->len++] = (*to_expand)->word[i];
+	}
+	exp->str[exp->len] = '\0';
+	// str = search_in_env(to_expand, env, state, str);
+	printf("AFTER EXPAND -> [%s]\n", exp->str);
 }
 
 void	expand(t_token **lst, t_quote *state, char **env)
@@ -180,10 +221,10 @@ void	expand(t_token **lst, t_quote *state, char **env)
 	char	**save_env;
 	t_token	*tmp;
 	t_token	*save;
-	t_index	*index;
+	t_expand	*exp;
 
-	index = malloc(sizeof(t_index));
-	if (!index)
+	exp = malloc(sizeof(t_expand));
+	if (!exp)
 		return ;
 	save_env = copy_env(env);
 	tmp = (*lst);
@@ -195,7 +236,7 @@ void	expand(t_token **lst, t_quote *state, char **env)
 			tmp = tmp->next;
 			state->is_quote = 0;
 			state->is_dquote = 0;
-			manage_expantion(&save, state, save_env, index);
+			manage_expantion(&save, state, save_env, exp);
 			// search_in_env(&save, save_env, state);
 		}
 		else

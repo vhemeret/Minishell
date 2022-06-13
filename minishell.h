@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 18:14:41 by vahemere          #+#    #+#             */
-/*   Updated: 2022/06/08 14:42:27 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/06/13 02:37:28 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,12 @@ typedef struct s_quote
 	int	is_dquote;
 }				t_quote;
 
-typedef	struct s_index
+typedef	struct s_expand
 {
-	int	i;
-	int	j;
-}				t_index;
+	char	*str;
+	int		len;
+	int		found;
+}				t_expand;
 
 typedef struct s_token
 {
