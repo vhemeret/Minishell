@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 16:23:06 by vahemere          #+#    #+#             */
-/*   Updated: 2022/06/04 04:15:57 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/06/17 20:53:22 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	sep_word(char c)
 	return (0);
 }
 
-static int	nb_words(char *cmd_line, t_quote *state)
+int	nb_words(char *cmd_line, t_quote *state)
 {
 	int	i;
 	int	words;
@@ -57,8 +57,6 @@ static int	nb_words(char *cmd_line, t_quote *state)
 			words++;
 		}
 	}
-	printf("\n\n\033[32;01mSTEP_SPLIT & TOKEN : \033[00m\n\n");
-	printf("\t\033[34;01mNB_WORDS [%i]\033[00m\n\t------------\n", words);
 	return (words);
 }
 
@@ -194,15 +192,16 @@ void	manage_cmd(char *cmd_line, char **env)
 			i++;
 	}
 	words[tab_index] = NULL;
-	tokenizer(words, &lst);
+	tokenizer(words, &lst, nb_words(cmd_line, state));
 	if (!syntax_check(&lst))
 		return ;
 	
 	/*########### PRINT ###########*/
+	printf("\n\n\033[32;01mSTEP_SPLIT & TOKEN : \033[00m\n\n");
 	t_token	*tmp;
 
 	tmp = lst;
-	char	*types[11] = {"CMD", "ARG", "R_IN", "R_OUT", "DR_IN", "DR_OUT", "INFILE", "OUTFILE", "LIMITOR", "OUTFILE_DROUT", "PIPE"};
+	char	*types[8] = {"CMD", "ARG", "R_IN", "R_OUT", "DR_IN", "DR_OUT", "FD", "PIPE"};
 	while (tmp)
 	{
 		printf("\033[31;01m\t[%s]\033[00m \033[32;01m|\033[00m \033[33;01m[%s]\033[00m\n", tmp->word, types[tmp->type]);
@@ -211,4 +210,14 @@ void	manage_cmd(char *cmd_line, char **env)
 	printf("\n\n\033[32;01mSTEP_EXPAND : \033[00m\n\n");
 	/*#############################*/
 	expand(&lst, state, env);
+	/*#############################*/
+	tmp = lst;
+	printf("%s\n", tmp->word);
+	while (tmp)
+	{
+		printf("\033[31;01m\t[%s]\033[00m \033[32;01m|\033[00m \033[33;01m[%s]\033[00m\n", tmp->word, types[tmp->type]);
+		tmp = tmp->next;
+	}
+	//printf("\n\n\033[32;01mSTEP_EXPAND : \033[00m\n\n");
+	/*#############################*/
 }

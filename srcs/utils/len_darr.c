@@ -1,26 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   len_darr.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/05 20:03:21 by vahemere          #+#    #+#             */
-/*   Updated: 2022/06/17 22:13:42 by vahemere         ###   ########.fr       */
+/*   Created: 2022/06/16 20:30:51 by vahemere          #+#    #+#             */
+/*   Updated: 2022/06/16 20:58:20 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	ft_strlen(char *str)
+int	len_darr(char **arr)
 {
 	int	i;
 
 	i = 0;
-	if (str)
-	{
-		while (str[i])
-			i++;
-	}
+	while (arr[i])
+		i++;
 	return (i);
 }
