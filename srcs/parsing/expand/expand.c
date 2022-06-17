@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 15:31:55 by vahemere          #+#    #+#             */
-/*   Updated: 2022/06/17 22:08:28 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/06/17 23:18:12 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ char	*malloc_for_expand(t_token **to_expand, t_quote *state, char **env)
 	return (str);
 }
 
-void	add_back_new_node(char **to_insert, t_token *back, t_token *next, int len)
+void	 add_back_new_node(char **to_insert, t_token *back, t_token *next, int len)
 {
 	int		i;
 	t_token	*tmp;
@@ -164,6 +164,7 @@ void	insert_new_node(char **to_insert, t_token *back, t_token *next, int len)
 {
 	t_token	*tmp;
 
+	printf("ici\n");
 	tmp = malloc(sizeof(t_token) * (1));
 	if (!tmp)
 		return ;
@@ -181,7 +182,9 @@ void	insert_new_node(char **to_insert, t_token *back, t_token *next, int len)
 		next->back = tmp;
 	tmp->next = next;
 	tmp->back = back;
+	printf("%s\n", next->word);
 	tmp->word = ft_strdup(to_insert[0]);
+	printf("%s\n", tmp->word);
 	back = tmp;
 	if (len > 1)
 		add_back_new_node(to_insert, back, next, len);
@@ -209,11 +212,11 @@ void	replace_old_node(t_token **old_node, char **to_insert)
 	}
 	else
 	{
-		printf("ici\n");
 		free((*old_node)->word);
-		(*old_node)->word = NULL;
-		free((*old_node));
-		(*old_node) = NULL;
+		// (*old_node)->word = NULL;
+		// free((*old_node));
+		// (*old_node) = NULL;
+		(*old_node)->word = ft_strdup(to_insert[0]);
 		insert_new_node(to_insert, back, next, len);
 	}
 }
@@ -287,6 +290,7 @@ void	expand(t_token **lst, t_quote *state, char **env)
 		return ;
 	save_env = copy_env(env);
 	tmp = (*lst);
+		
 	while (tmp)
 	{
 		save = tmp;
@@ -295,11 +299,18 @@ void	expand(t_token **lst, t_quote *state, char **env)
 			tmp = tmp->next;
 			state->is_quote = 0;
 			state->is_dquote = 0;
-		//	if (quoting_check(&save, state))
+			if (quoting_check(&save, state))
 				manage_expantion(&save, state, save_env, exp);
 		}
 		else
 			tmp = tmp->next;
+	}
+	tmp = (*lst);
+	char	*types[8] = {"CMD", "ARG", "R_IN", "R_OUT", "DR_IN", "DR_OUT", "FD", "PIPE"};
+	while (tmp)
+	{
+		printf("\033[31;01m\t[%s]\033[00m \033[32;01m|\033[00m \033[33;01m[%s]\033[00m\n", tmp->word, types[tmp->type]);
+		tmp = tmp->next;
 	}
 	free(exp);
 	exp = NULL;

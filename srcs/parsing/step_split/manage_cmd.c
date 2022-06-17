@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 16:23:06 by vahemere          #+#    #+#             */
-/*   Updated: 2022/06/17 20:53:22 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/06/17 22:21:03 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,14 +210,5 @@ void	manage_cmd(char *cmd_line, char **env)
 	printf("\n\n\033[32;01mSTEP_EXPAND : \033[00m\n\n");
 	/*#############################*/
 	expand(&lst, state, env);
-	/*#############################*/
-	tmp = lst;
-	printf("%s\n", tmp->word);
-	while (tmp)
-	{
-		printf("\033[31;01m\t[%s]\033[00m \033[32;01m|\033[00m \033[33;01m[%s]\033[00m\n", tmp->word, types[tmp->type]);
-		tmp = tmp->next;
-	}
-	//printf("\n\n\033[32;01mSTEP_EXPAND : \033[00m\n\n");
-	/*#############################*/
+
 }

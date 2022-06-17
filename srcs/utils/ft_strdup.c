@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 03:39:51 by vahemere          #+#    #+#             */
-/*   Updated: 2022/04/17 03:45:09 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/06/17 22:32:49 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,14 @@ char	*ft_strdup(char *str)
 	int	i;
 
 	i = -1;
+	if (!str)
+	{
+		str = malloc(sizeof(char) * 1);
+		if (!str)
+			return (NULL);
+		str[0] = '\0';
+		return (str);
+	}
 	dest = malloc(sizeof(char) * (ft_strlen(str) + 1));
 	if (!dest)
 		return (NULL);
