@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 18:14:25 by vahemere          #+#    #+#             */
-/*   Updated: 2022/05/20 19:07:12 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/06/22 14:23:27 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 int	main(int ac, char **av, char **env)
 {
 	char	*ret;
-	(void)	av;
 
+	(void) av;
 	if (ac != 1)
 	{
 		printf("Error:	to many arguments.\n");

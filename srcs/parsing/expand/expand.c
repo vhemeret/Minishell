@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 15:31:55 by vahemere          #+#    #+#             */
-/*   Updated: 2022/06/17 23:18:12 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/06/22 14:44:20 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,15 @@ int	search_in_env_len(char *word, char **save_env, t_quote *state, int *len)
 			k = 1;
 			if (word[k] == save_env[i][j])
 			{
-				while (word[k] && save_env[i][j] && save_env[i][j] != '=' && word[k] == save_env[i][j])
+				while (word[k] && save_env[i][j]
+					&& save_env[i][j] != '=' && word[k] == save_env[i][j])
 				{
 					j++;
 					k++;
 				}
-				if ((word[k] == '\0' || word[k] == '\'' || word[k] == '"' || word[k] == '$') && save_env[i][j] && j != 0 && save_env[i][j] == '=')
+				if ((word[k] == '\0' || word[k] == '\''
+						|| word[k] == '"' || word[k] == '$') && save_env[i][j]
+					&& j != 0 && save_env[i][j] == '=')
 				{
 					while (save_env[i][++j])
 						(*len)++;
@@ -92,7 +95,7 @@ int	basic_expantion(char *w, t_expand *exp, char **nv)
 				i++;
 				y++;
 			}
-			if ((w[i] == '\0' || w[i] == '\'' || w[i] == '$'|| w[i] == '"')
+			if ((w[i] == '\0' || w[i] == '\'' || w[i] == '$' || w[i] == '"')
 				&& nv[x][y] && nv[x][y] == '=')
 			{
 				exp->found = 1;
@@ -124,7 +127,7 @@ char	*malloc_for_expand(t_token **to_expand, t_quote *state, char **env)
 	{
 		quoting_state((*to_expand)->word[j], state);
 		if ((*to_expand)->word[j] == '$')
-				j += search_in_env_len(&(*to_expand)->word[j], env, state, &len);
+			j += search_in_env_len(&(*to_expand)->word[j], env, state, &len);
 		else
 		{
 			len++;
@@ -137,11 +140,11 @@ char	*malloc_for_expand(t_token **to_expand, t_quote *state, char **env)
 	return (str);
 }
 
-void	 add_back_new_node(char **to_insert, t_token *back, t_token *next, int len)
+void	add_back_new_node(char **insert, t_token *back, t_token *next, int len)
 {
 	int		i;
 	t_token	*tmp;
-	
+
 	i = 0;
 	while (++i < len)
 	{
@@ -155,7 +158,7 @@ void	 add_back_new_node(char **to_insert, t_token *back, t_token *next, int len)
 		tmp->back = back;
 		tmp->next = next;
 		tmp->type = ARG;
-		tmp->word = ft_strdup(to_insert[i]);
+		tmp->word = ft_strdup(insert[i]);
 		back = tmp;
 	}
 }
@@ -192,7 +195,7 @@ void	insert_new_node(char **to_insert, t_token *back, t_token *next, int len)
 
 void	replace_old_node(t_token **old_node, char **to_insert)
 {
-	int	len;
+	int		len;
 	t_token	*back;
 	t_token	*next;
 
@@ -208,34 +211,34 @@ void	replace_old_node(t_token **old_node, char **to_insert)
 	}
 }
 
-void	manage_expantion(t_token **to_expand, t_quote *state, char **env, t_expand *exp)
+void	manage_expantion(t_token **expnd, t_quote *st, char **nv, t_expand *exp)
 {	
 	int		i;
 	char	**expanded;
 
 	i = -1;
 	exp->len = 0;
-	exp->str = malloc_for_expand(to_expand, state, env);
+	exp->str = malloc_for_expand(expnd, st, nv);
 	if (!exp->str)
 		return ;
-	while ((*to_expand)->word[++i])
+	while ((expnd)->word[++i])
 	{
-		quoting_state((*to_expand)->word[i], state);
-		if ((*to_expand)->word[i] == '$')
+		quoting_state((expnd)->word[i], st);
+		if ((expnd)->word[i] == '$')
 		{
-			if (state->is_quote == 1 && state->is_dquote == 0)
-				i += single_quote_expantion(&(*to_expand)->word[i], exp) - 1;
+			if (st->is_quote == 1 && st->is_dquote == 0)
+				i += single_quote_expantion(&(*expnd)->word[i], exp) - 1;
 			else
-				i += basic_expantion(&(*to_expand)->word[i], exp, env) - 1;
+				i += basic_expantion(&(*expnd)->word[i], exp, nv) - 1;
 		}
 		else
-			exp->str[exp->len++] = (*to_expand)->word[i];
+			exp->str[exp->len++] = (*expnd)->word[i];
 	}
 	exp->str[exp->len] = '\0';
-	expanded = split_word(exp->str, state);
+	expanded = split_word(exp->str, st);
 	free(exp->str);
 	exp->str = NULL;
-	replace_old_node(to_expand, expanded);
+	replace_old_node(expnd, expanded);
 }
 
 int	quoting_check(t_token **to_check, t_quote *state)

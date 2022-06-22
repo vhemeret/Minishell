@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 19:49:06 by vahemere          #+#    #+#             */
-/*   Updated: 2022/06/17 16:46:50 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/06/22 14:30:52 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	on_word(char *word, int index, t_quote *state)
 		{
 			if (word[index + 1])
 				if (word[index + 1] != ' ')
-					return (1);	
+					return (1);
 		}
 		else
 			return (1);
@@ -83,7 +83,7 @@ char	**split_word(char *word, t_quote *state)
 		if (on_word(word, i, state))
 			j++;
 	}
-	arr = malloc(sizeof(char*) * (j + 1));
+	arr = malloc(sizeof(char *) * (j + 1));
 	if (!arr)
 		return (NULL);
 	i = -1;

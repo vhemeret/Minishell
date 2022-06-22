@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 18:14:41 by vahemere          #+#    #+#             */
-/*   Updated: 2022/06/20 01:27:01 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/06/22 14:22:14 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,15 @@
 
 typedef enum s_type
 {
-	CMD,	// cmd							0
-	ARG,	// argument						1
-	R_IN,	// <							2
-	R_OUT,	// >							3
-	DR_OUT,	// >>							4
-	DR_IN, 	// << (HERE_DOC)				5
-	FD,		// word following <				6
-	PIPE,	//								7
+	CMD,
+	ARG,
+	R_IN,	
+	R_OUT,
+	DR_OUT,
+	DR_IN,
+	FD,
+	PIPE,
 }			t_type;
-
 
 typedef struct s_quote
 {
@@ -41,7 +40,7 @@ typedef struct s_quote
 	int	is_dquote;
 }				t_quote;
 
-typedef	struct s_expand
+typedef struct s_expand
 {
 	char	*str;
 	int		len;
@@ -56,7 +55,7 @@ typedef struct s_token
 	struct s_token	*next;
 	struct s_token	*back;
 	enum s_type		type;
-} 				t_token;
+}				t_token;
 
 /*####################### PROTOTYPES #######################*/
 
@@ -78,7 +77,6 @@ int		is_limitor(t_token *save);
 void	expand(t_token **lst, t_quote *state, char **env);
 char	**split_word(char *word, t_quote *state);
 
-
 	/*###   EXEC  ###*/
 
 	/*###  UTILS  ###*/
@@ -96,8 +94,7 @@ char	**copy_env(char **env);
 char	*ft_strcpy(char *src);
 int		len_darr(char **arr);
 
-
-	/*### CLEANING ###*/
+/*### CLEANING ###*/
 void	free_double_array(char **arr);
 int		print_and_free(char *str, t_token **lst);
 
