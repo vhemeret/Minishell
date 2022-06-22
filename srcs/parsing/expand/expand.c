@@ -199,25 +199,12 @@ void	replace_old_node(t_token **old_node, char **to_insert)
 	len = len_darr(to_insert);
 	back = (*old_node)->back;
 	next = (*old_node)->next;
-	if ((*old_node)->nb_words == 1)
+	free((*old_node)->word);
+	(*old_node)->word = ft_strdup(to_insert[0]);
+	if (len > 1)
 	{
-		free((*old_node)->word);
-		(*old_node)->word = ft_strdup(to_insert[0]);
-		if (len > 1)
-		{
-			back = (*old_node);
-			add_back_new_node(to_insert, back, next, len);
-		}
-		return ;
-	}
-	else
-	{
-		free((*old_node)->word);
-		// (*old_node)->word = NULL;
-		// free((*old_node));
-		// (*old_node) = NULL;
-		(*old_node)->word = ft_strdup(to_insert[0]);
-		insert_new_node(to_insert, back, next, len);
+		back = (*old_node);
+		add_back_new_node(to_insert, back, next, len);
 	}
 }
 

@@ -173,6 +173,8 @@ void	manage_cmd(char *cmd_line, char **env)
 	int		i;
 
 	tab_index = 0;
+	if (!first_check(cmd_line))
+		return ;
 	state = malloc(sizeof(t_quote));
 	if (!state)
 		return ;

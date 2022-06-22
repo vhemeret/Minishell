@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 18:14:41 by vahemere          #+#    #+#             */
-/*   Updated: 2022/06/17 22:41:32 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/06/20 01:27:01 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ typedef struct s_token
 int		is_word(char *cmd, int i, t_quote *state);
 int		end_word(char *cmd, int i, t_quote *state);
 int		sep_word(char c);
+int		first_check(char *cmd);
 void	manage_cmd(char *cmd_line, char **env);
 int		nb_words(char *cmd_line, t_quote *state);
 void	tokenizer(char **cmd, t_token **lst, int len);

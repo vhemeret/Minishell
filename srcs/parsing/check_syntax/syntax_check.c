@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 01:11:46 by vahemere          #+#    #+#             */
-/*   Updated: 2022/05/20 13:32:50 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/06/20 01:38:08 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,17 +64,17 @@ int syntax_check(t_token **lst)
 		return (print_and_free("minishell:	syntax error near unexpected token `|'\n", lst));	
 	while (tmp)
 	{
-		if (save->type == 2 || save->type == 3 || save->type == 5 || save->type == 4)
+		if (save->type == R_IN || save->type == R_OUT || save->type == DR_IN || save->type == DR_OUT)
 		{
-				if (tmp->type == 10)
+				if (tmp->type == PIPE)
 					return (print_and_free("minishell:	syntax error near unexpected token `|'\n", lst));
-				else if (tmp->type == 2)
+				else if (tmp->type == R_IN)
 					return (print_and_free("minishell:	syntax error near unexpected token `<'\n", lst));
-				else if (tmp->type == 3)
+				else if (tmp->type == R_OUT)
 					return (print_and_free("minishell:	syntax error near unexpected token `>'\n", lst));
-				else if (tmp->type == 4)
+				else if (tmp->type == DR_IN)
 					return (print_and_free("minishell:	syntax error near unexpected token `>>'\n", lst));
-				else if (tmp->type == 5)
+				else if (tmp->type == DR_OUT)
 					return (print_and_free("minishell:	syntax error near unexpected token `<<'\n", lst));
 		}
 		save = tmp;
