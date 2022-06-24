@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 18:14:41 by vahemere          #+#    #+#             */
-/*   Updated: 2022/06/24 18:56:17 by brhajji-         ###   ########.fr       */
+/*   Updated: 2022/06/24 19:15:26 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,18 +28,6 @@
 # include <dirent.h>
 
 /*####################### STRUCTURES #######################*/
-
-typedef enum s_type
-{
-    CMD, // cmd                                0
-    ARG, // argument                           1
-    R_IN, // <                                 2
-    R_OUT, // >                                3
-    DR_OUT, // >>                              4
-    DR_IN, // << (HERE_DOC)                    5
-    FD,        // word following <             6
-    PIPE,//                                    7
-}            t_type;
 
 typedef struct s_exec
 {
@@ -63,29 +51,52 @@ typedef struct s_node
 	struct s_node	*next;
 }			t_node;
 
+typedef enum s_type
+{
+	CMD,
+	ARG,
+	R_IN,	
+	R_OUT,
+	DR_OUT,
+	DR_IN,
+	FD,
+	PIPE,
+}			t_type;
+
 typedef struct s_quote
 {
 	int	is_quote;
 	int	is_dquote;
 }				t_quote;
 
+typedef struct s_expand
+{
+	char	*str;
+	int		len;
+	int		found;
+}				t_expand;
+
 typedef struct s_token
 {
 	char			*word;
 	int				index;
+	int				nb_words;
 	struct s_token	*next;
 	struct s_token	*back;
 	enum s_type		type;
-} 				t_token;
+}				t_token;
 
 /*####################### PROTOTYPES #######################*/
 
 	/*### PARSING ###*/
+
 int		is_word(char *cmd, int i, t_quote *state);
 int		end_word(char *cmd, int i, t_quote *state);
 int		sep_word(char c);
+int		first_check(char *cmd);
 t_token	*manage_cmd(char *cmd_line, char **env);
-void	tokenizer(char **cmd, t_token **lst);
+// int		nb_words(char *cmd_line, t_quote *state);
+void	tokenizer(char **cmd, t_token **lst, int len);
 int		is_type(t_token *tmp);
 int		syntax_check(t_token **lst);
 int		check_quote(char *cmd_line, t_quote *state);
@@ -94,6 +105,7 @@ int		is_drin(t_token *tmp);
 int		is_outfile_drout(t_token *save);
 int		is_limitor(t_token *save);
 void	expand(t_token **lst, t_quote *state, char **env);
+char	**split_word(char *word, t_quote *state);
 
 	/*###   EXEC  ###*/
 
@@ -114,6 +126,7 @@ int pwd(char **envp);
 int	cd(char *path);
 
 	/*###  UTILS  ###*/
+
 char	*ft_strdup(char *str);
 int		ft_strlen(char *str);
 void	quoting_state(char c, t_quote *state);
@@ -130,14 +143,12 @@ char	**ft_split(char *s, char c);
 char	*ft_strjoin(char *s1, char *s2);
 char	*ft_itoa(int n);
 int		ft_strcmp(char *s1, char *s2);
+int		len_darr(char **arr);
 
 	/*### CLEANING ###*/
 void	free_double_array(char **arr);
 int		print_and_free(char *str, t_token **lst);
 void 	ft_free_node(t_node *node);
 void 	ft_free_token(t_token *token);
-
-// int	spr_word(char *cmd, int i);
-// int	quoting_rules(char *cmd, int i, t_quote *state);
 
 #endif

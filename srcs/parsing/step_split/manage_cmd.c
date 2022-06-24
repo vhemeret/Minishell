@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   manage_cmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 16:23:06 by vahemere          #+#    #+#             */
-/*   Updated: 2022/06/17 12:05:35 by brhajji-         ###   ########.fr       */
+/*   Updated: 2022/06/24 19:07:01 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	sep_word(char c)
 	return (0);
 }
 
-static int	nb_words(char *cmd_line, t_quote *state)
+int	nb_words(char *cmd_line, t_quote *state)
 {
 	int	i;
 	int	words;
@@ -37,7 +37,8 @@ static int	nb_words(char *cmd_line, t_quote *state)
 				if (cmd_line[i + 1] && cmd_line[i + 1] == '<')
 					i++;
 			}
-			else if (cmd_line[i] == '>' && cmd_line[i + 1] && cmd_line[i + 1] == '>')
+			else if (cmd_line[i] == '>'
+				&& cmd_line[i + 1] && cmd_line[i + 1] == '>')
 			{
 				if (cmd_line[i + 1] && cmd_line[i + 1] == '>')
 					i++;
@@ -57,8 +58,6 @@ static int	nb_words(char *cmd_line, t_quote *state)
 			words++;
 		}
 	}
-	//printf("\n\n\033[32;01mSTEP_SPLIT & TOKEN : \033[00m\n\n");
-	//printf("\t\033[34;01mNB_WORDS [%i]\033[00m\n\t------------\n", words);
 	return (words);
 }
 
@@ -126,11 +125,13 @@ static char	*put_words_into_tabs(char *cmd_line, int *i, t_quote *state)
 			return (words);
 		}
 		if (cmd_line[*i] && !sep_word(cmd_line[*i]))
+		{
 			while (cmd_line[*i] && !end_word(cmd_line, *i, state))
 			{
 				quoting_state(cmd_line[*i], state);
 				words[k++] = cmd_line[(*i)++];
 			}
+		}
 	}
 	else if (cmd_line[*i] == '"' && state->is_dquote == 1)
 	{
@@ -168,7 +169,6 @@ static char	*put_words_into_tabs(char *cmd_line, int *i, t_quote *state)
 
 t_token	*manage_cmd(char *cmd_line, char **env)
 {
-	(void)env;
 	t_quote	*state;
 	t_token	*lst;
 	char	**words;
@@ -176,6 +176,8 @@ t_token	*manage_cmd(char *cmd_line, char **env)
 	int		i;
 
 	tab_index = 0;
+	if (!first_check(cmd_line))
+		return (NULL);
 	state = malloc(sizeof(t_quote));
 	if (!state)
 		return (NULL);
@@ -195,22 +197,9 @@ t_token	*manage_cmd(char *cmd_line, char **env)
 			i++;
 	}
 	words[tab_index] = NULL;
-	tokenizer(words, &lst);
+	tokenizer(words, &lst, nb_words(cmd_line, state));
 	if (!syntax_check(&lst))
 		return (NULL);
-	
-	/*########### PRINT ###########*/
-	/*t_token	*tmp;
-
-	tmp = lst;
-	char	*types[9] = {"CMD", "ARG", "R_IN", "R_OUT", "DR_OUT", "DR_IN", "FD", "PIPE"};
-	while (tmp)
-	{
-		printf("\033[31;01m\t[%s]\033[00m \033[32;01m|\033[00m \033[33;01m[%s]\033[00m\n", tmp->word, types[tmp->type]);
-		tmp = tmp->next;
-	}
-	printf("\n\n\033[32;01mSTEP_EXPAND : \033[00m\n\n");*/
-	/*#############################*/
-	//expand(&lst, state, env);
+	expand(&lst, state, env);
 	return (lst);
 }

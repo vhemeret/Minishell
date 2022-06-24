@@ -1,32 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_pipe.c                                       :+:      :+:    :+:   */
+/*   len_darr.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/06 16:13:11 by vahemere          #+#    #+#             */
-/*   Updated: 2022/04/10 18:04:18 by vahemere         ###   ########.fr       */
+/*   Created: 2022/06/16 20:30:51 by vahemere          #+#    #+#             */
+/*   Updated: 2022/06/22 14:24:13 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	check_pipe(char *cmd)
+int	len_darr(char **arr)
 {
-	int i;
-	int	nb_pipe;
+	int	i;
 
-	i = -1;
-	nb_pipe = 0;
-	if (cmd)
-	{
-		while (cmd[++i])
-		{
-			if (cmd[i] == '|')
-				nb_pipe++;
-		}
-		return (nb_pipe);
-	}
-	return (0);
+	i = 0;
+	while (arr[i])
+		i++;
+	return (i);
 }
