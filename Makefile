@@ -6,7 +6,7 @@
 #    By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/04 16:43:53 by vahemere          #+#    #+#              #
-#    Updated: 2022/06/07 19:51:23 by brhajji-         ###   ########.fr        #
+#    Updated: 2022/06/24 16:09:35 by brhajji-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ vpath %.c $(foreach dir, $(SRCS_DIR), $(dir))
 SRCS = main.c \
 manage_cmd.c tokenizer.c is_type.c syntax_check.c expand.c \
 ft_strdup.c ft_strjoin.c ft_split.c ft_strlen.c is_whitespace.c quoting_state.c is_word.c next_quote.c copy_env.c \
-cleaning.c  exec_utils.c execve.c\
+cleaning.c  exec_utils.c execve.c init_exec.c ft_itoa.c here_doc.c ft_strcmp.c env.c pwd.c cd.c\
 
 OBJS = $(addprefix $(OBJS_DIR)/, $(SRCS:%.c=%.o))
 

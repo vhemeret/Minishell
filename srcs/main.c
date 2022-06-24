@@ -6,13 +6,13 @@
 /*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 18:14:25 by vahemere          #+#    #+#             */
-/*   Updated: 2022/06/06 16:25:35 by brhajji-         ###   ########.fr       */
+/*   Updated: 2022/06/24 18:29:20 by brhajji-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	main(int ac, char **av, char **env)
+int	main(int ac, char **av, char **envp)
 {
 	char	*ret;
 	(void)	av;
@@ -29,9 +29,11 @@ int	main(int ac, char **av, char **env)
 		//printf("%s\n", ret);
 		if (ft_strlen(ret) != 0)
 		{
-			token = manage_cmd(ret, env);
+			token = manage_cmd(ret, envp);
+			//(void)	token;
 			if (ret && *ret)
 				add_history(ret);
+			//cd(ret);
 			free(ret);
 			exec(token, env);
 		}

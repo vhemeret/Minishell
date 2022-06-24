@@ -6,7 +6,7 @@
 /*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 18:14:41 by vahemere          #+#    #+#             */
-/*   Updated: 2022/06/08 17:39:41 by brhajji-         ###   ########.fr       */
+/*   Updated: 2022/06/24 16:09:28 by brhajji-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 
 # include <stdio.h> 
 # include <stdlib.h>
+# include <signal.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <errno.h>
@@ -24,32 +25,43 @@
 # include <fcntl.h>
 # include <sys/wait.h>
 # include <unistd.h>
+# include <dirent.h>
 
 /*####################### STRUCTURES #######################*/
 
 typedef enum s_type
 {
-	CMD, // cmd								0
-	ARG, // argument						1
-	R_IN, // <								2
-	R_OUT, // >								3
-	DR_OUT, // >>							4
-	DR_IN, // << (HERE_DOC)					5
-	INFILE,	// word following <				6
-	OUTFILE, // word following >			7
-	LIMITOR, // word following <<			8
-	OUTFILE_DROUT, // word following >>		9
-	PIPE,//									10
-}			t_type;
+    CMD, // cmd                                0
+    ARG, // argument                           1
+    R_IN, // <                                 2
+    R_OUT, // >                                3
+    DR_OUT, // >>                              4
+    DR_IN, // << (HERE_DOC)                    5
+    FD,        // word following <             6
+    PIPE,//                                    7
+}            t_type;
 
 typedef struct s_exec
 {
-	char 	**envp;
-	int		nb_cmd;
-	int		in;
-	int		out;
-	int		previous_fd;
+	char 			**envp;
+	int				nb_node;
+	int				nb_cmd;
+	int				previous_fd;
+	struct s_node	*node;
+	struct s_node	*node_tmp;
+	struct s_token	*token_tmp;
 }			t_exec;
+
+typedef struct s_node
+{
+	int				in;
+	int				out;
+	int				here_doc_fd;
+	char			*here_doc;
+	int				has_cmd;
+	int				num;
+	struct s_node	*next;
+}			t_node;
 
 typedef struct s_quote
 {
@@ -87,9 +99,19 @@ void	expand(t_token **lst, t_quote *state, char **env);
 
 char	**get_arg(t_token *token);
 void	exec(t_token *token, char **envp);
-void	set_r_in(t_exec	*utils, t_token *token);
-void	set_r_out(t_exec	*utils, t_token *token);
+void	set_r_in(t_node	*node, t_token *token);
+void	set_r_out(t_node *node, t_token *token);
 char	**get_path(char **envp);
+void	init_exec(t_token *token, t_exec **utils);
+int		nb_cmd(t_token *token);
+void 	here_doc_init(t_node *node, t_token *token);
+t_token *go_next(t_token *token);
+	
+	/*###   BUILT IN  ###*/
+
+int	env(char **envp);
+int pwd(char **envp);
+int	cd(char *path);
 
 	/*###  UTILS  ###*/
 char	*ft_strdup(char *str);
@@ -106,10 +128,14 @@ char	**copy_env(char **env);
 char	*ft_strcpy(char *src);
 char	**ft_split(char *s, char c);
 char	*ft_strjoin(char *s1, char *s2);
+char	*ft_itoa(int n);
+int		ft_strcmp(char *s1, char *s2);
 
 	/*### CLEANING ###*/
 void	free_double_array(char **arr);
 int		print_and_free(char *str, t_token **lst);
+void 	ft_free_node(t_node *node);
+void 	ft_free_token(t_token *token);
 
 // int	spr_word(char *cmd, int i);
 // int	quoting_rules(char *cmd, int i, t_quote *state);

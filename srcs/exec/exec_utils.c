@@ -6,7 +6,7 @@
 /*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 16:04:55 by brhajji-          #+#    #+#             */
-/*   Updated: 2022/06/08 17:39:33 by brhajji-         ###   ########.fr       */
+/*   Updated: 2022/06/22 12:02:26 by brhajji-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int		get_nb_arg(t_token *token)
 	int	i;
 
 	i = 1;
-	while (token)
+	while (token && token->type != PIPE)
 	{
 		if (token->type == ARG)
 			i++;
@@ -35,49 +35,94 @@ char	**get_arg(t_token *token)
 
 	i = 0;
 	nb_arg = get_nb_arg(token);
-	//printf("nb_arg = %i\n", nb_arg);
 	arg = malloc(sizeof(char *) * (nb_arg + 1));
 	*arg = token->word;
-	token = token->next;
-	//printf("arg 0 = %s\n", arg[0]);
+	while (token && token->type != ARG && token->type != PIPE)
+		token = token->next;
 	while (++i < nb_arg && token->type == ARG)
 	{
 		arg[i] = token->word;
-		//printf("arg %i = %s\n",i, arg[i]);
+		//printf("%s\n", token->word);
 		token = token->next;
 	}
 	arg[i] = NULL;
 	return (arg);
 }
 
-void	set_r_in(t_exec	*utils, t_token *token)
+/*void	set_r_in(t_node	*node, t_token *token)
 {
-	if (utils->in != -2)
-		utils->in = -2;
+	node->in = -1;
 	while (token && token->type != R_IN && token->type != PIPE)
 		token = token->next;
 	if (token && token->type == R_IN && token->next->type == INFILE)
 	{
 		if (!access(token->next->word, F_OK))
-			utils->in = open(token->next->word, O_RDONLY);
+			node->in = open(token->next->word, O_RDONLY);
 		else
-			utils->in = -1;
+		{
+			node->in = -2;
+			perror(token->next->word);
+		}
 	}
+}*/
+
+void	set_r_in(t_node *node, t_token *token)
+{
+	//printf ("fd set in = %i, name = %s\n", node->here_doc_fd, node->here_doc);
+	node->in = -1;
+	while (token && token->type != PIPE)
+	{
+		if (token && token->type == R_IN && token->next->type == FD)
+		{
+			if (node->in > 0)
+				close(node->in);
+			if (!access(token->next->word, F_OK))
+				node->in = open(token->next->word, O_RDONLY);
+			else
+			{
+				node->in = -2;
+				perror(token->next->word);
+			}
+		}
+		if (token && token->type == DR_IN && token->next->type == FD)
+		{
+			if (node->in > 0)
+				close(node->in);
+			node->in = open(node->here_doc, O_RDONLY);
+			node->here_doc_fd = node->in;
+		}
+		token = token->next;
+	}
+	//printf (" fd in = %i\n", node->in);
 }
 
-void	set_r_out(t_exec	*utils, t_token *token)
+void	set_r_out(t_node *node, t_token *token)
 {
+	t_token *tmp;
 
-	if (utils->out != -2)
-		utils->out = -2;
-	while (token && token->type != R_OUT && token->type != PIPE)
-		token = token->next;
-	if (token && token->type == R_OUT && token->next->type == OUTFILE)
+	node->out = -1;
+	tmp = NULL;
+	while (token && token->type != PIPE)
 	{
-		utils->out = open(token->next->word, O_CREAT | O_RDWR | O_TRUNC, 0644);
-		if (utils->out == -1)
-			perror("Outfile :");
+		if (token->type == DR_OUT || token->type == R_OUT)
+			tmp = token;
+		if (token->type == DR_OUT && node->in != -2)
+		{
+			if (node->out > 0)
+				close (node->out);
+			node->out = open(token->next->word, O_CREAT | O_RDWR | O_APPEND, 0644);
+		}
+		else if (token->type == R_OUT && node->in != -2)
+		{
+			if (node->out > 0)
+				close (node->out);
+			node->out = open(token->next->word, O_CREAT | O_RDWR | O_TRUNC, 0644);
+		}
+		token = token->next;
 	}
+	if (tmp && (tmp->type == DR_OUT || tmp->type == R_OUT) && tmp->next)
+		if (node->out == -1 && node->in != -2)
+			perror("Outfile :");
 }
 
 char	**get_path(char **envp)
