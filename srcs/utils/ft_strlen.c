@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 20:03:21 by vahemere          #+#    #+#             */
-/*   Updated: 2022/06/06 14:39:09 by brhajji-         ###   ########.fr       */
+/*   Updated: 2022/06/17 22:16:44 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,7 @@ int	ft_strlen(char *str)
 	int	i;
 
 	i = 0;
-	if (!str)
-		return (0);
-	if (str[i])
+	if (str)
 	{
 		while (str[i])
 			i++;

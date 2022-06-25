@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 14:04:28 by vahemere          #+#    #+#             */
-/*   Updated: 2022/05/20 09:43:36 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/06/22 14:28:13 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,11 @@ int	is_word(char *cmd, int i, t_quote *state)
 			return (1);
 		return (0);
 	}
-	if (!is_whitespace(cmd[i]) && cmd[i] != '"' && cmd[i] != '\'' && (i == 0 || is_whitespace(cmd[i - 1])
-		|| cmd[i - 1] == '|' || cmd[i - 1] == '<' || cmd[i - 1] == '>'))
-			return (1);
+	if (!is_whitespace(cmd[i])
+		&& cmd[i] != '"' && cmd[i] != '\''
+		&& (i == 0 || is_whitespace(cmd[i - 1])
+			|| cmd[i - 1] == '|' || cmd[i - 1] == '<' || cmd[i - 1] == '>'))
+		return (1);
 	return (0);
 }
 

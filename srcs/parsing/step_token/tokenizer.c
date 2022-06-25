@@ -3,58 +3,59 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 03:18:55 by vahemere          #+#    #+#             */
-/*   Updated: 2022/06/16 18:30:56 by brhajji-         ###   ########.fr       */
+/*   Updated: 2022/06/24 04:29:19 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell.h"
 
-void    type_of_word(t_token **lst)
+void	type_of_word(t_token **lst)
 {
-    t_token    *tmp;
-    t_token    *save;
-    t_token *first;
+	t_token	*tmp;
+	t_token	*save;
+	t_token	*first;
 
-    tmp = (*lst);
-    while (tmp)
-    {
-        if (tmp->index == 1)
-            first = tmp;
-        if (tmp->index == 1 && tmp->word[0] != '<' && tmp->word[0] != '>')
-            tmp->type = CMD;
-        else if (tmp->index == 0)
-            tmp->type = PIPE;
-        else
-        {
-            if (tmp->word[0] == '<' || tmp->word[0] == '>')
-                tmp->type = is_type(tmp);
-            else
-            {
-                if (is_outfile_drout(save))
-                    tmp->type = FD;
-                else if (is_limitor(save))
-                    tmp->type = FD;
-                else if (save->type == R_IN)
-                    tmp->type = FD;
-                else if (save->type == R_OUT)
-                    tmp->type = FD;
-                else if (save->type == FD && ( !tmp->next || tmp->next->word[0] == '|' || tmp->next))
-                {
-                    if (first->type != CMD)
-                        tmp->type = CMD;
-                    else
-                        tmp->type = ARG;
-                }
-                else
-                    tmp->type = ARG;
-            }
-        }
-        save = tmp;
-        tmp = tmp->next;
-    }
+	tmp = (*lst);
+	while (tmp)
+	{
+		if (tmp->index == 1)
+			first = tmp;
+		if (tmp->index == 1 && tmp->word[0] != '<' && tmp->word[0] != '>')
+			tmp->type = CMD;
+		else if (tmp->index == 0)
+			tmp->type = PIPE;
+		else
+		{
+			if (tmp->word[0] == '<' || tmp->word[0] == '>')
+				tmp->type = is_type(tmp);
+			else
+			{
+				if (is_outfile_drout(save))
+					tmp->type = FD;
+				else if (is_limitor(save))
+					tmp->type = FD;
+				else if (save->type == R_IN)
+					tmp->type = FD;
+				else if (save->type == R_OUT)
+					tmp->type = FD;
+				else if (save->type == FD
+					&& (!tmp->next || tmp->next->word[0] == '|' || tmp->next))
+				{
+					if (first->type != CMD)
+						tmp->type = CMD;
+					else
+						tmp->type = ARG;
+				}
+				else
+					tmp->type = ARG;
+			}
+		}
+		save = tmp;
+		tmp = tmp->next;
+	}
 }
 
 void	put_index_node(t_token **lst)
@@ -75,11 +76,11 @@ void	put_index_node(t_token **lst)
 	}
 }
 
-void	tokenizer(char **cmd, t_token **lst)
+void	tokenizer(char **cmd, t_token **lst, int words)
 {
 	int		i;
 	int		len;
-	t_token *tmp;
+	t_token	*tmp;
 	t_token	*save;
 
 	i = 0;
@@ -90,6 +91,7 @@ void	tokenizer(char **cmd, t_token **lst)
 	if (!lst)
 		return ;
 	(*lst)->word = ft_strdup(cmd[0]);
+	(*lst)->nb_words = words;
 	if (len == 1)
 	{
 		(*lst)->next = NULL;
@@ -110,6 +112,7 @@ void	tokenizer(char **cmd, t_token **lst)
 			tmp->back = save;
 			save = save->next;
 			tmp->word = ft_strdup(cmd[i]);
+			tmp->nb_words = words;
 			i++;
 		}
 		tmp->next = NULL;

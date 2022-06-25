@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/09 23:58:11 by vahemere          #+#    #+#             */
-/*   Updated: 2022/06/06 15:24:59 by brhajji-         ###   ########.fr       */
+/*   Updated: 2022/06/24 19:18:48 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	is_sep(char s, char c)
 	return (1);
 }
 
-int	nb_words(char const *s, char c)
+int	number_words(char const *s, char c)
 {
 	int	word;
 	int	i;
@@ -60,13 +60,13 @@ char	**ft_split(char *s, char c)
 	i = 0;
 	if (!s)
 		return (NULL);
-	tab = malloc(sizeof(*tab) * (nb_words(s, c) + 1));
+	tab = malloc(sizeof(*tab) * (number_words(s, c) + 1));
 	if (!tab)
 		return (NULL);
 	while (s[i] && !is_sep((char)s[i], c))
 		i++;
 	i -= 1;
-	while (s[++i] && word < nb_words(s, c))
+	while (s[++i] && word < number_words(s, c))
 	{
 		if (is_sep((char)s[i], c) && (i == 0 || !is_sep((char)s[i - 1], c)))
 		{

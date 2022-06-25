@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 18:14:25 by vahemere          #+#    #+#             */
-/*   Updated: 2022/06/24 18:29:20 by brhajji-         ###   ########.fr       */
+/*   Updated: 2022/06/24 18:59:50 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	main(int ac, char **av, char **envp)
 				add_history(ret);
 			//cd(ret);
 			free(ret);
-			exec(token, env);
+			exec(token, envp);
 		}
 	}
 	return (0);
