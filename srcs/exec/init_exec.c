@@ -6,7 +6,7 @@
 /*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:58:02 by brhajji-          #+#    #+#             */
-/*   Updated: 2022/06/22 13:29:48 by brhajji-         ###   ########.fr       */
+/*   Updated: 2022/06/25 14:57:29 by brhajji-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,20 @@ int	nb_node(t_token *token)
 	return (x);
 }
 
-void	ft_lstadd_back(t_node **alst, t_node *new)
+t_node	*ft_lstadd_back(t_node *lst, t_node *new)
 {
-	if (!*alst)
-		*alst = new;
+	t_node	*alst;
+	
+	alst = lst;
+	if (!alst)
+		return (new);
 	else
 	{
-		while ((*alst)->next)
-			*alst = (*alst)->next;
-		(*alst)->next = new;
+		while ((alst)->next)
+			alst = (alst)->next;
+		(alst)->next = new;
 	}
+	return (lst);
 }
 
 t_token *go_next(t_token *token)
@@ -79,7 +83,8 @@ void	init_exec(t_token *token, t_exec **utils)
 		}
 		if (token)
 			token = token->next;
-		ft_lstadd_back(&((*utils)->node), node);
+		(*utils)->node = ft_lstadd_back(((*utils)->node), node);
+		//printf("num ava = %i\n", (*utils)->node->num);
 	}
 	(*utils)->node_tmp = (*utils)->node;
 }

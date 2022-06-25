@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 18:14:41 by vahemere          #+#    #+#             */
-/*   Updated: 2022/06/24 19:15:26 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/06/25 16:34:09 by brhajji-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,12 @@ typedef struct s_node
 	int				num;
 	struct s_node	*next;
 }			t_node;
+
+typedef struct s_env
+{
+	char			*content;
+	struct s_env	*next;
+}			t_env;
 
 typedef enum s_type
 {

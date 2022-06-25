@@ -6,7 +6,7 @@
 /*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 15:46:20 by brhajji-          #+#    #+#             */
-/*   Updated: 2022/06/24 18:56:21 by brhajji-         ###   ########.fr       */
+/*   Updated: 2022/06/25 14:57:56 by brhajji-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ void	exec(t_token *token, char **envp)
 	utils->envp = envp;
 	fd[0] = 0;
 	pid = malloc(sizeof(pid_t) * (utils->nb_cmd + 1));
+	//printf("%i nodes\n", utils->nb_node);
 	while (++i < utils->nb_node)
 	{
 		//printf("has cmd = %i\n", utils->node->has_cmd);
