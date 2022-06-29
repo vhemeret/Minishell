@@ -6,7 +6,7 @@
 /*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 18:14:41 by vahemere          #+#    #+#             */
-/*   Updated: 2022/06/25 16:34:09 by brhajji-         ###   ########.fr       */
+/*   Updated: 2022/06/27 03:26:34 by brhajji-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,14 @@
 # include <sys/wait.h>
 # include <unistd.h>
 # include <dirent.h>
+# include <limits.h>
 
 /*####################### STRUCTURES #######################*/
 
 typedef struct s_exec
 {
 	char 			**envp;
+	struct s_env	*envp_lst;
 	int				nb_node;
 	int				nb_cmd;
 	int				previous_fd;
@@ -124,12 +126,21 @@ void	init_exec(t_token *token, t_exec **utils);
 int		nb_cmd(t_token *token);
 void 	here_doc_init(t_node *node, t_token *token);
 t_token *go_next(t_token *token);
+int		get_nb_arg(t_token *token);
 	
 	/*###   BUILT IN  ###*/
 
-int	env(char **envp);
-int pwd(char **envp);
-int	cd(char *path);
+int		env(char **envp);
+int 	pwd(char **envp);
+int		cd(char *path, t_exec *utils);
+int		export(char *var, t_exec *utils);
+int		unset(char *var, t_exec *utils);
+t_env	*init_lst_env(char **envp);
+char	**lst_to_char(t_env *lst);
+t_env	*ft_lstadd_back_env(t_env *lst, t_env *new);
+int		init_env(t_exec *utils);
+int		manage_built_in(t_token *token, t_exec *utils);
+int		is_built_in(t_token *token);
 
 	/*###  UTILS  ###*/
 

@@ -6,7 +6,7 @@
 /*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 15:46:20 by brhajji-          #+#    #+#             */
-/*   Updated: 2022/06/25 14:57:56 by brhajji-         ###   ########.fr       */
+/*   Updated: 2022/06/27 03:38:29 by brhajji-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,16 @@ pid_t	run(t_token *token, int *fd, int num, t_exec utils)
 {
 	pid_t	pid;
 
+	if (!strcmp(token->word, "cd"))
+	{
+		if (get_nb_arg(token) == 2)
+			cd(token->next->word, &utils);
+		else if (get_nb_arg(token) == 1)
+			cd(NULL, &utils);
+		else
+			write(2, "cd: too many arguments", 23);
+		return (0);
+	}
 	pid = fork();
 	if (pid < 0)
 	{
@@ -73,7 +83,13 @@ pid_t	run(t_token *token, int *fd, int num, t_exec utils)
 			close(fd[1]);
 		if (fd[0] > 0)
 			close(fd[0]);
-		if (execve(get_cmd_path(token->word, utils.envp), get_arg(token), utils.envp) == -1)
+		if (!is_built_in(token))
+		{
+			manage_built_in(token, &utils);
+			pid = 0;
+			exit(0);
+		}
+		else if (execve(get_cmd_path(token->word, utils.envp), get_arg(token), utils.envp) == -1)
 			perror("Execve ");
 	}
 	return (pid);
@@ -107,9 +123,11 @@ void	exec(t_token *token, char **envp)
 	utils = NULL;
 	init_exec(token, &utils);
 	utils->envp = envp;
+	if (!envp)
+		init_env(utils);
 	fd[0] = 0;
 	pid = malloc(sizeof(pid_t) * (utils->nb_cmd + 1));
-	//printf("%i nodes\n", utils->nb_node);
+//	printf("%i nodes\n", utils->nb_node);
 	while (++i < utils->nb_node)
 	{
 		//printf("has cmd = %i\n", utils->node->has_cmd);

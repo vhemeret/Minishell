@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 18:14:25 by vahemere          #+#    #+#             */
-/*   Updated: 2022/06/24 18:59:50 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/06/26 20:42:08 by brhajji-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,12 @@ int	main(int ac, char **av, char **envp)
 		if (ft_strlen(ret) != 0)
 		{
 			token = manage_cmd(ret, envp);
-			//(void)	token;
+			(void)	token;
 			if (ret && *ret)
 				add_history(ret);
 			//cd(ret);
 			free(ret);
+			//init_lst_env(envp);
 			exec(token, envp);
 		}
 	}
