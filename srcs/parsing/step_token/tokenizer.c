@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 03:18:55 by vahemere          #+#    #+#             */
-/*   Updated: 2022/06/17 16:36:14 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/06/24 04:29:19 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	type_of_word(t_token **lst)
 {
 	t_token	*tmp;
 	t_token	*save;
-	t_token *first;
+	t_token	*first;
 
 	tmp = (*lst);
 	while (tmp)
@@ -41,7 +41,8 @@ void	type_of_word(t_token **lst)
 					tmp->type = FD;
 				else if (save->type == R_OUT)
 					tmp->type = FD;
-				else if (save->type == FD && ( !tmp->next || tmp->next->word[0] == '|' || tmp->next))
+				else if (save->type == FD
+					&& (!tmp->next || tmp->next->word[0] == '|' || tmp->next))
 				{
 					if (first->type != CMD)
 						tmp->type = CMD;
@@ -79,7 +80,7 @@ void	tokenizer(char **cmd, t_token **lst, int words)
 {
 	int		i;
 	int		len;
-	t_token *tmp;
+	t_token	*tmp;
 	t_token	*save;
 
 	i = 0;

@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/06 03:37:05 by vahemere          #+#    #+#             */
-/*   Updated: 2022/05/09 15:19:48 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/06/23 16:35:23 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	is_limitor(t_token *save)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (save->word[++i])
@@ -29,7 +29,7 @@ int	is_limitor(t_token *save)
 
 int	is_outfile_drout(t_token *save)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (save->word[++i])
@@ -44,7 +44,7 @@ int	is_outfile_drout(t_token *save)
 
 int	is_drin(t_token *tmp)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (tmp->word[++i])
@@ -59,7 +59,7 @@ int	is_drin(t_token *tmp)
 
 int	is_drout(t_token *tmp)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (tmp->word[++i])

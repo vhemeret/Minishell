@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 15:31:55 by vahemere          #+#    #+#             */
-/*   Updated: 2022/06/22 14:44:20 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/06/30 03:58:25 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	need_expand(char *word)
 
 	i = -1;
 	while (word[++i])
-		if (word[i] == '$' || word[i] == '"' || word[i] == '\'')
+		if (word[i] == '$' || word[i] == '"' || word [i] == '\'')
 			return (1);
 	return (0);
 }
@@ -29,12 +29,16 @@ int	search_in_env_len(char *word, char **save_env, t_quote *state, int *len)
 	int		j;
 	int		k;
 
-	j = -1;
+	j = 0;
 	if (state->is_quote == 1 && state->is_dquote == 0)
 	{
-		while (word[++j] && word[j] != '\'')
+		while (word[j++] && word[j] != '\'')
 			(*len)++;
 		return (j);
+	}
+	if (word[1] == '\0' || word[1] == ' ')
+	{
+		
 	}
 	else
 	{
@@ -51,8 +55,8 @@ int	search_in_env_len(char *word, char **save_env, t_quote *state, int *len)
 					j++;
 					k++;
 				}
-				if ((word[k] == '\0' || word[k] == '\''
-						|| word[k] == '"' || word[k] == '$') && save_env[i][j]
+				if ((word[k] == '\0' || sign(word[k], state)
+					|| word[k] == '$') && save_env[i][j]
 					&& j != 0 && save_env[i][j] == '=')
 				{
 					while (save_env[i][++j])
@@ -75,7 +79,7 @@ int	single_quote_expantion(char *word, t_expand *exp)
 	return (i);
 }
 
-int	basic_expantion(char *w, t_expand *exp, char **nv)
+int	basic_expantion(char *w, t_expand *exp, char **nv, t_quote *state)
 {
 	int	i;
 	int	x;
@@ -95,7 +99,7 @@ int	basic_expantion(char *w, t_expand *exp, char **nv)
 				i++;
 				y++;
 			}
-			if ((w[i] == '\0' || w[i] == '\'' || w[i] == '$' || w[i] == '"')
+			if ((w[i] == '\0' || w[i] == '$' || sign(w[i], state))
 				&& nv[x][y] && nv[x][y] == '=')
 			{
 				exp->found = 1;
@@ -109,8 +113,14 @@ int	basic_expantion(char *w, t_expand *exp, char **nv)
 	{
 		i = 1;
 		if (w[i])
-			while (w[i] != '\0' && w[i] != '\'' && w[i] != '"' && w[i] != '$')
+		{
+			while (w[i] != '\0')
+			{
+				if (sign(w[i], state))
+					return (i);
 				i++;
+			}
+		}
 	}
 	return (i);
 }
@@ -167,7 +177,6 @@ void	insert_new_node(char **to_insert, t_token *back, t_token *next, int len)
 {
 	t_token	*tmp;
 
-	printf("ici\n");
 	tmp = malloc(sizeof(t_token) * (1));
 	if (!tmp)
 		return ;
@@ -185,9 +194,7 @@ void	insert_new_node(char **to_insert, t_token *back, t_token *next, int len)
 		next->back = tmp;
 	tmp->next = next;
 	tmp->back = back;
-	printf("%s\n", next->word);
 	tmp->word = ft_strdup(to_insert[0]);
-	printf("%s\n", tmp->word);
 	back = tmp;
 	if (len > 1)
 		add_back_new_node(to_insert, back, next, len);
@@ -221,50 +228,56 @@ void	manage_expantion(t_token **expnd, t_quote *st, char **nv, t_expand *exp)
 	exp->str = malloc_for_expand(expnd, st, nv);
 	if (!exp->str)
 		return ;
-	while ((expnd)->word[++i])
+	while ((*expnd)->word[++i])
 	{
-		quoting_state((expnd)->word[i], st);
-		if ((expnd)->word[i] == '$')
+		quoting_state((*expnd)->word[i], st);
+		if ((*expnd)->word[i] == '$')
 		{
-			if (st->is_quote == 1 && st->is_dquote == 0)
+			if ((*expnd)->word[i + 1] == '\0' || sign((*expnd)->word[i + 1], st))
+				exp->str[exp->len++] = (*expnd)->word[i];
+			else if ((*expnd)->word[i + 1] && isdigits((*expnd)->word[i + 1]))
+				i++;
+			else if (st->is_quote == 1 && st->is_dquote == 0)
 				i += single_quote_expantion(&(*expnd)->word[i], exp) - 1;
 			else
-				i += basic_expantion(&(*expnd)->word[i], exp, nv) - 1;
+				i += basic_expantion(&(*expnd)->word[i], exp, nv, st) - 1;
 		}
 		else
+		{
 			exp->str[exp->len++] = (*expnd)->word[i];
+		}
 	}
 	exp->str[exp->len] = '\0';
-	expanded = split_word(exp->str, st);
+	if (exp->need_expand == 1 && exp->quote == 0)
+		expanded = split_word(exp->str, st);
+	else
+	{
+		(*expnd)->word = word_without_quote(exp->str, st);
+		return ;
+	}
 	free(exp->str);
 	exp->str = NULL;
 	replace_old_node(expnd, expanded);
 }
 
-int	quoting_check(t_token **to_check, t_quote *state)
+int	quoting_check(t_token **to_check, t_quote *state, t_expand *exp)
 {
-	int	need_expand;
-	char **arr;
-	int	quote;
-	int	i;
+	int		i;
 
-	need_expand = 0;
-	quote = 0;
+	exp->need_expand = 0;
+	exp->quote = 0;
 	i = -1;
 	while ((*to_check)->word[++i])
 	{
 		if ((*to_check)->word[i] == '$')
-			need_expand = 1;
+			exp->need_expand = 1;
 		if ((*to_check)->word[i] == '"' || (*to_check)->word[i] == '\'')
-			quote = 1;
+			exp->quote = 1;
 	}
-	if (need_expand == 1)
+	if (exp->need_expand == 0 && exp->quote == 1)
+		(*to_check)->word = word_without_quote((*to_check)->word, state);
+	else
 		return (1);
-	else if (need_expand == 0 && quote == 1)
-	{
-		arr = split_word((*to_check)->word, state);
-		replace_old_node(to_check, arr);
-	}
 	return (0);
 }
 
@@ -279,8 +292,7 @@ void	expand(t_token **lst, t_quote *state, char **env)
 	if (!exp)
 		return ;
 	save_env = copy_env(env);
-	tmp = (*lst);
-		
+	tmp = (*lst);	
 	while (tmp)
 	{
 		save = tmp;
@@ -289,19 +301,14 @@ void	expand(t_token **lst, t_quote *state, char **env)
 			tmp = tmp->next;
 			state->is_quote = 0;
 			state->is_dquote = 0;
-			if (quoting_check(&save, state))
+			if (quoting_check(&save, state, exp))
 				manage_expantion(&save, state, save_env, exp);
 		}
 		else
 			tmp = tmp->next;
 	}
 	tmp = (*lst);
-	char	*types[8] = {"CMD", "ARG", "R_IN", "R_OUT", "DR_IN", "DR_OUT", "FD", "PIPE"};
-	while (tmp)
-	{
-		printf("\033[31;01m\t[%s]\033[00m \033[32;01m|\033[00m \033[33;01m[%s]\033[00m\n", tmp->word, types[tmp->type]);
-		tmp = tmp->next;
-	}
 	free(exp);
 	exp = NULL;
+	tmp = (*lst);
 }

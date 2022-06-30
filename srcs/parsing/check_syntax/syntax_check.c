@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 01:11:46 by vahemere          #+#    #+#             */
-/*   Updated: 2022/06/20 01:38:08 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/06/26 02:59:36 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,27 +60,30 @@ int syntax_check(t_token **lst)
 	tmp = (*lst);
 	save = tmp;
 	tmp = tmp->next;
-	if (save->word[0] == '|')
-		return (print_and_free("minishell:	syntax error near unexpected token `|'\n", lst));	
+	if (tmp)
+	{
+		if (save->type == PIPE && tmp->type == PIPE)
+			return (print_and_free("minishell:	syntax error near unexpected token `||'", lst));
+	}
+	if (save->type == PIPE && (!save->next || !save->back))
+		return (print_and_free("minishell:	syntax error near unexpected token `|'", lst));	
 	while (tmp)
 	{
 		if (save->type == R_IN || save->type == R_OUT || save->type == DR_IN || save->type == DR_OUT)
 		{
 				if (tmp->type == PIPE)
-					return (print_and_free("minishell:	syntax error near unexpected token `|'\n", lst));
+					return (print_and_free("minishell:	syntax error near unexpected token `|'", lst));
 				else if (tmp->type == R_IN)
-					return (print_and_free("minishell:	syntax error near unexpected token `<'\n", lst));
+					return (print_and_free("minishell:	syntax error near unexpected token `<'", lst));
 				else if (tmp->type == R_OUT)
-					return (print_and_free("minishell:	syntax error near unexpected token `>'\n", lst));
+					return (print_and_free("minishell:	syntax error near unexpected token `>'", lst));
 				else if (tmp->type == DR_IN)
-					return (print_and_free("minishell:	syntax error near unexpected token `>>'\n", lst));
+					return (print_and_free("minishell:	syntax error near unexpected token `>>'", lst));
 				else if (tmp->type == DR_OUT)
-					return (print_and_free("minishell:	syntax error near unexpected token `<<'\n", lst));
+					return (print_and_free("minishell:	syntax error near unexpected token `<<'", lst));
 		}
 		save = tmp;
 		tmp = tmp->next;
 	}
-	if (save->word[0] == '|')
-		return (print_and_free("minishell:	syntax error near unexpected token `|'\n", lst));	
 	return (1);
 }
