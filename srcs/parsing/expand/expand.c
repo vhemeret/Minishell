@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 15:31:55 by vahemere          #+#    #+#             */
-/*   Updated: 2022/06/30 03:58:25 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/06/30 06:28:33 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,52 +21,6 @@ static int	need_expand(char *word)
 		if (word[i] == '$' || word[i] == '"' || word [i] == '\'')
 			return (1);
 	return (0);
-}
-
-int	search_in_env_len(char *word, char **save_env, t_quote *state, int *len)
-{
-	int		i;
-	int		j;
-	int		k;
-
-	j = 0;
-	if (state->is_quote == 1 && state->is_dquote == 0)
-	{
-		while (word[j++] && word[j] != '\'')
-			(*len)++;
-		return (j);
-	}
-	if (word[1] == '\0' || word[1] == ' ')
-	{
-		
-	}
-	else
-	{
-		i = -1;
-		while (save_env[++i])
-		{
-			j = 0;
-			k = 1;
-			if (word[k] == save_env[i][j])
-			{
-				while (word[k] && save_env[i][j]
-					&& save_env[i][j] != '=' && word[k] == save_env[i][j])
-				{
-					j++;
-					k++;
-				}
-				if ((word[k] == '\0' || sign(word[k], state)
-					|| word[k] == '$') && save_env[i][j]
-					&& j != 0 && save_env[i][j] == '=')
-				{
-					while (save_env[i][++j])
-						(*len)++;
-					return (k);
-				}
-			}
-		}
-	}
-	return (k);
 }
 
 int	single_quote_expantion(char *word, t_expand *exp)
@@ -114,7 +68,7 @@ int	basic_expantion(char *w, t_expand *exp, char **nv, t_quote *state)
 		i = 1;
 		if (w[i])
 		{
-			while (w[i] != '\0')
+			while (w[i] != '\0' && w[i] != '$')
 			{
 				if (sign(w[i], state))
 					return (i);
@@ -150,74 +104,6 @@ char	*malloc_for_expand(t_token **to_expand, t_quote *state, char **env)
 	return (str);
 }
 
-void	add_back_new_node(char **insert, t_token *back, t_token *next, int len)
-{
-	int		i;
-	t_token	*tmp;
-
-	i = 0;
-	while (++i < len)
-	{
-		tmp = malloc(sizeof(t_token) * (1));
-		if (!tmp)
-			return ;
-		if (back)
-			back->next = tmp;
-		if (next)
-			next->back = tmp;
-		tmp->back = back;
-		tmp->next = next;
-		tmp->type = ARG;
-		tmp->word = ft_strdup(insert[i]);
-		back = tmp;
-	}
-}
-
-void	insert_new_node(char **to_insert, t_token *back, t_token *next, int len)
-{
-	t_token	*tmp;
-
-	tmp = malloc(sizeof(t_token) * (1));
-	if (!tmp)
-		return ;
-	if (back)
-	{
-		back->next = tmp;
-		if (back->type == CMD)
-			tmp->type = ARG;
-		else
-			tmp->type = CMD;
-	}
-	else
-		tmp->type = CMD;
-	if (next)
-		next->back = tmp;
-	tmp->next = next;
-	tmp->back = back;
-	tmp->word = ft_strdup(to_insert[0]);
-	back = tmp;
-	if (len > 1)
-		add_back_new_node(to_insert, back, next, len);
-}
-
-void	replace_old_node(t_token **old_node, char **to_insert)
-{
-	int		len;
-	t_token	*back;
-	t_token	*next;
-
-	len = len_darr(to_insert);
-	back = (*old_node)->back;
-	next = (*old_node)->next;
-	free((*old_node)->word);
-	(*old_node)->word = ft_strdup(to_insert[0]);
-	if (len > 1)
-	{
-		back = (*old_node);
-		add_back_new_node(to_insert, back, next, len);
-	}
-}
-
 void	manage_expantion(t_token **expnd, t_quote *st, char **nv, t_expand *exp)
 {	
 	int		i;
@@ -233,7 +119,8 @@ void	manage_expantion(t_token **expnd, t_quote *st, char **nv, t_expand *exp)
 		quoting_state((*expnd)->word[i], st);
 		if ((*expnd)->word[i] == '$')
 		{
-			if ((*expnd)->word[i + 1] == '\0' || sign((*expnd)->word[i + 1], st))
+			if ((*expnd)->word[i + 1] == '\0'
+				|| sign((*expnd)->word[i + 1], st))
 				exp->str[exp->len++] = (*expnd)->word[i];
 			else if ((*expnd)->word[i + 1] && isdigits((*expnd)->word[i + 1]))
 				i++;
@@ -292,7 +179,7 @@ void	expand(t_token **lst, t_quote *state, char **env)
 	if (!exp)
 		return ;
 	save_env = copy_env(env);
-	tmp = (*lst);	
+	tmp = (*lst);
 	while (tmp)
 	{
 		save = tmp;
