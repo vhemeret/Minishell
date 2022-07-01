@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   delete_quote.c                                     :+:      :+:    :+:   */
+/*   remove_quote.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 20:52:39 by vahemere          #+#    #+#             */
-/*   Updated: 2022/06/30 04:02:48 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/07/01 02:37:22 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char	*malloc_word_without_quote(char *old, char *nw, t_quote *state)
 {
 	int	i;
 	int	j;
-	
+
 	i = -1;
 	j = 0;
 	state->is_quote = 0;
@@ -41,7 +41,7 @@ char	*malloc_word_without_quote(char *old, char *nw, t_quote *state)
 	return (nw);
 }
 
-char	*word_without_quote(char *old, t_quote *state)
+char	*remove_quote(char *old, t_quote *state)
 {
 	char	*nw;
 	int		i;

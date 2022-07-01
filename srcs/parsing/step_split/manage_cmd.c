@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 16:23:06 by vahemere          #+#    #+#             */
-/*   Updated: 2022/06/24 19:07:01 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/07/01 02:44:11 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,11 +144,13 @@ static char	*put_words_into_tabs(char *cmd_line, int *i, t_quote *state)
 			return (words);
 		}
 		if (cmd_line[*i] && !sep_word(cmd_line[*i]))
+		{
 			while (cmd_line[*i] && !end_word(cmd_line, *i, state))
 			{
 				quoting_state(cmd_line[*i], state);
 				words[k++] = cmd_line[(*i)++];
 			}
+		}
 	}
 	else if (cmd_line[*i] == '|')
 		words[k++] = cmd_line[(*i)++];

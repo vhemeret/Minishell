@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 01:20:48 by vahemere          #+#    #+#             */
-/*   Updated: 2022/06/26 02:39:17 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/07/01 02:50:23 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	first_check(char *cmd)
 		}
 		while (cmd[i] && cmd[i] == '&')
 			i++;
-		if (cmd[i] =='\0')
+		if (cmd[i] == '\0')
 		{
 			dprintf(2, "minishell:	syntax error near unexpected token '&&'\n ");
 			return (0);

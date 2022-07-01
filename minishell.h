@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 18:14:41 by vahemere          #+#    #+#             */
-/*   Updated: 2022/06/30 06:24:44 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/07/01 02:41:01 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ typedef struct s_quote
 {
 	int	is_quote;
 	int	is_dquote;
+	int	sq_first;
 }				t_quote;
 
 typedef struct s_expand
@@ -117,10 +118,12 @@ int		first_check(char *cmd);
 /* expand */
 void	expand(t_token **lst, t_quote *state, char **env);
 int		search_in_env_len(char *word, char **env, t_quote *state, int *len);
-char	*word_without_quote(char *old, t_quote *state);
-char	**split_word(char *word, t_quote *state);
+char	*malloc_for_expand(t_token **to_expand, t_quote *state, char **env);
+char	*remove_quote(char *old, t_quote *state);
 int		sign(char c, t_quote *st);
-int		isdigits(char c);
+int		single_quote_expantion(char *word, t_expand *exp);
+int		basic_expantion(char *w, t_expand *exp, char **nv, t_quote *state);
+char	**split_word(char *word, t_quote *state);
 void	replace_old_node(t_token **old_node, char **to_insert);
 
 /*###   EXEC  ###*/
@@ -160,6 +163,7 @@ char	*ft_strjoin(char *s1, char *s2);
 char	*ft_itoa(int n);
 int		ft_strcmp(char *s1, char *s2);
 int		len_darr(char **arr);
+int		isdigits(char c);
 
 /*### CLEANING ###*/
 
