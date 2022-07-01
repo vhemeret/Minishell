@@ -6,60 +6,11 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 16:23:06 by vahemere          #+#    #+#             */
-/*   Updated: 2022/07/01 02:44:11 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/07/01 06:56:01 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell.h"
-
-int	sep_word(char c)
-{
-	if (c == '<' || c == '>' || c == '|' || c == ' ')
-		return (1);
-	return (0);
-}
-
-int	nb_words(char *cmd_line, t_quote *state)
-{
-	int	i;
-	int	words;
-
-	i = -1;
-	words = 0;
-	while (cmd_line[++i])
-	{
-		quoting_state(cmd_line[i], state);
-		if (is_word(cmd_line, i, state) || pipe_word(cmd_line, i, state)
-			|| redir_word(cmd_line, i, state))
-		{
-			if (cmd_line[i] == '<' && cmd_line[i + 1] && cmd_line[i + 1] == '<')
-			{
-				if (cmd_line[i + 1] && cmd_line[i + 1] == '<')
-					i++;
-			}
-			else if (cmd_line[i] == '>'
-				&& cmd_line[i + 1] && cmd_line[i + 1] == '>')
-			{
-				if (cmd_line[i + 1] && cmd_line[i + 1] == '>')
-					i++;
-			}
-			else if (cmd_line[i] == '\'' && state->is_quote == 1)
-			{
-				i += next_squote(&cmd_line[i]);
-				if (cmd_line[i] == '\0')
-					return (words += 1);
-			}
-			else if (cmd_line[i] == '"' && state->is_dquote == 1)
-			{
-				i += next_dquote(&cmd_line[i]);
-				if (cmd_line[i] == '\0')
-					return (words += 1);
-			}
-			words++;
-		}
-	}
-	return (words);
-}
 
 static int	on_word(char *cmd_line, int i, t_quote	*state)
 {
@@ -73,11 +24,9 @@ static int	on_word(char *cmd_line, int i, t_quote	*state)
 	return (0);
 }
 
-static char	*put_words_into_tabs(char *cmd_line, int *i, t_quote *state)
+void	len_malloc_word(char *cmd_line, int *i, t_quote *state)
 {
-	char	*words;
 	int		j;
-	int		k;
 
 	j = *i;
 	if (cmd_line[*i] == '<')
@@ -100,84 +49,59 @@ static char	*put_words_into_tabs(char *cmd_line, int *i, t_quote *state)
 			(*i)++;
 		}
 	}
+}
+
+static char	*put_in_tab(char *cmd_line, int *i, t_quote *state)
+{
+	char	*words;
+	int		j;
+
+	j = *i;
+	len_malloc_word(cmd_line, i, state);
 	words = malloc(sizeof(char) * ((*i - j) + 1));
 	if (!words)
 		return (NULL);
 	state->is_dquote = 0;
 	state->is_dquote = 0;
 	*i = j;
-	k = 0;
 	quoting_state(cmd_line[*i], state);
-	if (cmd_line[*i] == '<')
-		while (cmd_line[*i] && cmd_line[*i] == '<' && k < 2)
-			words[k++] = cmd_line[(*i)++];
-	else if (cmd_line[*i] == '>')
-		while (cmd_line[*i] && cmd_line[*i] == '>' && k < 2)
-			words[k++] = cmd_line[(*i)++];
+	if (cmd_line[*i] == '<' || cmd_line[*i] == '>')
+		return (put_redir_in_tab(cmd_line, i, words));
 	else if (cmd_line[*i] == '\'' && state->is_quote == 1)
-	{
-		words[k++] = cmd_line[(*i)++];
-		while (cmd_line[*i] && cmd_line[*i] != '\'')
-			words[k++] = cmd_line[(*i)++];
-		if (cmd_line[(*i)] == '\0')
-		{
-			words[k] = '\0';
-			return (words);
-		}
-		if (cmd_line[*i] && !sep_word(cmd_line[*i]))
-		{
-			while (cmd_line[*i] && !end_word(cmd_line, *i, state))
-			{
-				quoting_state(cmd_line[*i], state);
-				words[k++] = cmd_line[(*i)++];
-			}
-		}
-	}
+		return (put_sqword_in_tab(cmd_line, i, state, words));
 	else if (cmd_line[*i] == '"' && state->is_dquote == 1)
-	{
-		words[k++] = cmd_line[(*i)++];
-		while (cmd_line[*i] && cmd_line[*i] != '"')
-			words[k++] = cmd_line[(*i)++];
-		if (cmd_line[(*i)] == '\0')
-		{
-			words[k] = '\0';
-			return (words);
-		}
-		if (cmd_line[*i] && !sep_word(cmd_line[*i]))
-		{
-			while (cmd_line[*i] && !end_word(cmd_line, *i, state))
-			{
-				quoting_state(cmd_line[*i], state);
-				words[k++] = cmd_line[(*i)++];
-			}
-		}
-	}
+		return (put_dqword_in_tab(cmd_line, i, state, words));
 	else if (cmd_line[*i] == '|')
-		words[k++] = cmd_line[(*i)++];
+		return (put_pipe_in_tab(cmd_line, i, words));
 	else
+		return (put_word_in_tab(cmd_line, i, state, words));
+	return (NULL);
+}
+
+char	**get_array_with_words(char *cmd_line, char **arr, t_quote *state)
+{
+	int	i;
+	int	tab_index;
+
+	i = 0;
+	tab_index = 0;
+	while (cmd_line[i])
 	{
-		if (cmd_line[*i] && cmd_line[*i] == ' ')
-			while (cmd_line[*i] == ' ')
-				(*i)++;
-		while (cmd_line[*i] && !end_word(cmd_line, *i, state))
-		{
-			quoting_state(cmd_line[*i], state);
-			words[k++] = cmd_line[(*i)++];
-		}
+		if (on_word(cmd_line, i, state))
+			arr[tab_index++] = put_in_tab(cmd_line, &i, state);
+		else
+			i++;
 	}
-	words[k] = '\0';
-	return (words);
+	arr[tab_index] = NULL;
+	return (arr);
 }
 
 t_token	*manage_cmd(char *cmd_line, char **env)
 {
 	t_quote	*state;
 	t_token	*lst;
-	char	**words;
-	int		tab_index;
-	int		i;
+	char	**arr;
 
-	tab_index = 0;
 	if (!first_check(cmd_line))
 		return (NULL);
 	state = malloc(sizeof(t_quote));
@@ -185,21 +109,13 @@ t_token	*manage_cmd(char *cmd_line, char **env)
 		return (NULL);
 	if (!check_quote(cmd_line, state))
 		return (NULL);
-	words = malloc(sizeof(char *) * (nb_words(cmd_line, state) + 1));
-	if (!words)
+	arr = malloc(sizeof(char *) * (nb_words(cmd_line, state) + 1));
+	if (!arr)
 		return (NULL);
 	state->is_dquote = 0;
 	state->is_quote = 0;
-	i = 0;
-	while (cmd_line[i])
-	{
-		if (on_word(cmd_line, i, state))
-			words[tab_index++] = put_words_into_tabs(cmd_line, &i, state);
-		else
-			i++;
-	}
-	words[tab_index] = NULL;
-	tokenizer(words, &lst, nb_words(cmd_line, state));
+	arr = get_array_with_words(cmd_line, arr, state);
+	tokenizer(arr, &lst, nb_words(cmd_line, state));
 	if (!syntax_check(&lst))
 		return (NULL);
 	expand(&lst, state, env);
