@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 16:23:06 by vahemere          #+#    #+#             */
-/*   Updated: 2022/07/01 06:56:01 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/07/03 07:34:57 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ t_token	*manage_cmd(char *cmd_line, char **env)
 	arr = get_array_with_words(cmd_line, arr, state);
 	tokenizer(arr, &lst, nb_words(cmd_line, state));
 	if (!syntax_check(&lst))
-		return (NULL);
+		return (cleaning_parsing_error(state, env));
 	expand(&lst, state, env);
 	return (lst);
 }

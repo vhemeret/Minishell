@@ -6,11 +6,24 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 15:31:55 by vahemere          #+#    #+#             */
-/*   Updated: 2022/07/01 02:42:26 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/07/03 07:45:53 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell.h"
+
+int	sign(char c, t_quote *st)
+{
+	if (c)
+	{
+		if (c == ':' || c == '=' || c == '%' || c == '^' || c == '+' || c == '~'
+			|| c == '/' || c == '?' || c == ' '
+			|| ((c == '"' || c == '\'') && st->is_dquote == 1)
+			|| c == ']' || c == '@')
+			return (1);
+	}
+	return (0);
+}
 
 static int	check(char *word)
 {
@@ -21,49 +34,6 @@ static int	check(char *word)
 		if (word[i] == '$' || word[i] == '"' || word [i] == '\'')
 			return (1);
 	return (0);
-}
-
-void	manage_expantion(t_token **expnd, t_quote *st, char **nv, t_expand *exp)
-{	
-	int		i;
-	char	**expanded;
-
-	i = -1;
-	exp->len = 0;
-	exp->str = malloc_for_expand(expnd, st, nv);
-	if (!exp->str)
-		return ;
-	while ((*expnd)->word[++i])
-	{
-		quoting_state((*expnd)->word[i], st);
-		if ((*expnd)->word[i] == '$')
-		{
-			if ((*expnd)->word[i + 1] == '\0'
-				|| sign((*expnd)->word[i + 1], st))
-				exp->str[exp->len++] = (*expnd)->word[i];
-			else if ((*expnd)->word[i + 1] && isdigits((*expnd)->word[i + 1]))
-				i++;
-			else if (st->is_quote == 1 && st->sq_first == 1)
-				i += single_quote_expantion(&(*expnd)->word[i], exp) - 1;
-			else
-				i += basic_expantion(&(*expnd)->word[i], exp, nv, st) - 1;
-		}
-		else
-		{
-			exp->str[exp->len++] = (*expnd)->word[i];
-		}
-	}
-	exp->str[exp->len] = '\0';
-	if (exp->need_expand == 1 && exp->quote == 0)
-		expanded = split_word(exp->str, st);
-	else
-	{
-		(*expnd)->word = remove_quote(exp->str, st);
-		return ;
-	}
-	free(exp->str);
-	exp->str = NULL;
-	replace_old_node(expnd, expanded);
 }
 
 int	need_expand_or_rm_quote(t_token **to_check, t_quote *state, t_expand *exp)
@@ -113,8 +83,5 @@ void	expand(t_token **lst, t_quote *state, char **env)
 		else
 			tmp = tmp->next;
 	}
-	tmp = (*lst);
-	free(exp);
-	exp = NULL;
-	tmp = (*lst);
+	cleaning_parsing(exp);
 }

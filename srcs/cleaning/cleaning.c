@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleaning.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:22:13 by vahemere          #+#    #+#             */
-/*   Updated: 2022/06/22 13:27:27 by brhajji-         ###   ########.fr       */
+/*   Updated: 2022/07/03 07:47:02 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,23 +24,6 @@ void	free_double_array(char **arr)
 	}
 	free(arr);
 	arr = NULL;
-}
-
-int	print_and_free(char *str, t_token **lst)
-{
-	t_token	*tmp;
-	
-	if (str)
-		dprintf(2, "%s\n", str);
-	while (tmp)
-	{
-		tmp = (*lst);
-		(*lst) = (*lst)->next;
-		free(tmp->word);
-		free(tmp);
-		tmp = NULL;
-	}
-	return (0);
 }
 
 void	ft_free_node(t_node *node)
@@ -72,4 +55,19 @@ void	ft_free_token(t_token *token)
 		free(tmp);
 		tmp = NULL;
 	}
+}
+
+t_token	*cleaning_parsing_error(t_quote *state, char **env)
+{
+	(void)env;
+	free(state);
+	state = NULL;
+	//free_double_array(env);
+	return (NULL);
+}
+
+void	cleaning_parsing(t_expand *exp)
+{
+	free(exp);
+	exp = NULL;
 }
