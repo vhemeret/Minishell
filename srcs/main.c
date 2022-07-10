@@ -6,7 +6,7 @@
 /*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 18:14:25 by vahemere          #+#    #+#             */
-/*   Updated: 2022/06/26 20:42:08 by brhajji-         ###   ########.fr       */
+/*   Updated: 2022/06/25 23:24:11 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,13 @@ int	main(int ac, char **av, char **envp)
 		if (ft_strlen(ret) != 0)
 		{
 			token = manage_cmd(ret, envp);
-			(void)	token;
+			//(void)	token;
 			if (ret && *ret)
 				add_history(ret);
 			//cd(ret);
 			free(ret);
-			//init_lst_env(envp);
-			exec(token, envp);
+			if (token)
+				exec(token, envp);
 		}
 	}
 	return (0);

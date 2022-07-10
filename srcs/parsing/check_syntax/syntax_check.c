@@ -6,16 +6,27 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 01:11:46 by vahemere          #+#    #+#             */
-/*   Updated: 2022/06/20 01:38:08 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/07/03 07:25:10 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell.h"
 
+int	quote_error(int j, int k, t_quote *state)
+{
+	if (j % 2 != 0)
+		return (print_message(5));
+	if (k % 2 != 0)
+		return (print_message(4));
+	state->is_quote = 0;
+	state->is_dquote = 0;
+	return (1);
+}
+
 int	check_quote(char *cmd_line, t_quote *state)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 	int	k;
 
 	i = -1;
@@ -36,51 +47,48 @@ int	check_quote(char *cmd_line, t_quote *state)
 			k++;
 		}
 	}
-	if (j % 2 != 0)
-	{
-		dprintf(2, "minishell:	syntax error single quote not closed\n");
-		return (0);
-	}
-	if (k % 2 != 0)
-	{
-		dprintf(2, "minishell:	syntax error double quote not closed\n");
-		return (0);
-	}
-	state->is_quote = 0;
-	state->is_dquote = 0;
-	return (1);
+	return (quote_error(j, k, state));
 }
 
-
-int syntax_check(t_token **lst)
+int	check_after_redir(t_token *tmp, t_token **lst)
 {
-	t_token *tmp;
-	t_token *save;
-	
+	if (tmp->type == PIPE)
+		return (print_message_and_cleaning(1, lst));
+	else if (tmp->type == R_IN)
+		return (print_message_and_cleaning(2, lst));
+	else if (tmp->type == R_OUT)
+		return (print_message_and_cleaning(3, lst));
+	else if (tmp->type == DR_IN)
+		return (print_message_and_cleaning(4, lst));
+	else if (tmp->type == DR_OUT)
+		return (print_message_and_cleaning(5, lst));
+	return (0);
+}
+
+int	syntax_check(t_token **lst)
+{
+	t_token	*tmp;
+	t_token	*save;
+
 	tmp = (*lst);
 	save = tmp;
 	tmp = tmp->next;
-	if (save->word[0] == '|')
-		return (print_and_free("minishell:	syntax error near unexpected token `|'\n", lst));	
+	if (tmp)
+		if (save->type == PIPE && tmp->type == PIPE)
+			return (print_message_and_cleaning(6, lst));
+	if (save->type == PIPE && (!save->next || !save->back))
+		return (print_message_and_cleaning(7, lst));
 	while (tmp)
 	{
-		if (save->type == R_IN || save->type == R_OUT || save->type == DR_IN || save->type == DR_OUT)
+		if (save->type == R_IN || save->type == R_OUT
+			|| save->type == DR_IN || save->type == DR_OUT)
 		{
-				if (tmp->type == PIPE)
-					return (print_and_free("minishell:	syntax error near unexpected token `|'\n", lst));
-				else if (tmp->type == R_IN)
-					return (print_and_free("minishell:	syntax error near unexpected token `<'\n", lst));
-				else if (tmp->type == R_OUT)
-					return (print_and_free("minishell:	syntax error near unexpected token `>'\n", lst));
-				else if (tmp->type == DR_IN)
-					return (print_and_free("minishell:	syntax error near unexpected token `>>'\n", lst));
-				else if (tmp->type == DR_OUT)
-					return (print_and_free("minishell:	syntax error near unexpected token `<<'\n", lst));
+			if (tmp->type == PIPE || tmp->type == R_IN || tmp->type == R_OUT
+				|| tmp->type == DR_IN || tmp->type == DR_OUT)
+				return (check_after_redir(tmp, lst));
 		}
 		save = tmp;
 		tmp = tmp->next;
 	}
-	if (save->word[0] == '|')
-		return (print_and_free("minishell:	syntax error near unexpected token `|'\n", lst));	
 	return (1);
 }
