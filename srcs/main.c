@@ -6,7 +6,7 @@
 /*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 18:14:25 by vahemere          #+#    #+#             */
-/*   Updated: 2022/07/01 02:15:48 by brhajji-         ###   ########.fr       */
+/*   Updated: 2022/07/10 20:41:45 by brhajji-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	main(int ac, char **av, char **envp)
 		if (ft_strlen(ret) != 0)
 		{
 			token = manage_cmd(ret, envp);
-			(void)	token;
+			//(void)	token;
 			if (ret && *ret)
 				add_history(ret);
 			free(ret);

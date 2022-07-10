@@ -6,7 +6,7 @@
 /*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 18:14:41 by vahemere          #+#    #+#             */
-/*   Updated: 2022/07/01 14:51:03 by brhajji-         ###   ########.fr       */
+/*   Updated: 2022/07/10 20:43:58 by brhajji-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 /*####################### LIBRARIES #######################*/
 
-# include <stdio.h> 
+# include <stdio.h>
 # include <stdlib.h>
 # include <signal.h>
 # include <readline/readline.h>
@@ -76,6 +76,8 @@ typedef struct s_quote
 {
 	int	is_quote;
 	int	is_dquote;
+	int	sq_first;
+	int	found;
 }				t_quote;
 
 typedef struct s_expand
@@ -83,6 +85,9 @@ typedef struct s_expand
 	char	*str;
 	int		len;
 	int		found;
+	int		need_expand;
+	int		quote;
+	int		i;
 }				t_expand;
 
 typedef struct s_token
@@ -97,26 +102,64 @@ typedef struct s_token
 
 /*####################### PROTOTYPES #######################*/
 
-	/*### PARSING ###*/
+/*### PARSING ###*/
 
 int		is_word(char *cmd, int i, t_quote *state);
 int		end_word(char *cmd, int i, t_quote *state);
-int		sep_word(char c);
-int		first_check(char *cmd);
-t_token	*manage_cmd(char *cmd_line, char **env);
-// int		nb_words(char *cmd_line, t_quote *state);
+/* step token */
 void	tokenizer(char **cmd, t_token **lst, int len);
-int		is_type(t_token *tmp);
-int		syntax_check(t_token **lst);
-int		check_quote(char *cmd_line, t_quote *state);
 int		is_drout(t_token *tmp);
 int		is_drin(t_token *tmp);
 int		is_outfile_drout(t_token *save);
 int		is_limitor(t_token *save);
-void	expand(t_token **lst, t_quote *state, char **env);
-char	**split_word(char *word, t_quote *state);
+int		is_type(t_token *tmp);
+/* check_syntax */
+int		first_check(char *cmd);
+int		check_quote(char *cmd_line, t_quote *state);
+int		syntax_check(t_token **lst);
+int		print_message(int error);
+int		print_message_and_cleaning(int error, t_token **lst);
 
-	/*###   EXEC  ###*/
+/* step split */
+t_token	*manage_cmd(char *cmd_line, char **env);
+int		nb_words(char *cmd, t_quote *state);
+int		sep_word(char c);
+char	*put_redir_in_tab(char *cmd_line, int *i, char *words);
+char	*put_sqword_in_tab(char *cmd_line, int *i, t_quote *state, char *words);
+char	*put_dqword_in_tab(char *cmd_line, int *i, t_quote *state, char *words);
+char	*put_word_in_tab(char *cmd_line, int *i, t_quote *state, char *words);
+char	*put_pipe_in_tab(char *cmd_line, int *i, char *words);
+/* expand */
+void	expand(t_token **lst, t_quote *state, char **env);
+int		search_in_env_len(char *word, char **env, t_quote *state, int *len);
+char	*malloc_for_expand(t_token **to_expand, t_quote *state, char **env);
+char	*remove_quote(char *old, t_quote *state);
+int		sign(char c, t_quote *st);
+void	manage_expantion(t_token **expnd, t_quote *st, char **nv, t_expand *exp);
+int		single_quote_expantion(char *word, t_expand *exp);
+int		basic_expantion(char *w, t_expand *exp, char **nv, t_quote *state);
+char	**split_word(char *word, t_quote *state);
+void	replace_old_node(t_token **old_node, char **to_insert);
+
+/*###   EXEC  ###*/
+
+char	**get_arg(t_token *token);
+void	exec(t_token *token, char **envp);
+void	set_r_in(t_node	*node, t_token *token);
+void	set_r_out(t_node *node, t_token *token);
+char	**get_path(char **envp);
+void	init_exec(t_token *token, t_exec **utils);
+int		nb_cmd(t_token *token);
+void 	here_doc_init(t_node *node, t_token *token);
+t_token *go_next(t_token *token);
+	
+/*###   BUILT IN  ###*/
+
+int		env(char **envp);
+int		pwd(char **envp);
+int		cd(char *path);
+
+/*###  UTILS  ###*/
 
 char	**get_arg(t_token *token);
 void	exec(t_token *token, t_exec *utils);
@@ -170,12 +213,15 @@ char	*ft_strjoin(char *s1, char *s2);
 char	*ft_itoa(int n);
 int		ft_strcmp(char *s1, char *s2);
 int		len_darr(char **arr);
+int		isdigits(char c);
 
-	/*### CLEANING ###*/
+/*### CLEANING ###*/
+
 void	free_double_array(char **arr);
-int		print_and_free(char *str, t_token **lst);
 void 	ft_free_node(t_node *node);
 void 	ft_free_token(t_token *token);
 void 	clean(t_exec *utils);
+void	cleaning_parsing(t_expand *exp);
+t_token	*cleaning_parsing_error(t_quote *state, char **env);
 
 #endif
