@@ -6,7 +6,7 @@
 /*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 18:14:25 by vahemere          #+#    #+#             */
-/*   Updated: 2022/06/26 20:42:08 by brhajji-         ###   ########.fr       */
+/*   Updated: 2022/07/01 02:15:48 by brhajji-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,9 @@ int	main(int ac, char **av, char **envp)
 	char	*ret;
 	(void)	av;
 	t_token	*token;
+	t_exec	*utils;
 
+	utils = NULL;
 	if (ac != 1)
 	{
 		printf("Error:	to many arguments.\n");
@@ -26,17 +28,22 @@ int	main(int ac, char **av, char **envp)
 	while (1)
 	{
 		ret = readline("\033[0;35mminishell\033[0m\033[0;32m$>\033[0m ");
-		//printf("%s\n", ret);
 		if (ft_strlen(ret) != 0)
 		{
 			token = manage_cmd(ret, envp);
 			(void)	token;
 			if (ret && *ret)
 				add_history(ret);
-			//cd(ret);
 			free(ret);
-			//init_lst_env(envp);
-			exec(token, envp);
+			if (!utils)
+				utils = init_exec(token, envp);
+			else
+				refresh(token, utils);
+			if (utils)
+			{
+				exec(token, utils);
+				clean(utils);
+			}
 		}
 	}
 	return (0);

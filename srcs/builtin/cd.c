@@ -6,7 +6,7 @@
 /*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/24 12:40:01 by brhajji-          #+#    #+#             */
-/*   Updated: 2022/06/27 03:51:58 by brhajji-         ###   ########.fr       */
+/*   Updated: 2022/06/29 17:42:07 by brhajji-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void change_env_dir(t_exec	*utils, char *path)
 	
 	if (!utils->envp_lst)
 	{
-		utils->envp_lst = init_lst_env(utils->envp);
+		utils->envp_lst = init_lst_env(utils->envp, utils);
 		utils->envp = lst_to_char(utils->envp_lst);
 	}
 	temp = utils->envp_lst;
@@ -51,7 +51,7 @@ int	cd(char *path, t_exec *utils)
 {
 	char	*tmp;
 	
-	utils->envp_lst = init_lst_env(utils->envp);
+	utils->envp_lst = init_lst_env(utils->envp, utils);
 	if (!path)
 	{
 		tmp = get_home(utils);

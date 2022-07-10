@@ -6,7 +6,7 @@
 /*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 15:46:20 by brhajji-          #+#    #+#             */
-/*   Updated: 2022/06/27 03:38:29 by brhajji-         ###   ########.fr       */
+/*   Updated: 2022/07/01 02:18:51 by brhajji-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,16 +37,7 @@ pid_t	run(t_token *token, int *fd, int num, t_exec utils)
 {
 	pid_t	pid;
 
-	if (!strcmp(token->word, "cd"))
-	{
-		if (get_nb_arg(token) == 2)
-			cd(token->next->word, &utils);
-		else if (get_nb_arg(token) == 1)
-			cd(NULL, &utils);
-		else
-			write(2, "cd: too many arguments", 23);
-		return (0);
-	}
+
 	pid = fork();
 	if (pid < 0)
 	{
@@ -77,13 +68,13 @@ pid_t	run(t_token *token, int *fd, int num, t_exec utils)
 			if (utils.node->in > 0)
 				close(utils.node->in);	
 		}
-		else if (num != utils.nb_cmd - 1)
+		else if (num != utils.nb_cmd - 1 && fd[1] > 0)
 			dup2(fd[1], STDOUT_FILENO);
 		if (utils.nb_cmd > 1 && fd[1] > 0)
 			close(fd[1]);
 		if (fd[0] > 0)
 			close(fd[0]);
-		if (!is_built_in(token))
+		if (is_built_in(token) == 0)
 		{
 			manage_built_in(token, &utils);
 			pid = 0;
@@ -102,35 +93,32 @@ int		nb_cmd(t_token *token)
 	i = 0;
 	while (token)
 	{
-		if (token->type == 0)
+		if (token->type == 0 && is_built_in(token) <= 0)
 			i++;
 		token = token->next;
 	}
 	return (i);
 }
 
-void	exec(t_token *token, char **envp)
+void	exec(t_token *token, t_exec *utils)
 {
 	int		status;
 	pid_t 	*pid;
 	int		i;
+	int 	x;
 	int		num;
 	int		fd[2];
-	t_exec	*utils;
+
 
 	i = -1;
 	num = 0;
-	utils = NULL;
-	init_exec(token, &utils);
-	utils->envp = envp;
-	if (!envp)
-		init_env(utils);
+	x = 0;
+	//utils = NULL;
 	fd[0] = 0;
+	//printf("%i\n", utils->nb_cmd);
 	pid = malloc(sizeof(pid_t) * (utils->nb_cmd + 1));
-//	printf("%i nodes\n", utils->nb_node);
 	while (++i < utils->nb_node)
 	{
-		//printf("has cmd = %i\n", utils->node->has_cmd);
 		if (utils->node && utils->node->has_cmd == 1)
 		{
 			while (token && token->type != CMD)
@@ -141,7 +129,15 @@ void	exec(t_token *token, char **envp)
 					return (perror("Pipe "));
 			//printf("fd in = %i\n", utils->node->in);
 			if (utils->node->in != -2)
-				pid[i] = run(token, fd, num, *utils);
+			{
+				if (is_built_in(token) == 1)
+					no_fork(token, utils);
+				else
+				{
+					pid[i] = run(token, fd, num, *utils);
+					x++;
+				}
+			}
 			num++;
 		}
 		utils->node = utils->node->next;
@@ -151,8 +147,7 @@ void	exec(t_token *token, char **envp)
 		if (utils->previous_fd > 0)
 			close(utils->previous_fd);
 	}
-	while (--i >= 0)
-		waitpid(pid[i], &status, 0);
-	ft_free_token(utils->token_tmp);
-	ft_free_node(utils->node_tmp);
+	while (--x >= 0)
+		wait(&status);
+	free(pid);
 }

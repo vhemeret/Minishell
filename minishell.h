@@ -6,7 +6,7 @@
 /*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 18:14:41 by vahemere          #+#    #+#             */
-/*   Updated: 2022/06/27 03:26:34 by brhajji-         ###   ########.fr       */
+/*   Updated: 2022/07/01 14:51:03 by brhajji-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct s_node
 typedef struct s_env
 {
 	char			*content;
+	int				type;
 	struct s_env	*next;
 }			t_env;
 
@@ -118,29 +119,37 @@ char	**split_word(char *word, t_quote *state);
 	/*###   EXEC  ###*/
 
 char	**get_arg(t_token *token);
-void	exec(t_token *token, char **envp);
+void	exec(t_token *token, t_exec *utils);
 void	set_r_in(t_node	*node, t_token *token);
 void	set_r_out(t_node *node, t_token *token);
 char	**get_path(char **envp);
-void	init_exec(t_token *token, t_exec **utils);
+t_exec	*init_exec(t_token *token, char **envp);
 int		nb_cmd(t_token *token);
 void 	here_doc_init(t_node *node, t_token *token);
 t_token *go_next(t_token *token);
 int		get_nb_arg(t_token *token);
+void	refresh(t_token *token, t_exec *utils);
+t_env	*edit_var_lst(t_exec *utils, char *var, int	join);
 	
 	/*###   BUILT IN  ###*/
 
-int		env(char **envp);
+int		env(t_exec *utils);
 int 	pwd(char **envp);
 int		cd(char *path, t_exec *utils);
-int		export(char *var, t_exec *utils);
+int		export(char *var, t_exec **utils);
 int		unset(char *var, t_exec *utils);
-t_env	*init_lst_env(char **envp);
+t_env	*init_lst_env(char **envp, t_exec *utils);
 char	**lst_to_char(t_env *lst);
-t_env	*ft_lstadd_back_env(t_env *lst, t_env *new);
-int		init_env(t_exec *utils);
+t_env	*ft_envadd_back(t_env *lst, t_env *new);
+int		init_env(t_exec *utils, char **envp);
 int		manage_built_in(t_token *token, t_exec *utils);
 int		is_built_in(t_token *token);
+int		pos_equal(char *str);
+char	**lst_to_char_env(t_env *lst);
+void	print_tab(char **tab);
+char	**sort_tab(char **tab, int size);
+int		size_tab(t_exec *utils);
+void	no_fork(t_token *token, t_exec *utils);
 
 	/*###  UTILS  ###*/
 
@@ -167,5 +176,6 @@ void	free_double_array(char **arr);
 int		print_and_free(char *str, t_token **lst);
 void 	ft_free_node(t_node *node);
 void 	ft_free_token(t_token *token);
+void 	clean(t_exec *utils);
 
 #endif

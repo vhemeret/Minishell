@@ -6,7 +6,7 @@
 /*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/26 15:34:45 by brhajji-          #+#    #+#             */
-/*   Updated: 2022/06/27 01:53:44 by brhajji-         ###   ########.fr       */
+/*   Updated: 2022/06/29 17:42:22 by brhajji-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	unset(char *var, t_exec *utils)
 	//var = ft_strcpy
 	if (!utils->envp_lst)
 	{
-		utils->envp_lst = init_lst_env(utils->envp);
+		utils->envp_lst = init_lst_env(utils->envp, utils);
 		utils->envp = lst_to_char(utils->envp_lst);
 	}
 	tmp_lst = utils->envp_lst;
