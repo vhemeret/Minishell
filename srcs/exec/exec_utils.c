@@ -6,7 +6,7 @@
 /*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 16:04:55 by brhajji-          #+#    #+#             */
-/*   Updated: 2022/06/24 18:56:19 by brhajji-         ###   ########.fr       */
+/*   Updated: 2022/07/13 21:32:48 by brhajji-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,23 +48,6 @@ char	**get_arg(t_token *token)
 	arg[i] = NULL;
 	return (arg);
 }
-
-/*void	set_r_in(t_node	*node, t_token *token)
-{
-	node->in = -1;
-	while (token && token->type != R_IN && token->type != PIPE)
-		token = token->next;
-	if (token && token->type == R_IN && token->next->type == INFILE)
-	{
-		if (!access(token->next->word, F_OK))
-			node->in = open(token->next->word, O_RDONLY);
-		else
-		{
-			node->in = -2;
-			perror(token->next->word);
-		}
-	}
-}*/
 
 void	set_r_in(t_node *node, t_token *token)
 {
@@ -136,8 +119,8 @@ char	**get_path(char **envp)
 		return (NULL);
 	while (envp[++i])
 	{
-		if (envp[i][0] == 'P' && envp[i][1] == 'A' && envp[i][2] == 'T'
-			&& envp[i][3] == 'H' && envp[i][4] == '=')
+		if (ft_strlen(envp[i]) >=5  && envp[i][0] == 'P' && envp[i][1] == 'A' 
+			&& envp[i][2] == 'T' && envp[i][3] == 'H' && envp[i][4] == '=')
 		{
 			path = ft_split(envp[i] + 5, ':');
 			return (path);

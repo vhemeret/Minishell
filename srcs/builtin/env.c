@@ -6,7 +6,7 @@
 /*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/24 15:09:32 by brhajji-          #+#    #+#             */
-/*   Updated: 2022/07/10 16:46:59 by brhajji-         ###   ########.fr       */
+/*   Updated: 2022/07/10 21:59:52 by brhajji-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ int	env(t_exec *utils)
 	tmp = utils->envp_lst;
 	if (!tmp)
 		return (-1);
-	while (tmp)
+	while (tmp && tmp->content)
 	{
 		if (tmp->content && *(tmp->content) && tmp->type != 1)
 			printf("%s\n", tmp->content);

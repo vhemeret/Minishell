@@ -6,7 +6,7 @@
 /*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 01:50:59 by brhajji-          #+#    #+#             */
-/*   Updated: 2022/07/10 16:36:33 by brhajji-         ###   ########.fr       */
+/*   Updated: 2022/07/12 02:29:49 by brhajji-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,14 @@ void	no_fork(t_token *token, t_exec *utils)
 	else if (!strcmp(token->word, "export"))
 	{
 		if (token->next)
-			export(token->next->word, &utils);
+			export(ft_strcpy(token->next->word), &utils);
 		else
 			export(NULL, &utils);
+	}
+
+	else if (!ft_strcmp(token->word, "unset"))
+	{
+		unset(token->next->word, utils);
 	}
 }
 
@@ -82,14 +87,14 @@ int	manage_built_in(t_token *token, t_exec *utils)
 		pwd(utils->envp);
 		return (0);	
 	}
-	else if (!ft_strcmp(token->word, "unset"))
-	{
-		unset(token->next->word, utils);
-		return (0);
-	}
 	else if (!ft_strcmp(token->word, "env"))
 	{
 		env(utils);
+		return (0);
+	}
+	else if (!ft_strcmp(token->word, "echo"))
+	{
+		echo(token, utils);
 		return (0);
 	}
 	return (1);

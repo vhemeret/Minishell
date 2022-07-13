@@ -6,7 +6,7 @@
 /*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/26 15:34:45 by brhajji-          #+#    #+#             */
-/*   Updated: 2022/06/29 17:42:22 by brhajji-         ###   ########.fr       */
+/*   Updated: 2022/07/12 02:30:36 by brhajji-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,13 @@ int	unset(char *var, t_exec *utils)
 		{
 			tmp = tmp_lst->next->next;
 			free(tmp_lst->next);
+			tmp_lst->next = NULL;
 			tmp_lst->next = tmp;
-			return (0);
+			break ;
 		}
 		tmp_lst = tmp_lst->next;
 	}
+	free_env(utils->envp, size_tab(utils->envp));
 	utils->envp = lst_to_char(utils->envp_lst);
 	return (0);
 }

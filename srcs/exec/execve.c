@@ -6,7 +6,7 @@
 /*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 15:46:20 by brhajji-          #+#    #+#             */
-/*   Updated: 2022/07/01 02:18:51 by brhajji-         ###   ########.fr       */
+/*   Updated: 2022/07/11 23:41:48 by brhajji-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,16 @@ char	*get_cmd_path(char *cmd, char **envp)
 	char 	**path;
 
 	i = -1;
-	path = get_path(envp);
 	if (!access(cmd, X_OK))
 		return (cmd);
-	while (path[++i])
+	path = get_path(envp);
+	//if (!path)
+		
+	while (path && path[++i])
 	{
 		tmp = ft_strjoin(path[i], "/");
 		tmp = ft_strjoin(tmp, cmd);
-		if (access(tmp, F_OK) == 0)
+		if (!access(tmp, F_OK))
 			return (tmp);
 		free(tmp);
 	}
@@ -74,6 +76,7 @@ pid_t	run(t_token *token, int *fd, int num, t_exec utils)
 			close(fd[1]);
 		if (fd[0] > 0)
 			close(fd[0]);
+		printf("check = %s\n", get_cmd_path(token->word, utils.envp));
 		if (is_built_in(token) == 0)
 		{
 			manage_built_in(token, &utils);
@@ -81,7 +84,7 @@ pid_t	run(t_token *token, int *fd, int num, t_exec utils)
 			exit(0);
 		}
 		else if (execve(get_cmd_path(token->word, utils.envp), get_arg(token), utils.envp) == -1)
-			perror("Execve ");
+			perror(token->word);
 	}
 	return (pid);
 }

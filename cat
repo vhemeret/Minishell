@@ -1,0 +1,11 @@
+check = /usr/bin/ls
+cat
+Makefile
+memo
+minishell
+minishell.h
+objs
+srcs
+test
+test1
+test2

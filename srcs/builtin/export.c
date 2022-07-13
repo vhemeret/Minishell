@@ -6,7 +6,7 @@
 /*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/26 15:34:49 by brhajji-          #+#    #+#             */
-/*   Updated: 2022/07/10 16:57:22 by brhajji-         ###   ########.fr       */
+/*   Updated: 2022/07/12 02:14:32 by brhajji-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,18 +49,21 @@ void	print_tab(char **tab)
 
 void free_env(char **envp, int size)
 {
-	while (--size && envp[size])
+	int	i;
+
+	i = -1;
+	while (++i <= size)
 		free(envp[size]);
 	free(envp);
 	envp = NULL;
 }
 
-int	size_tab(t_exec *utils)
+int	size_tab(char **tab)
 {
 	int i;
 
 	i = 0;
-	while (utils->envp[i])
+	while (tab[i])
 	{
 		i++;
 	}
@@ -85,32 +88,36 @@ int	export(char *var, t_exec **utils)
 	}
 	if (!var)
 	{
-		print_tab(sort_tab((*utils)->envp, size_tab((*utils))));
+		print_tab(sort_tab((*utils)->envp, size_tab((*utils)->envp)));
 		free(tmp);
 		return (0);
 	}
-	tmp->content = ft_strcpy(var);
-	if (pos_equal(tmp->content) == - 1)
-		tmp->type = 1;
-	else
-		tmp->type = 2;
-	tmp->next = NULL;
-	while ((*utils)->envp[++i] && tmp->type == 2)
+	else if (!check_parsing(var))
 	{
-		if (!strncmp((*utils)->envp[i], var, pos_equal(var)))
+		tmp->content = ft_strcpy(var);
+		if (pos_equal(tmp->content) == - 1)
+			tmp->type = 1;
+		else
+			tmp->type = 2;
+		tmp->next = NULL;
+		while ((*utils)->envp[++i] && tmp->type == 2)
 		{
-			free((*utils)->envp[i]);
-			(*utils)->envp_lst = edit_var_lst(*utils, var, 0);
-			free_env((*utils)->envp, size_tab(*utils));
-			(*utils)->envp = lst_to_char((*utils)->envp_lst);
-			return (0);
+			if (!strncmp((*utils)->envp[i], var, pos_equal(var)))
+			{
+				if (*(var + pos_equal(var)) == '=')
+					(*utils)->envp_lst = edit_var_lst(*utils, var, 0);
+				else
+					(*utils)->envp_lst = edit_var_lst(*utils, var, 1);
+				free_env((*utils)->envp, size_tab((*utils)->envp));
+				(*utils)->envp = lst_to_char((*utils)->envp_lst);
+				return (0);
+			}
 		}
+		//printf("test 1 = %s\n",(*utils)->envp_lst->content);
+		//printf("test 2 = %s\n",(*utils)->envp_lst->content);
+		free_env((*utils)->envp, size_tab((*utils)->envp));
+		(*utils)->envp_lst = ft_envadd_back(((*utils)->envp_lst), tmp);
+		(*utils)->envp = lst_to_char((*utils)->envp_lst);
 	}
-	//printf("test 1 = %s\n",(*utils)->envp_lst->content);
-	(*utils)->envp_lst = ft_envadd_back(((*utils)->envp_lst), tmp);
-	//printf("test 2 = %s\n",(*utils)->envp_lst->content);
-	if ((*utils)->envp_lst)
-		free_env((*utils)->envp, size_tab(*utils));
-	(*utils)->envp = lst_to_char((*utils)->envp_lst);
 	return (0);
 }

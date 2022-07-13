@@ -6,7 +6,7 @@
 /*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 18:14:41 by vahemere          #+#    #+#             */
-/*   Updated: 2022/07/10 20:43:58 by brhajji-         ###   ########.fr       */
+/*   Updated: 2022/07/12 02:29:06 by brhajji-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,25 +141,7 @@ int		basic_expantion(char *w, t_expand *exp, char **nv, t_quote *state);
 char	**split_word(char *word, t_quote *state);
 void	replace_old_node(t_token **old_node, char **to_insert);
 
-/*###   EXEC  ###*/
-
-char	**get_arg(t_token *token);
-void	exec(t_token *token, char **envp);
-void	set_r_in(t_node	*node, t_token *token);
-void	set_r_out(t_node *node, t_token *token);
-char	**get_path(char **envp);
-void	init_exec(t_token *token, t_exec **utils);
-int		nb_cmd(t_token *token);
-void 	here_doc_init(t_node *node, t_token *token);
-t_token *go_next(t_token *token);
-	
-/*###   BUILT IN  ###*/
-
-int		env(char **envp);
-int		pwd(char **envp);
-int		cd(char *path);
-
-/*###  UTILS  ###*/
+	/*###   EXEC  ###*/
 
 char	**get_arg(t_token *token);
 void	exec(t_token *token, t_exec *utils);
@@ -181,6 +163,8 @@ int 	pwd(char **envp);
 int		cd(char *path, t_exec *utils);
 int		export(char *var, t_exec **utils);
 int		unset(char *var, t_exec *utils);
+int		echo(t_token *token, t_exec *utils);
+
 t_env	*init_lst_env(char **envp, t_exec *utils);
 char	**lst_to_char(t_env *lst);
 t_env	*ft_envadd_back(t_env *lst, t_env *new);
@@ -191,8 +175,11 @@ int		pos_equal(char *str);
 char	**lst_to_char_env(t_env *lst);
 void	print_tab(char **tab);
 char	**sort_tab(char **tab, int size);
-int		size_tab(t_exec *utils);
+int		size_tab(char **tab);
 void	no_fork(t_token *token, t_exec *utils);
+void 	free_env(char **envp, int size);
+int		check_parsing(char *str);
+char	*plus_egale(char *str, char *var, int egale);
 
 	/*###  UTILS  ###*/
 
@@ -215,13 +202,14 @@ int		ft_strcmp(char *s1, char *s2);
 int		len_darr(char **arr);
 int		isdigits(char c);
 
-/*### CLEANING ###*/
-
+	/*### CLEANING ###*/
 void	free_double_array(char **arr);
+int		print_and_free(char *str, t_token **lst);
 void 	ft_free_node(t_node *node);
 void 	ft_free_token(t_token *token);
 void 	clean(t_exec *utils);
 void	cleaning_parsing(t_expand *exp);
 t_token	*cleaning_parsing_error(t_quote *state, char **env);
+
 
 #endif

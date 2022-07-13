@@ -6,7 +6,7 @@
 /*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:22:13 by vahemere          #+#    #+#             */
-/*   Updated: 2022/07/10 20:43:04 by brhajji-         ###   ########.fr       */
+/*   Updated: 2022/07/10 20:58:19 by brhajji-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,22 +24,6 @@ void	free_double_array(char **arr)
 	}
 	free(arr);
 	arr = NULL;
-}
-
-void	ft_free_node(t_node *node)
-{
-	t_node	*tmp;
-
-	while (node)
-	{
-		tmp = node;
-		node = node->next;
-		if (tmp->here_doc)
-			free(tmp->here_doc);
-		free(tmp);
-		tmp = NULL;
-	}
-	return (0);
 }
 
 void	ft_free_node(t_node *node)
