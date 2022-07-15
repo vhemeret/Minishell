@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 01:11:46 by vahemere          #+#    #+#             */
-/*   Updated: 2022/07/03 07:25:10 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/07/15 13:05:52 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,20 @@ int	check_after_redir(t_token *tmp, t_token **lst)
 	return (0);
 }
 
+int	find_syntax_error(t_token *tmp, t_token *save)
+{
+	if (save->type == PIPE && tmp->type == PIPE)
+		return (1);
+	else if (save->type == R_IN || save->type == R_OUT
+		|| save->type == DR_IN || save->type == DR_OUT)
+	{
+		if (tmp->type == PIPE || tmp->type == R_IN || tmp->type == R_OUT
+			|| tmp->type == DR_IN || tmp->type == DR_OUT)
+			return (1);
+	}
+	return (0);
+}
+
 int	syntax_check(t_token **lst)
 {
 	t_token	*tmp;
@@ -80,13 +94,8 @@ int	syntax_check(t_token **lst)
 		return (print_message_and_cleaning(7, lst));
 	while (tmp)
 	{
-		if (save->type == R_IN || save->type == R_OUT
-			|| save->type == DR_IN || save->type == DR_OUT)
-		{
-			if (tmp->type == PIPE || tmp->type == R_IN || tmp->type == R_OUT
-				|| tmp->type == DR_IN || tmp->type == DR_OUT)
-				return (check_after_redir(tmp, lst));
-		}
+		if (find_syntax_error(tmp, save))
+			return (check_after_redir(tmp, lst));
 		save = tmp;
 		tmp = tmp->next;
 	}
