@@ -6,7 +6,7 @@
 /*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 14:33:41 by brhajji-          #+#    #+#             */
-/*   Updated: 2022/06/24 15:05:43 by brhajji-         ###   ########.fr       */
+/*   Updated: 2022/07/14 04:44:33 by brhajji-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,7 @@ void here_doc_init(t_node *node, t_token *token)
 	int	i;
 
 	i = 1;
-	if (signal(SIGINT, NULL) == SIG_ERR)
-	{
-		close(node->here_doc_fd);
-		unlink(node->here_doc);
-        return ;
-	}
+
 	while (token && token->type != PIPE && ++i)
 	{
 		if (token && token->type == DR_IN && token->next->type == FD)
