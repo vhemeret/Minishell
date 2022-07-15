@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   manage_cmd_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 06:12:23 by vahemere          #+#    #+#             */
-/*   Updated: 2022/07/13 21:37:03 by brhajji-         ###   ########.fr       */
+/*   Updated: 2022/07/15 13:00:06 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,29 +19,27 @@ int	sep_word(char c)
 	return (0);
 }
 
-static int	increment_redir_word(char *cmd_line, int i)
+static void	increment_redir_word(char *cmd_line, int *i)
 {
-	if (cmd_line[i] == '<' && cmd_line[i + 1] && cmd_line[i + 1] == '<')
+	if (cmd_line[*i] == '<' && cmd_line[*i + 1] && cmd_line[*i + 1] == '<')
 	{
-		if (cmd_line[i + 1] && cmd_line[i + 1] == '<')
-			i++;
+		if (cmd_line[*i + 1] && cmd_line[*i + 1] == '<')
+			(*i)++;
 	}
-	else if (cmd_line[i] == '>'
-		&& cmd_line[i + 1] && cmd_line[i + 1] == '>')
+	else if (cmd_line[*i] == '>'
+		&& cmd_line[*i + 1] && cmd_line[*i + 1] == '>')
 	{
-		if (cmd_line[i + 1] && cmd_line[i + 1] == '>')
-			i++;
+		if (cmd_line[*i + 1] && cmd_line[*i + 1] == '>')
+			(*i)++;
 	}
-	return (i);
 }
 
-static int	increment_quote_word(char *cmd_line, t_quote *state, int i)
+static void	increment_quote_word(char *cmd_line, t_quote *state, int *i)
 {
-	if (cmd_line[i] == '\'' && state->is_quote == 1)
-		i += next_squote(&cmd_line[i]);
-	else if (cmd_line[i] == '"' && state->is_dquote == 1)
-		i += next_dquote(&cmd_line[i]);
-	return (i);
+	if (cmd_line[*i] == '\'' && state->is_quote == 1)
+		*i += next_squote(&cmd_line[*i]);
+	else if (cmd_line[*i] == '"' && state->is_dquote == 1)
+		*i += next_dquote(&cmd_line[*i]);
 }
 
 int	nb_words(char *cmd, t_quote *state)
@@ -59,11 +57,11 @@ int	nb_words(char *cmd, t_quote *state)
 		{
 			if ((cmd[i] == '<' && cmd[i + 1] && cmd[i + 1] == '<')
 				|| (cmd[i] == '>' && cmd[i + 1] && cmd[i + 1] == '>'))
-				i += increment_redir_word(cmd, i);
+				increment_redir_word(cmd, &i);
 			else if ((cmd[i] == '\'' && state->is_quote == 1)
 				|| (cmd[i] == '"' && state->is_dquote == 1))
 			{
-				i += increment_quote_word(cmd, state, i);
+				increment_quote_word(cmd, state, &i);
 				if (cmd[i] == '\0')
 					return (words += 1);
 			}
