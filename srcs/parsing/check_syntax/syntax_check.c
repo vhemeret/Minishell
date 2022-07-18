@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 01:11:46 by vahemere          #+#    #+#             */
-/*   Updated: 2022/07/15 13:05:52 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/07/17 17:47:23 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,8 @@ int	syntax_check(t_token **lst)
 	{
 		if (find_syntax_error(tmp, save))
 			return (check_after_redir(tmp, lst));
+		if (!tmp->next && tmp->type == PIPE)
+			return (print_message_and_cleaning(7, lst));
 		save = tmp;
 		tmp = tmp->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 04:59:57 by vahemere          #+#    #+#             */
-/*   Updated: 2022/07/03 05:17:43 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/07/18 02:04:49 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int	len_squote_expantion(char *w, int *l)
 {
 	int		i;
 
-	i = 0;
+	i = -1;
 	while (w[i++] && w[i] != '\'')
 		(*l)++;
 	return (i);

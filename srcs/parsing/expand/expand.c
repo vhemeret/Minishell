@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 15:31:55 by vahemere          #+#    #+#             */
-/*   Updated: 2022/07/03 07:45:53 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/07/16 23:56:15 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ int	need_expand_or_rm_quote(t_token **to_check, t_quote *state, t_expand *exp)
 	i = -1;
 	while ((*to_check)->word[++i])
 	{
+		if ((*to_check)->type == LIMITOR)
+			return (0);
 		if ((*to_check)->word[i] == '$')
 			exp->need_expand = 1;
 		if ((*to_check)->word[i] == '"' || (*to_check)->word[i] == '\'')

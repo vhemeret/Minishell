@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/03 06:07:41 by vahemere          #+#    #+#             */
-/*   Updated: 2022/07/03 07:41:45 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/07/17 20:03:35 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int	free_lst(t_token **lst)
 {
 	t_token	*tmp;
 
+	tmp = (*lst);
 	while (tmp)
 	{
 		tmp = (*lst);

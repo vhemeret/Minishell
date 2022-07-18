@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 03:18:55 by vahemere          #+#    #+#             */
-/*   Updated: 2022/07/04 01:24:05 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/07/16 23:26:20 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	type_of_word2(t_token *tmp, t_token *first, t_token *save)
 		if (is_outfile_drout(save))
 			tmp->type = FD;
 		else if (is_limitor(save))
-			tmp->type = FD;
+			tmp->type = LIMITOR;
 		else if (save->type == R_IN)
 			tmp->type = FD;
 		else if (save->type == R_OUT)

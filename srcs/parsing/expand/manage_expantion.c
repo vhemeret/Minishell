@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/03 05:46:07 by vahemere          #+#    #+#             */
-/*   Updated: 2022/07/03 05:52:12 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/07/18 02:39:52 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ void	manage_expantion(t_token **expnd, t_quote *st, char **nv, t_expand *exp)
 	exp->str = malloc_for_expand(expnd, st, nv);
 	if (!exp->str)
 		return ;
+	st->is_quote = 0;
+	st->is_dquote = 0;
 	type_expantion(expnd, st, nv, exp);
 	exp->str[exp->len] = '\0';
 	if (exp->need_expand == 1 && exp->quote == 0)

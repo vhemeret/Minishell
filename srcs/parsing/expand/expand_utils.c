@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 20:07:52 by vahemere          #+#    #+#             */
-/*   Updated: 2022/07/03 03:56:09 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/07/18 02:26:00 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int	basic_expantion(char *w, t_expand *exp, char **nv, t_quote *state)
 	return (i);
 }
 
-char	*malloc_for_expand(t_token **to_expand, t_quote *state, char **env)
+char	*malloc_for_expand(t_token **exp, t_quote *st, char **env)
 {
 	int		j;
 	int		len;
@@ -92,11 +92,15 @@ char	*malloc_for_expand(t_token **to_expand, t_quote *state, char **env)
 
 	j = 0;
 	len = 0;
-	while ((*to_expand)->word[j])
+	while ((*exp)->word[j])
 	{
-		quoting_state((*to_expand)->word[j], state);
-		if ((*to_expand)->word[j] == '$')
-			j += search_in_env_len(&(*to_expand)->word[j], env, state, &len);
+		quoting_state((*exp)->word[j], st);
+		if ((*exp)->word[j] == '$')
+		{
+			j += search_in_env_len(&(*exp)->word[j], env, st, &len);
+			if (st->found == 0 && (*exp)->word[j] && sign((*exp)->word[j], st))
+				len++;
+		}
 		else
 		{
 			len++;
