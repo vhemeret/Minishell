@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 19:49:06 by vahemere          #+#    #+#             */
-/*   Updated: 2022/06/30 04:52:28 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/07/18 02:50:40 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ char	*malloc_word(char *word, t_quote *state)
 	int		j;
 
 	i = 0;
+	j = 0;
 	while (word[i] && word[i] != ' ')
 	{
 		if ((word[i] == '"' && state->is_quote == 0)

@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 18:14:41 by vahemere          #+#    #+#             */
-/*   Updated: 2022/07/18 02:43:35 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/07/18 04:48:56 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ typedef enum s_type
 {
 	CMD,
 	ARG,
-	R_IN,	
+	R_IN,
 	R_OUT,
 	DR_OUT,
 	DR_IN,
@@ -209,7 +209,7 @@ int		print_and_free(char *str, t_token **lst);
 void 	ft_free_node(t_node *node);
 void 	ft_free_token(t_token *token);
 void 	clean(t_exec *utils);
-void	cleaning_parsing(t_expand *exp);
+void	cleaning_parsing(t_expand *exp, t_quote *state, char **env);
 t_token	*cleaning_parsing_error(t_quote *state, char **env);
 
 

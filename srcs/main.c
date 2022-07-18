@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 18:14:25 by vahemere          #+#    #+#             */
-/*   Updated: 2022/07/14 05:01:22 by brhajji-         ###   ########.fr       */
+/*   Updated: 2022/07/18 04:07:32 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,30 @@ int	main(int ac, char **av, char **envp)
 			free(ret);
 			if (!utils)
 				utils = init_exec(token, envp);
-			else
-				refresh(token, utils);
+			// else
+			// 	refresh(token, utils);
+			// if (utils)
+			// {
+			// 	exec(token, utils);
+			// 	clean(utils);
+			// }
+			t_token *tmp;
+
+			/*########### PRINT ###########*/
+			tmp = token;
+			char	*types[9] = {"CMD", "ARG", "R_IN", "R_OUT", "DR_IN", "DR_OUT", "FD", "LIMITOR", "PIPE"};
+			while (tmp)
+			{
+				printf("\033[31;01m\t[%s]\033[00m \033[32;01m|\033[00m \033[33;01m[%s]\033[00m\n", tmp->word, types[tmp->type]);
+				tmp = tmp->next;
+			}
+			/*#############################*/
 			if (utils)
 			{
 				exec(token, utils);
 				clean(utils);
 			}
+			break ;
 		}
 	}
 	return (0);

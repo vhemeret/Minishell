@@ -6,7 +6,7 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 15:31:55 by vahemere          #+#    #+#             */
-/*   Updated: 2022/07/16 23:56:15 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/07/18 04:20:46 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,5 +85,5 @@ void	expand(t_token **lst, t_quote *state, char **env)
 		else
 			tmp = tmp->next;
 	}
-	cleaning_parsing(exp);
+	cleaning_parsing(exp, state, save_env);
 }

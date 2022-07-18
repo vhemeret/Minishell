@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleaning.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:22:13 by vahemere          #+#    #+#             */
-/*   Updated: 2022/07/10 20:58:19 by brhajji-         ###   ########.fr       */
+/*   Updated: 2022/07/18 04:20:58 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,15 +71,20 @@ void clean(t_exec *utils)
 }
 t_token	*cleaning_parsing_error(t_quote *state, char **env)
 {
-	(void)env;
-	free(state);
-	state = NULL;
-	//free_double_array(env);
+	if (state)
+	{
+		free(state);
+		state = NULL;
+	}
+	free_double_array(env);
 	return (NULL);
 }
 
-void	cleaning_parsing(t_expand *exp)
-{
+void	cleaning_parsing(t_expand *exp, t_quote *state, char **env)
+{	
 	free(exp);
 	exp = NULL;
+	free(state);
+	state = NULL;
+	free_double_array(env);
 }

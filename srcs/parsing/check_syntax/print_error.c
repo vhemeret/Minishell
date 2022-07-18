@@ -6,22 +6,22 @@
 /*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/03 06:07:41 by vahemere          #+#    #+#             */
-/*   Updated: 2022/07/17 20:03:35 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/07/18 04:55:23 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell.h"
 
-int	free_lst(t_token **lst)
+int	free_lst(t_token *token)
 {
 	t_token	*tmp;
 
-	tmp = (*lst);
-	while (tmp)
+	while (token)
 	{
-		tmp = (*lst);
-		(*lst) = (*lst)->next;
-		free(tmp->word);
+		tmp = token;
+		token = token->next;
+		if (tmp->word)
+			free(tmp->word);
 		free(tmp);
 		tmp = NULL;
 	}
@@ -59,5 +59,5 @@ int	print_message_and_cleaning(int error, t_token **lst)
 		dprintf(2, "minishell: syntax error near unexpected token `||'\n");
 	if (error == 7)
 		dprintf(2, "minishell: syntax error near unexpected token `|'\n");
-	return (free_lst(lst));
+	return (free_lst(*lst));
 }
