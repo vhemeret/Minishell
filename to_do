@@ -1,0 +1,7 @@
+- probleme derniere commande fausse apres pipe -> plusieurs prompt s'affiche
+- probleme variable inchange apres un export quand on reprend le meme nom de var quand env suppr
+- echo gerer le -nnnnn
+- expantion here_doc
+- message d'erreur
+- leaks
+- norm exec

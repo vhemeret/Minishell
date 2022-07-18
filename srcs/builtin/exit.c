@@ -6,14 +6,14 @@
 /*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 15:47:02 by brhajji-          #+#    #+#             */
-/*   Updated: 2022/07/13 21:45:20 by brhajji-         ###   ########.fr       */
+/*   Updated: 2022/07/18 18:11:16 by brhajji-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	ft_exit(t_token *token, t_exec *utils)
+void	ft_exit(t_exec *utils)
 {
 	clean(utils);
-	exit(NULL);
+	exit(0);
 }

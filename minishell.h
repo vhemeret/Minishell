@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 18:14:41 by vahemere          #+#    #+#             */
-/*   Updated: 2022/07/18 04:48:56 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/07/18 20:56:34 by brhajji-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,6 +165,7 @@ int		cd(char *path, t_exec *utils);
 int		export(char *var, t_exec **utils);
 int		unset(char *var, t_exec *utils);
 int		echo(t_token *token, t_exec *utils);
+void	ft_exit(t_exec *utils);
 
 t_env	*init_lst_env(char **envp, t_exec *utils);
 char	**lst_to_char(t_env *lst);
@@ -209,8 +210,8 @@ int		print_and_free(char *str, t_token **lst);
 void 	ft_free_node(t_node *node);
 void 	ft_free_token(t_token *token);
 void 	clean(t_exec *utils);
-void	cleaning_parsing(t_expand *exp, t_quote *state, char **env);
-t_token	*cleaning_parsing_error(t_quote *state, char **env);
+void	cleaning_parsing(t_expand *exp, t_quote *state);
+t_token	*cleaning_parsing_error(t_quote *state);
 
 
 #endif

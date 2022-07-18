@@ -6,7 +6,7 @@
 /*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 01:50:59 by brhajji-          #+#    #+#             */
-/*   Updated: 2022/07/12 02:29:49 by brhajji-         ###   ########.fr       */
+/*   Updated: 2022/07/18 18:49:48 by brhajji-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,23 +16,19 @@ int	init_env(t_exec *utils, char **envp)
 {
 	t_env	*tmp;
 	t_env	*tmp2;
-	t_env	*rendu;
 	char	*temp;
 	
-	
-	if (!envp)
+	if (!(*envp))
 	{
+		printf("test\n");
 		tmp = malloc(sizeof(t_env));
 		temp = malloc(sizeof(char ) * 1024);
-		rendu = NULL;
 		tmp->content = getcwd(temp, sizeof(temp));
 		tmp->next = NULL;
-		rendu = tmp;
 		tmp2 = malloc(sizeof(t_env));
 		tmp2->content = "SHLVL=1";
-		tmp2->next = NULL;
-		rendu->next = tmp2;
-		utils->envp_lst = rendu;
+		tmp2->next = tmp;
+		utils->envp_lst = tmp2;
 		utils->envp = lst_to_char(utils->envp_lst);
 	}
 	else if (utils && envp)
@@ -95,6 +91,11 @@ int	manage_built_in(t_token *token, t_exec *utils)
 	else if (!ft_strcmp(token->word, "echo"))
 	{
 		echo(token, utils);
+		return (0);
+	}
+	else if (!ft_strcmp(token->word, "exit"))
+	{
+		ft_exit(utils);
 		return (0);
 	}
 	return (1);

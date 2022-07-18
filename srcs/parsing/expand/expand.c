@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 15:31:55 by vahemere          #+#    #+#             */
-/*   Updated: 2022/07/18 04:20:46 by vahemere         ###   ########.fr       */
+/*   Updated: 2022/07/18 20:56:45 by brhajji-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ int	need_expand_or_rm_quote(t_token **to_check, t_quote *state, t_expand *exp)
 
 void	expand(t_token **lst, t_quote *state, char **env)
 {
-	char		**save_env;
 	t_token		*tmp;
 	t_token		*save;
 	t_expand	*exp;
@@ -69,7 +68,6 @@ void	expand(t_token **lst, t_quote *state, char **env)
 	exp = malloc(sizeof(t_expand));
 	if (!exp)
 		return ;
-	save_env = copy_env(env);
 	tmp = (*lst);
 	while (tmp)
 	{
@@ -80,10 +78,10 @@ void	expand(t_token **lst, t_quote *state, char **env)
 			state->is_quote = 0;
 			state->is_dquote = 0;
 			if (need_expand_or_rm_quote(&save, state, exp))
-				manage_expantion(&save, state, save_env, exp);
+				manage_expantion(&save, state, env, exp);
 		}
 		else
 			tmp = tmp->next;
 	}
-	cleaning_parsing(exp, state, save_env);
+	cleaning_parsing(exp, state);
 }

@@ -6,7 +6,7 @@
 /*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 18:14:25 by vahemere          #+#    #+#             */
-/*   Updated: 2022/07/18 18:02:52 by brhajji-         ###   ########.fr       */
+/*   Updated: 2022/07/18 18:40:13 by brhajji-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,12 @@ int	main(int ac, char **av, char **envp)
 	t_token	*token;
 	t_exec	*utils;
 
-	utils = NULL;
 	if (ac != 1)
 	{
 		printf("Error:	to many arguments.\n");
 		return (1);
 	}
+	utils = init_exec(NULL, envp);
 	handle_sig();
 	while (1)
 	{
@@ -49,14 +49,11 @@ int	main(int ac, char **av, char **envp)
 			exit(0);
 		else if (ft_strlen(ret) != 0)
 		{
-			token = manage_cmd(ret, envp);
+			token = manage_cmd(ret, utils->envp);
 			if (ret && *ret)
 				add_history(ret);
 			free(ret);
-			if (!utils)
-				utils = init_exec(token, envp);
-			else
-				refresh(token, utils);
+			refresh(token, utils);
 			if (utils)
 			{
 				exec(token, utils);
