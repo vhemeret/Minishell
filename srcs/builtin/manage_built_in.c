@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   manage_built_in.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 01:50:59 by brhajji-          #+#    #+#             */
-/*   Updated: 2022/07/18 18:49:48 by brhajji-         ###   ########.fr       */
+/*   Updated: 2022/07/19 00:12:58 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int	manage_built_in(t_token *token, t_exec *utils)
 	}
 	else if (!ft_strcmp(token->word, "echo"))
 	{
-		echo(token, utils);
+		echo(token);
 		return (0);
 	}
 	else if (!ft_strcmp(token->word, "exit"))

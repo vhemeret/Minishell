@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vahemere <vahemere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 18:14:41 by vahemere          #+#    #+#             */
-/*   Updated: 2022/07/18 20:56:34 by brhajji-         ###   ########.fr       */
+/*   Updated: 2022/07/19 00:21:43 by vahemere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,7 @@ int 	pwd(char **envp);
 int		cd(char *path, t_exec *utils);
 int		export(char *var, t_exec **utils);
 int		unset(char *var, t_exec *utils);
-int		echo(t_token *token, t_exec *utils);
+int		echo(t_token *token);
 void	ft_exit(t_exec *utils);
 
 t_env	*init_lst_env(char **envp, t_exec *utils);
