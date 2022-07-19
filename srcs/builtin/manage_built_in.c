@@ -6,7 +6,7 @@
 /*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 01:50:59 by brhajji-          #+#    #+#             */
-/*   Updated: 2022/07/19 04:22:21 by brhajji-         ###   ########.fr       */
+/*   Updated: 2022/07/19 04:28:00 by brhajji-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ int	manage_built_in(t_token *token, t_exec *utils)
 	}
 	else if (!ft_strcmp(token->word, "echo"))
 	{
-		echo(token, utils);
+		echo(token);
 		return (0);
 	}
 	return (1);
