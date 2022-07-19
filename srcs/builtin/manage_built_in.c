@@ -6,7 +6,7 @@
 /*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 01:50:59 by brhajji-          #+#    #+#             */
-/*   Updated: 2022/07/18 18:49:48 by brhajji-         ###   ########.fr       */
+/*   Updated: 2022/07/19 04:22:21 by brhajji-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ int	is_built_in(t_token *token)
 	if (!ft_strcmp(token->word, "pwd") 
 		|| !ft_strcmp(token->word, "env") || !ft_strcmp(token->word, "echo"))
 		return (0);
-	else if (!ft_strcmp(token->word, "cd") || !ft_strcmp(token->word, "export") || !ft_strcmp(token->word, "unset"))
+	else if (!ft_strcmp(token->word, "cd") || !ft_strcmp(token->word, "export") || !ft_strcmp(token->word, "unset")
+		|| !ft_strcmp(token->word, "exit"))
 		return (1);
 	else 
 		return (-1);
@@ -64,16 +65,25 @@ void	no_fork(t_token *token, t_exec *utils)
 	}
 	else if (!strcmp(token->word, "export"))
 	{
-		if (token->next)
-			export(ft_strcpy(token->next->word), &utils);
-		else
+		if (!token->next)
 			export(NULL, &utils);
+		else
+			while (token->next && token->next->type == ARG)
+			{
+				export(ft_strcpy(token->next->word), &utils);
+				token = token->next;
+			}
 	}
-
 	else if (!ft_strcmp(token->word, "unset"))
 	{
-		unset(token->next->word, utils);
+		while (token->next && token->next->type == ARG)
+		{
+			unset(token->next->word, utils);
+			token = token->next;
+		}
 	}
+	else if (!ft_strcmp(token->word, "exit"))
+		ft_exit(utils);
 }
 
 int	manage_built_in(t_token *token, t_exec *utils)
@@ -91,11 +101,6 @@ int	manage_built_in(t_token *token, t_exec *utils)
 	else if (!ft_strcmp(token->word, "echo"))
 	{
 		echo(token, utils);
-		return (0);
-	}
-	else if (!ft_strcmp(token->word, "exit"))
-	{
-		ft_exit(utils);
 		return (0);
 	}
 	return (1);

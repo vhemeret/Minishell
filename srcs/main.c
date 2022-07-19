@@ -6,7 +6,7 @@
 /*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 18:14:25 by vahemere          #+#    #+#             */
-/*   Updated: 2022/07/18 18:40:13 by brhajji-         ###   ########.fr       */
+/*   Updated: 2022/07/18 23:45:08 by brhajji-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,10 @@ int	main(int ac, char **av, char **envp)
 		
 		ret = readline("\033[0;35mminishell\033[0m\033[0;32m$>\033[0m ");
 		if (!ret)
+		{
+			printf("exit\n");
 			exit(0);
+		}
 		else if (ft_strlen(ret) != 0)
 		{
 			token = manage_cmd(ret, utils->envp);

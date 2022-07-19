@@ -6,7 +6,7 @@
 /*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 16:04:55 by brhajji-          #+#    #+#             */
-/*   Updated: 2022/07/13 21:32:48 by brhajji-         ###   ########.fr       */
+/*   Updated: 2022/07/19 00:13:28 by brhajji-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ char	**get_arg(t_token *token)
 
 	i = 0;
 	nb_arg = get_nb_arg(token);
+	printf("nb = %i\n", nb_arg);
 	arg = malloc(sizeof(char *) * (nb_arg + 1));
 	*arg = token->word;
 	while (token && token->type != ARG && token->type != PIPE)

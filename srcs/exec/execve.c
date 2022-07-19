@@ -6,7 +6,7 @@
 /*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 15:46:20 by brhajji-          #+#    #+#             */
-/*   Updated: 2022/07/11 23:41:48 by brhajji-         ###   ########.fr       */
+/*   Updated: 2022/07/19 01:54:51 by brhajji-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,15 @@ char	*get_cmd_path(char *cmd, char **envp)
 	if (!access(cmd, X_OK))
 		return (cmd);
 	path = get_path(envp);
-	//if (!path)
-		
 	while (path && path[++i])
 	{
 		tmp = ft_strjoin(path[i], "/");
 		tmp = ft_strjoin(tmp, cmd);
-		if (!access(tmp, F_OK))
+		if (!access(tmp, X_OK))
 			return (tmp);
 		free(tmp);
 	}
-	return (NULL);
+	return (cmd);
 }
 
 pid_t	run(t_token *token, int *fd, int num, t_exec utils)
@@ -84,7 +82,10 @@ pid_t	run(t_token *token, int *fd, int num, t_exec utils)
 			exit(0);
 		}
 		else if (execve(get_cmd_path(token->word, utils.envp), get_arg(token), utils.envp) == -1)
+		{
 			perror(token->word);
+			exit(0);
+		}
 	}
 	return (pid);
 }

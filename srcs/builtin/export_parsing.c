@@ -6,16 +6,23 @@
 /*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 23:29:23 by brhajji-          #+#    #+#             */
-/*   Updated: 2022/07/11 16:46:36 by brhajji-         ###   ########.fr       */
+/*   Updated: 2022/07/19 01:52:51 by brhajji-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
+int	is_num(char c)
+{
+	if (c >= '0' && c <= '9')
+		return (1);
+	return (0);
+}
+
 int	check_parsing(char *str)
 {
-	printf("test => %s \n", str);
-	if (*str == '=' || *str == '$' || *str == '/' || *str == ' ' || *str == '.')
+	if (*str == '=' || *str == '$' || *str == '/' || *str == ' '
+		|| *str == '.' || is_num(*str))
 	{
 		printf("export : `%s': not a valid identifier\n", str);
 		return (1);

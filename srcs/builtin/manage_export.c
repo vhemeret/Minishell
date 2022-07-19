@@ -6,7 +6,7 @@
 /*   By: brhajji- <brhajji-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 02:28:43 by brhajji-          #+#    #+#             */
-/*   Updated: 2022/07/12 01:57:35 by brhajji-         ###   ########.fr       */
+/*   Updated: 2022/07/19 04:25:51 by brhajji-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,11 @@ int	pos_equal(char *str)
 
 	x = 0;
 	while (str[x] && str[x] != '=' && str[x] != '+')
+	{
+		if (str[x] == ' ')
+			return (-1);
 		x++;
+	}
 	if (str[x] != '=' && str[x] != '+')
 		return (-1);
 	return (x);
